@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "replicant"
+version = "0.1.0"
+description = "Turn research papers into working local environments"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = [
+    "click>=8.1",
+    "pypdf>=3.0",
+    "arxiv>=2.0",
+    "GitPython>=3.1",
+    "docker>=7.0",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov",
+]
+
+[project.scripts]
+replicant = "replicant.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["replicant*"]
