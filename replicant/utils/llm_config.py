@@ -14,9 +14,9 @@ def check_gemini_setup() -> tuple[bool, str]:
     
     if not api_key:
         return False, (
-            "Gemini API key not found. Set GEMINI_API_KEY environment variable for enhanced paper analysis.\n"
+            "Gemini API key is required for replicant to function.\n"
             "Get your API key from: https://aistudio.google.com/app/apikey\n"
-            "Export it: export GEMINI_API_KEY=your_api_key_here"
+            "Set it with: export GEMINI_API_KEY=your_api_key_here"
         )
     
     try:
@@ -28,10 +28,10 @@ def check_gemini_setup() -> tuple[bool, str]:
         client = genai.Client(api_key=api_key)
         # Test the API with a simple call
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model='gemini-3-flash-preview',
             contents="Hello"
         )
-        return True, "Gemini API configured successfully"
+        return True, "Gemini API configured successfully - replicant is ready to use!"
     except Exception as e:
         return False, f"Gemini API test failed: {e}"
 
@@ -39,21 +39,21 @@ def check_gemini_setup() -> tuple[bool, str]:
 def get_config_instructions() -> str:
     """Get instructions for configuring Gemini API."""
     return """
-🤖 Enhanced Paper Analysis with Gemini AI
+🎆 Replicant: AI-Powered Research Environment Setup
 
-Replicant can now use Google's Gemini AI for smarter paper analysis instead of 
-regex patterns. This provides much better accuracy for:
+Replicant uses Google's Gemini AI to intelligently analyze research papers and 
+automatically create working environments. This provides:
 
-• GitHub repository detection
-• Framework and library identification  
-• Dataset recognition (beyond hardcoded lists)
-• Hardware requirement extraction
-• Download URL classification
+• Smart GitHub repository detection
+• Intelligent framework and library identification  
+• Advanced dataset recognition
+• Context-aware hardware requirement extraction
+• Intelligent download URL classification
 
 Setup:
 1. Get a Gemini API key: https://aistudio.google.com/app/apikey
 2. Set environment variable: export GEMINI_API_KEY=your_key_here
-3. Run replicant normally - it will automatically use AI analysis
+3. Run replicant normally - it will use AI analysis automatically
 
-If no API key is provided, replicant falls back to the original regex-based approach.
+Without a valid API key, replicant cannot function.
 """

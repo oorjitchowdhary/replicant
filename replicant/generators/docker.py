@@ -44,11 +44,48 @@ CMD ["/bin/bash"]
 
 
 def _pip(spec: EnvironmentSpec, d: Path) -> Path:
-    shutil.copy2(spec.primary_env_path, d / "requirements.txt")
-    v = spec.python_version
-    if v.count(".") > 1: v = ".".join(v.split(".")[:2])
-    (d / "Dockerfile").write_text(f"""\
-FROM python:{v}-slim
+    """Generate pip-based Dockerfile using AI-resolved dependencies."""
+    
+    # Use AI-resolved dependencies if available
+    if spec.resolved_deps and spec.resolved_deps.dependencies:
+        from replicant.analyzers.dependencies import generate_requirements_txt
+        requirements_content = generate_requirements_txt(spec.resolved_deps)
+        python_version = spec.resolved_deps.python_version
+        
+        # Check for TensorFlow version to determine base image
+        base_image, tf_preinstalled = _select_base_image(spec.resolved_deps, python_version)
+        
+        # If TF is preinstalled in base image, filter it from requirements
+        if tf_preinstalled:
+            requirements_content = _filter_tensorflow_from_requirements(requirements_content)
+    else:
+        # Fallback to original requirements.txt
+        requirements_content = ""
+        if spec.primary_env_path and spec.primary_env_path.exists():
+            requirements_content = spec.primary_env_path.read_text()
+        python_version = spec.python_version
+        base_image = f"python:{python_version}-slim"
+        tf_preinstalled = False
+    
+    # Write requirements.txt
+    (d / "requirements.txt").write_text(requirements_content)
+    
+    # Generate Dockerfile with appropriate base image
+    if tf_preinstalled:
+        # TensorFlow base images have old pip, upgrade it first
+        (d / "Dockerfile").write_text(f"""\
+FROM {base_image}
+RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
+RUN pip install --upgrade pip
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+WORKDIR /workspace
+CMD ["/bin/bash"]
+""")
+    else:
+        # Standard Python image
+        (d / "Dockerfile").write_text(f"""\
+FROM {base_image}
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential git && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
@@ -56,6 +93,57 @@ WORKDIR /workspace
 CMD ["/bin/bash"]
 """)
     return d
+
+
+def _select_base_image(resolved_deps, python_version: str) -> tuple[str, bool]:
+    """Select the best Docker base image based on dependencies.
+    
+    Returns:
+        (base_image, tf_preinstalled): The Docker image tag and whether TF is preinstalled
+    """
+    # Check if TensorFlow is in dependencies and what version
+    tf_version = None
+    for dep in resolved_deps.dependencies:
+        pkg_lower = dep.package.lower()
+        if pkg_lower in ("tensorflow", "tensorflow-gpu"):
+            tf_version = dep.version_spec
+            break
+    
+    if tf_version:
+        # Parse TF version from spec like "==1.15.0" or ">=2.0,<3.0"
+        if "1.15" in tf_version or "1.14" in tf_version or "1.13" in tf_version:
+            # Use official TensorFlow 1.x image - these are x86_64 only
+            # but that's fine for Docker which can emulate
+            return "tensorflow/tensorflow:1.15.0-py3", True
+        elif "1." in tf_version and "==" in tf_version:
+            # Other TF 1.x versions
+            version = tf_version.replace("==", "").strip()
+            return f"tensorflow/tensorflow:{version}-py3", True
+        elif "2.0" in tf_version or "2.1" in tf_version or "2.2" in tf_version:
+            # Early TF 2.x
+            version = tf_version.replace("==", "").replace(">=", "").split(",")[0].strip()
+            if version:
+                return f"tensorflow/tensorflow:{version}", True
+    
+    # Default to standard Python image
+    v = python_version
+    if v.count(".") > 1:
+        v = ".".join(v.split(".")[:2])
+    return f"python:{v}-slim", False
+
+
+def _filter_tensorflow_from_requirements(requirements_content: str) -> str:
+    """Remove tensorflow from requirements since it's in the base image."""
+    lines = requirements_content.split("\n")
+    filtered = []
+    for line in lines:
+        line_lower = line.lower().strip()
+        # Skip tensorflow lines but keep other deps
+        if line_lower.startswith("tensorflow") and not line_lower.startswith("tensorflow-hub"):
+            filtered.append(f"# {line}  # Provided by base image")
+        else:
+            filtered.append(line)
+    return "\n".join(filtered)
 
 
 def _setuppy(spec: EnvironmentSpec, d: Path) -> Path:

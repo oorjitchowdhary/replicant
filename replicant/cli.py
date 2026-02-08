@@ -1,5 +1,6 @@
 """Replicant CLI."""
 from __future__ import annotations
+import os
 import shutil, sys
 from pathlib import Path
 import click
@@ -41,6 +42,14 @@ def main(ctx, verbose):
 def setup(ctx, source, github):
     """Setup environment from arXiv ID, PDF, or GitHub URL."""
     verbose = ctx.obj["verbose"]
+
+    # Check for API key first
+    if not os.getenv("GEMINI_API_KEY"):
+        _abort(
+            "GEMINI_API_KEY is required. Get your key from https://aistudio.google.com/app/apikey\n"
+            "Set it with: export GEMINI_API_KEY=your_key_here\n"
+            "Or run: replicant llm-config for help"
+        )
 
     # docker check
     with _spin("Checking Docker…") as p:
@@ -109,16 +118,9 @@ def setup(ctx, source, github):
         pdf_for_analysis = Path(source).expanduser().resolve()
 
     # analyze – full environment spec including paper context
-    with _spin("Analyzing…") as p:
-        p.add_task("Analyzing…")
+    with _spin("Analyzing with AI…") as p:
+        p.add_task("Analyzing with AI…")
         from replicant.analyzers.repo import analyze
-        # Check if we're using AI analysis
-        import os
-        using_ai = bool(os.getenv("GEMINI_API_KEY"))
-        if using_ai:
-            con.print("  [dim]Using AI analysis (Gemini)[/]")
-        else:
-            con.print("  [dim]Using regex analysis (set GEMINI_API_KEY for AI)[/]")
         spec = analyze(code_path, pdf_path=pdf_for_analysis)
 
     if not spec.env_files:
@@ -171,10 +173,43 @@ def _print_spec(spec):
         return s
 
     t.add_row("Env file", f"[green]{spec.primary_env}[/]" + (f"  (also: {', '.join(k for k in spec.env_files if k != spec.primary_env)})" if len(spec.env_files) > 1 else ""))
-    t.add_row("Python", spec.python_version)
+    
+    # Show Python version with reasoning if from AI
+    python_info = spec.python_version
+    if spec.resolved_deps and spec.resolved_deps.python_reason:
+        python_info += f"  [dim]({spec.resolved_deps.python_reason})[/]"
+    t.add_row("Python", python_info)
+    
     if spec.frameworks:
         t.add_row("Frameworks", ", ".join(spec.frameworks))
-    t.add_row("Packages", _trunc(spec.packages, 30) if spec.packages else "[dim]none detected[/]")
+    
+    # Show AI-resolved dependencies with reasoning
+    if spec.resolved_deps and spec.resolved_deps.dependencies:
+        critical_deps = [d for d in spec.resolved_deps.dependencies if d.is_critical]
+        other_deps = [d for d in spec.resolved_deps.dependencies if not d.is_critical]
+        
+        if critical_deps:
+            dep_lines = []
+            for d in critical_deps[:8]:
+                dep_lines.append(f"[bold]{d.package}{d.version_spec}[/]  [dim]{d.reason}[/]")
+            if len(critical_deps) > 8:
+                dep_lines.append(f"… +{len(critical_deps)-8} more")
+            t.add_row("🎯 Core deps", "\n".join(dep_lines))
+        
+        if other_deps:
+            other_summary = ", ".join(f"{d.package}{d.version_spec}" for d in other_deps[:10])
+            if len(other_deps) > 10:
+                other_summary += f" … +{len(other_deps)-10} more"
+            t.add_row("📦 Other deps", other_summary)
+        
+        # Show compatibility notes prominently
+        if spec.resolved_deps.compatibility_notes:
+            notes = "\n".join(f"⚠️  {n}" for n in spec.resolved_deps.compatibility_notes)
+            t.add_row("[yellow]Compat notes[/]", notes)
+    else:
+        # Fallback to old package display
+        t.add_row("Packages", _trunc(spec.packages, 30) if spec.packages else "[dim]none detected[/]")
+    
     t.add_row("Datasets", _trunc(spec.datasets) if spec.datasets else "[dim]none detected[/]")
     if spec.download_urls:
         t.add_row("Data downloads", _trunc(spec.download_urls, 10))
@@ -278,8 +313,9 @@ def llm_config():
     if is_configured:
         con.print(f"[green]✔[/] {message}")
     else:
-        con.print(f"[yellow]⚠[/] {message}")
+        con.print(f"[red]✗[/] {message}")
         con.print(get_config_instructions())
+        sys.exit(1)
 
 
 if __name__ == "__main__":

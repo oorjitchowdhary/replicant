@@ -1,61 +1,65 @@
 # replicant
 
-Turn research papers into working local environments.
+Turn research papers into working local environments using AI.
 
 ## What It Does
 
 Give **replicant** an arXiv paper (or a PDF, or a GitHub URL) and it will:
 
-1. Extract the GitHub repository link from the paper
+1. **Intelligently analyze** the paper using Google's Gemini AI to extract GitHub repository links, dependencies, and environment details
 2. Clone the repo and detect existing environment files (`Dockerfile`, `environment.yml`, `requirements.txt`)
 3. Generate a Docker image with all dependencies installed
 4. Drop you into an interactive shell with the code mounted at `/workspace`
 
-## 🤖 Enhanced with AI
+## 🧠 AI-Powered Analysis
 
-**Replicant** now uses Google's Gemini AI for intelligent paper analysis, providing much better accuracy than regex patterns for:
+**Replicant** uses Google's Gemini AI for intelligent paper analysis, providing superior accuracy for:
 
-- GitHub repository detection
-- Framework and library identification 
-- Dataset recognition (beyond hardcoded lists)
-- Hardware requirement extraction
-- Download URL classification
+- GitHub repository detection from paper text, references, and acknowledgments
+- Framework and library identification (PyTorch, TensorFlow, Hugging Face, etc.)
+- Dataset recognition (both well-known and custom datasets)
+- Hardware requirement extraction (GPU, TPU, memory requirements)
+- Download URL classification (data vs model checkpoints)
 
-**Setup AI analysis (optional):**
-1. Get a Gemini API key: https://aistudio.google.com/app/apikey
-2. Set environment variable: `export GEMINI_API_KEY=your_key_here`
-3. Check setup: `replicant llm-config`
-
-If no API key is provided, replicant falls back to regex-based analysis.
-
-## 🤖 Enhanced with AI
-
-**Replicant** now uses Google's Gemini AI for intelligent paper analysis, providing much better accuracy than regex patterns for:
-
-- GitHub repository detection
-- Framework and library identification 
-- Dataset recognition (beyond hardcoded lists)
-- Hardware requirement extraction
-- Download URL classification
-
-**Setup AI analysis (optional):**
-1. Get a Gemini API key: https://aistudio.google.com/app/apikey
-2. Set environment variable: `export GEMINI_API_KEY=your_key_here`
-3. Check setup: `replicant llm-config`
-
-If no API key is provided, replicant falls back to regex-based analysis.
-
-## Install
-
+**Required Setup:**
 ```bash
-pip install -e .
+# Get a Gemini API key from https://aistudio.google.com/app/apikey
+export GEMINI_API_KEY=your_api_key_here
+
+# Check configuration
+replicant llm-config
 ```
 
-Requires **Docker** to be installed and running.
+## 🤖 Enhanced with AI
+
+**Replicant** now uses Google's Gemini AI for intelligent paper analysis, providing much better accuracy than regex patterns for:
+
+- GitHub repository detection
+- Framework and library identification 
+- Dataset recognition (beyond hardcoded lists)
+- Hardware requirement extraction
+- Download URL classification
+
+**Setup AI analysis (optional):**
+1. Get a Gemini API key: https://aistudio.google.com/app/apikey
+2. Set environment variable: `export GEMINI_API_KEY=your_key_here`
+3. Check setup: `replicant llm-config`
+
+If no API key is provided, replicant falls back to regex-based analysis.
 
 ## Quick Start
 
+**Prerequisites:** Docker must be installed and running.
+
 ```bash
+# 1. Install
+pip install -e .
+
+# 2. Configure AI (required)
+export GEMINI_API_KEY=your_api_key_here
+replicant llm-config  # Verify setup
+
+# 3. Use replicant
 # From an arXiv ID
 replicant setup 2301.12345
 
@@ -76,13 +80,13 @@ replicant shell
 
 | Command | Description |
 |---------|-------------|
+| `replicant llm-config` | **Required**: Check and configure AI analysis |
 | `replicant setup <source>` | Set up from arXiv ID, PDF path, or GitHub URL |
 | `replicant setup <source> --github <url>` | Specify GitHub repo explicitly |
 | `replicant shell [env_id]` | Enter environment (latest if no ID) |
 | `replicant list` | List all environments |
 | `replicant info [env_id]` | Show environment details |
-| `replicant delete <env_id>` | Remove environment and Docker image |
-| `replicant llm-config` | Check and configure AI analysis || `replicant llm-config` | Check and configure AI analysis || `replicant validate [env_id]` | Run validation checks |
+| `replicant delete <env_id>` | Remove environment and Docker image || `replicant llm-config` | Check and configure AI analysis || `replicant validate [env_id]` | Run validation checks |
 
 ### Global Flags
 

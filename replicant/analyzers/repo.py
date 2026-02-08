@@ -2,11 +2,17 @@
 
 Scans for: env files, packages, datasets to download, entrypoint scripts,
 hardware hints (GPU/TPU/RAM), and python version.
+
+Uses AI-powered dependency resolution to prevent dependency hell.
 """
 from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from replicant.analyzers.dependencies import ResolvedDependencies
 
 # ── Patterns ────────────────────────────────────────────────────────────────
 
@@ -59,6 +65,7 @@ class EnvironmentSpec:
     download_urls: list[str] = field(default_factory=list)   # data download links from paper
     checkpoint_urls: list[str] = field(default_factory=list)  # model weight URLs from paper
     frameworks: list[str] = field(default_factory=list)       # pytorch, tensorflow, etc.
+    resolved_deps: "ResolvedDependencies | None" = None       # AI-resolved dependencies
     entrypoints: list[str] = field(default_factory=list)     # likely main scripts
     needs_gpu: bool = False
     needs_tpu: bool = False
@@ -182,7 +189,65 @@ def analyze(repo: str | Path, pdf_path: str | Path | None = None) -> Environment
         if spec.python_version == "3.10" and paper_ctx.python_version:
             spec.python_version = paper_ctx.python_version
 
+    # === AI-POWERED DEPENDENCY RESOLUTION ===
+    # This is the core intelligence that prevents dependency hell
+    spec.resolved_deps = _resolve_with_ai(repo, spec)
+    
+    # Update python version from AI resolution if provided
+    if spec.resolved_deps and spec.resolved_deps.python_version:
+        spec.python_version = spec.resolved_deps.python_version
+
     return spec
+
+
+def _resolve_with_ai(repo: Path, spec: EnvironmentSpec) -> "ResolvedDependencies | None":
+    """Use AI to resolve all dependencies with proper version pinning."""
+    try:
+        from replicant.analyzers.dependencies import (
+            resolve_dependencies,
+            extract_code_samples,
+        )
+        
+        # Gather all the context for AI analysis
+        requirements_content = ""
+        if spec.primary_env == "requirements.txt" and spec.primary_env_path:
+            requirements_content = spec.primary_env_path.read_text(errors="ignore")
+        
+        env_yml_content = ""
+        for name in ("environment.yml", "environment.yaml"):
+            if name in spec.env_files:
+                env_yml_content = spec.env_files[name].read_text(errors="ignore")
+                break
+        
+        setup_content = ""
+        for name in ("setup.py", "pyproject.toml"):
+            if name in spec.env_files:
+                setup_content = spec.env_files[name].read_text(errors="ignore")
+                break
+        
+        # Extract code samples showing framework usage
+        code_samples = extract_code_samples(repo)
+        
+        # Get README content
+        readme_content = spec.readme_setup or ""
+        readme_file = _find_readme(repo)
+        if readme_file:
+            readme_content = readme_file.read_text(errors="ignore")
+        
+        # Call AI dependency resolver
+        return resolve_dependencies(
+            repo_path=repo,
+            existing_requirements=requirements_content,
+            existing_env_yml=env_yml_content,
+            setup_py_content=setup_content,
+            code_samples=code_samples,
+            readme_content=readme_content,
+        )
+    except Exception as e:
+        # Log but don't fail - fall back to existing requirements
+        import sys
+        print(f"Warning: AI dependency resolution failed: {e}", file=sys.stderr)
+        return None
 
 
 # ── helpers ─────────────────────────────────────────────────────────────────
