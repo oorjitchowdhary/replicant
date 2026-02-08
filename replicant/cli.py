@@ -112,6 +112,13 @@ def setup(ctx, source, github):
     with _spin("Analyzing…") as p:
         p.add_task("Analyzing…")
         from replicant.analyzers.repo import analyze
+        # Check if we're using AI analysis
+        import os
+        using_ai = bool(os.getenv("GEMINI_API_KEY"))
+        if using_ai:
+            con.print("  [dim]Using AI analysis (Gemini)[/]")
+        else:
+            con.print("  [dim]Using regex analysis (set GEMINI_API_KEY for AI)[/]")
         spec = analyze(code_path, pdf_path=pdf_for_analysis)
 
     if not spec.env_files:
@@ -259,6 +266,20 @@ def validate(env_id):
         if not r.passed: ok = False
     con.print("[bold green]All passed.[/]" if ok else "[bold red]Some failed.[/]")
     if not ok: sys.exit(1)
+
+
+@main.command(name="llm-config")
+def llm_config():
+    """Check and configure LLM integration."""
+    from replicant.utils.llm_config import check_gemini_setup, get_config_instructions
+    
+    is_configured, message = check_gemini_setup()
+    
+    if is_configured:
+        con.print(f"[green]✔[/] {message}")
+    else:
+        con.print(f"[yellow]⚠[/] {message}")
+        con.print(get_config_instructions())
 
 
 if __name__ == "__main__":
