@@ -1,4 +1,4 @@
-"""Parse a research paper PDF for everything useful to env setup.
+"""Analyze research papers for environment setup information.
 
 Extracts: title, GitHub URLs, named datasets, download URLs, framework/library
 mentions, hardware requirements, model checkpoints, and setup instructions.
@@ -7,9 +7,9 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from pypdf import PdfReader
-
-GITHUB_RE = re.compile(r"https?://github\.com/[A-Za-z0-9_.\-]+/[A-Za-z0-9_.\-]+")
+from replicant.sources.pdf import extract_text
+from replicant.sources.arxiv import fetch
+from replicant.utils.patterns import GITHUB_RE
 
 # ── Well-known dataset names (case-insensitive whole-word match) ────────────
 _KNOWN_DATASETS = [
@@ -75,7 +75,7 @@ _DATA_EXTENSIONS = re.compile(
 
 @dataclass
 class PaperContext:
-    """Structured context extracted from a research paper PDF."""
+    """Structured environment context extracted from a research paper."""
     title: str = ""
     github_urls: list[str] = field(default_factory=list)
     datasets: list[str] = field(default_factory=list)          # named datasets
@@ -89,79 +89,107 @@ class PaperContext:
     python_version: str | None = None
 
 
-def parse_paper(path: str | Path) -> PaperContext:
-    """Extract everything useful from a PDF for environment setup."""
-    reader = PdfReader(str(path))
-    pages_text = [p.extract_text() or "" for p in reader.pages]
-    full = "\n".join(pages_text)
-    ctx = PaperContext()
+def analyze_paper(source: str | Path) -> PaperContext:
+    """Analyze a paper from PDF file path or arXiv ID for environment information."""
+    from replicant.sources.arxiv import is_arxiv
+    
+    if isinstance(source, str) and is_arxiv(source):
+        return _analyze_from_arxiv(source)
+    else:
+        return _analyze_from_pdf(source)
 
-    # title = first substantial line of page 1
-    for line in pages_text[0].splitlines():
-        if len(line.strip()) > 5:
-            ctx.title = line.strip(); break
 
-    # github
+def _analyze_from_arxiv(arxiv_id: str) -> PaperContext:
+    """Analyze paper from arXiv ID."""
+    arxiv_data = fetch(arxiv_id)
+    
+    # Extract text from the downloaded PDF
+    pdf_content = extract_text(arxiv_data["pdf_path"])
+    
+    # Combine all available text sources
+    all_text_sources = [
+        pdf_content.full_text,
+        arxiv_data.get("abstract", ""),
+        arxiv_data.get("comment", "")
+    ]
+    full_text = "\n\n".join(s for s in all_text_sources if s)
+    
+    # Use arxiv metadata for title if available, fallback to PDF
+    title = arxiv_data.get("title", "") or pdf_content.title
+    
+    # Combine hyperlinks from PDF with any URLs in arxiv metadata
+    all_hyperlinks = pdf_content.hyperlinks[:]
+    
+    return _extract_context(full_text, title, all_hyperlinks)
+
+
+def _analyze_from_pdf(pdf_path: str | Path) -> PaperContext:
+    """Analyze paper from PDF file."""
+    pdf_content = extract_text(pdf_path)
+    return _extract_context(pdf_content.full_text, pdf_content.title, pdf_content.hyperlinks)
+
+
+def _extract_context(full_text: str, title: str, hyperlinks: list[str]) -> PaperContext:
+    """Extract structured context from paper text and hyperlinks."""
+    ctx = PaperContext(title=title)
+
+    # GitHub URLs from text and hyperlinks
     seen_urls: set[str] = set()
-    for url in GITHUB_RE.findall(full):
+    
+    # From text content
+    for url in GITHUB_RE.findall(full_text):
         clean = url.rstrip("/.")
         if clean not in seen_urls:
-            seen_urls.add(clean); ctx.github_urls.append(clean)
-    # also from hyperlink annotations
-    for page in reader.pages:
-        for annot in (page.get("/Annots") or []):
-            obj = annot.get_object()
-            if "/A" in obj and "/URI" in obj["/A"]:
-                uri = obj["/A"]["/URI"]
-                if GITHUB_RE.match(uri):
-                    clean = uri.rstrip("/.")
-                    if clean not in seen_urls:
-                        seen_urls.add(clean); ctx.github_urls.append(clean)
+            seen_urls.add(clean)
+            ctx.github_urls.append(clean)
+    
+    # From PDF hyperlink annotations
+    for url in hyperlinks:
+        if GITHUB_RE.match(url):
+            clean = url.rstrip("/.")
+            if clean not in seen_urls:
+                seen_urls.add(clean)
+                ctx.github_urls.append(clean)
 
-    # named datasets
+    # Named datasets
     seen_ds: set[str] = set()
-    for m in _DATASET_RE.finditer(full):
+    for m in _DATASET_RE.finditer(full_text):
         name = m.group(1)
         key = name.lower()
         if key not in seen_ds:
-            seen_ds.add(key); ctx.datasets.append(name)
+            seen_ds.add(key)
+            ctx.datasets.append(name)
 
     # URLs — classify into data downloads vs checkpoints vs ignore
-    for url in _URL_RE.findall(full):
+    for url in _URL_RE.findall(full_text):
         url = url.rstrip(".,;:)\"'")
-        if "github.com" in url: continue
+        if "github.com" in url: 
+            continue  # Already handled above
         if _WEIGHT_HINTS.search(url):
-            if url not in ctx.checkpoint_urls: ctx.checkpoint_urls.append(url)
+            if url not in ctx.checkpoint_urls: 
+                ctx.checkpoint_urls.append(url)
         elif _DATA_EXTENSIONS.search(url):
-            if url not in ctx.download_urls: ctx.download_urls.append(url)
+            if url not in ctx.download_urls: 
+                ctx.download_urls.append(url)
         elif "drive.google.com" in url or "huggingface.co" in url:
-            if url not in ctx.download_urls: ctx.download_urls.append(url)
+            if url not in ctx.download_urls: 
+                ctx.download_urls.append(url)
 
-    # frameworks
+    # Frameworks
     for name, pat in _FRAMEWORKS.items():
-        if pat.search(full): ctx.frameworks.append(name)
+        if pat.search(full_text): 
+            ctx.frameworks.append(name)
 
-    # hardware
-    ctx.needs_gpu = bool(_HW_GPU.search(full))
-    ctx.needs_tpu = bool(_HW_TPU.search(full))
-    if m := _HW_DETAIL.search(full):
+    # Hardware
+    ctx.needs_gpu = bool(_HW_GPU.search(full_text))
+    ctx.needs_tpu = bool(_HW_TPU.search(full_text))
+    if m := _HW_DETAIL.search(full_text):
         ctx.gpu_detail = m.group(0)
-    if m := _HW_RAM.search(full):
+    if m := _HW_RAM.search(full_text):
         ctx.ram_hint = m.group(0)
 
-    # python version (rare but some papers mention it)
-    if m := re.search(r"Python\s+(\d+\.\d+)", full):
+    # Python version (rare but some papers mention it)
+    if m := re.search(r"Python\s+(\d+\.\d+)", full_text):
         ctx.python_version = m.group(1)
 
     return ctx
-
-
-# ── Convenience wrappers (used by parsers/arxiv.py and cli.py) ──────────────
-
-def github_url_from_pdf(path: str | Path) -> str | None:
-    ctx = parse_paper(path)
-    return ctx.github_urls[0] if ctx.github_urls else None
-
-def title_from_pdf(path: str | Path) -> str:
-    ctx = parse_paper(path)
-    return ctx.title

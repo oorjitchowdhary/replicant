@@ -51,26 +51,31 @@ def setup(ctx, source, github):
 
     # resolve github url
     paper_title, label = "", source
-    from replicant.parsers.pdf import GITHUB_RE
+    from replicant.utils.patterns import GITHUB_RE
     if github:
         pass
     elif GITHUB_RE.match(source):
         github = source.rstrip("/.")
     else:
-        from replicant.parsers.arxiv import is_arxiv
+        from replicant.sources.arxiv import is_arxiv
         if is_arxiv(source):
             with _spin("Fetching from arXiv…") as p:
                 p.add_task("Fetching from arXiv…")
-                from replicant.parsers.arxiv import fetch
+                from replicant.sources.arxiv import fetch
+                from replicant.analyzers.paper import analyze_paper
                 info = fetch(source)
-                github, paper_title = info.get("github_url"), info.get("title", "")
+                paper_ctx = analyze_paper(source)
+                paper_title = info.get("title", "")
                 label = f"arxiv:{info['arxiv_id']}"
+                github = paper_ctx.github_urls[0] if paper_ctx.github_urls else None
         elif Path(source).expanduser().exists():
             with _spin("Reading PDF…") as p:
                 p.add_task("Reading PDF…")
-                from replicant.parsers.pdf import github_url_from_pdf, title_from_pdf
+                from replicant.analyzers.paper import analyze_paper
                 pdf = Path(source).expanduser().resolve()
-                github, paper_title, label = github_url_from_pdf(pdf), title_from_pdf(pdf), str(pdf)
+                paper_ctx = analyze_paper(pdf)
+                paper_title, label = paper_ctx.title, str(pdf)
+                github = paper_ctx.github_urls[0] if paper_ctx.github_urls else None
         else:
             _abort(f"Can't interpret '{source}'. Use arXiv ID, PDF path, GitHub URL, or --github.")
 
@@ -90,7 +95,7 @@ def setup(ctx, source, github):
     # clone
     with _spin("Cloning…") as p:
         p.add_task("Cloning…")
-        from replicant.parsers.github import clone
+        from replicant.sources.github import clone
         code_path = clone(github)
     con.print(f"  Cloned: [dim]{code_path}[/]")
 

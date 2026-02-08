@@ -1,6 +1,6 @@
 """Test GitHub parsing."""
 import pytest
-from replicant.parsers.github import _GH_RE
+from replicant.sources.github import _GH_RE
 
 def test_github_url_parsing():
     """Test GitHub URL regex."""

@@ -8,6 +8,7 @@ from replicant.utils.config import REPOS, ensure_dirs
 _GH_RE = re.compile(r"https?://github\.com/([A-Za-z0-9_.\-]+)/([A-Za-z0-9_.\-]+)")
 
 def clone(url: str, dest: Path | None = None) -> Path:
+    """Clone a GitHub repository and return the local path."""
     ensure_dirs()
     m = _GH_RE.search(url)
     if not m: raise ValueError(f"Bad GitHub URL: {url}")

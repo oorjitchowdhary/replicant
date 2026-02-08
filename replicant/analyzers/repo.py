@@ -149,32 +149,38 @@ def analyze(repo: str | Path, pdf_path: str | Path | None = None) -> Environment
     # python version
     spec.python_version = _infer_python(repo, spec, all_text)
 
-# 3. merge paper PDF context
+    # Merge paper context if available
     if pdf_path:
-        try:
-            from replicant.parsers.pdf import parse_paper
-            paper = parse_paper(pdf_path)
-            # datasets from paper (named + download URLs)
-            for d in paper.datasets:
-                if d.lower() not in {x.lower() for x in spec.datasets}:
-                    spec.datasets.append(d)
-            for u in paper.download_urls:
-                if u not in spec.download_urls: spec.download_urls.append(u)
-            for u in paper.checkpoint_urls:
-                if u not in spec.checkpoint_urls: spec.checkpoint_urls.append(u)
-            # frameworks
-            for f in paper.frameworks:
-                if f not in spec.frameworks: spec.frameworks.append(f)
-            # hardware — paper overrides repo if more specific
-            spec.needs_gpu = spec.needs_gpu or paper.needs_gpu
-            spec.needs_tpu = spec.needs_tpu or paper.needs_tpu
-            if paper.gpu_detail: spec.gpu_detail = paper.gpu_detail
-            if paper.ram_hint: spec.ram_hint = paper.ram_hint
-            # python version from paper (only if repo didn't have one)
-            if spec.python_version == "3.10" and paper.python_version:
-                spec.python_version = paper.python_version
-        except Exception:
-            pass
+        from replicant.analyzers.paper import analyze_paper
+        paper_ctx = analyze_paper(pdf_path)
+        
+        # Merge datasets from paper (named + download URLs)
+        for d in paper_ctx.datasets:
+            if d.lower() not in {x.lower() for x in spec.datasets}:
+                spec.datasets.append(d)
+        for u in paper_ctx.download_urls:
+            if u not in spec.download_urls: 
+                spec.download_urls.append(u)
+        for u in paper_ctx.checkpoint_urls:
+            if u not in spec.checkpoint_urls: 
+                spec.checkpoint_urls.append(u)
+        
+        # Merge frameworks
+        for f in paper_ctx.frameworks:
+            if f not in spec.frameworks: 
+                spec.frameworks.append(f)
+        
+        # Merge hardware - paper overrides repo if more specific
+        spec.needs_gpu = spec.needs_gpu or paper_ctx.needs_gpu
+        spec.needs_tpu = spec.needs_tpu or paper_ctx.needs_tpu
+        if paper_ctx.gpu_detail: 
+            spec.gpu_detail = paper_ctx.gpu_detail
+        if paper_ctx.ram_hint: 
+            spec.ram_hint = paper_ctx.ram_hint
+        
+        # Python version from paper (only if repo didn't find one)
+        if spec.python_version == "3.10" and paper_ctx.python_version:
+            spec.python_version = paper_ctx.python_version
 
     return spec
 

@@ -1,6 +1,6 @@
 """Test arXiv parsing."""
 import pytest
-from replicant.parsers.arxiv import is_arxiv, parse_id
+from replicant.sources.arxiv import is_arxiv, parse_id
 
 def test_is_arxiv():
     """Test arXiv ID detection."""
