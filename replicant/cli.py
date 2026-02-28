@@ -271,20 +271,65 @@ def info(env_id):
 
 
 @main.command()
-@click.argument("env_id")
-@click.option("-y","--yes", is_flag=True)
-@click.option("--keep-code", is_flag=True)
-def delete(env_id, yes, keep_code):
-    """Delete an environment."""
-    m = _env(env_id)
-    if not yes: click.confirm(f"Delete '{env_id}'?", abort=True)
-    from replicant.executors.local import remove_image
-    remove_image(m.docker_image)
-    if not keep_code and m.code_path:
-        p = Path(m.code_path)
-        if p.exists(): shutil.rmtree(p, ignore_errors=True)
-    m.delete()
-    con.print(f"[green]✔[/] Deleted [bold]{env_id}[/].")
+@click.argument("env_id", required=False, default=None)
+@click.option("-y","--yes", is_flag=True, help="Skip confirmation prompt.")
+@click.option("--keep-code", is_flag=True, help="Keep cloned repository code.")
+@click.option("--all", "delete_all", is_flag=True, help="Delete all environments.")
+def delete(env_id, yes, keep_code, delete_all):
+    """Delete an environment (or all environments with --all)."""
+    
+    # Validate: need either env_id or --all
+    if not env_id and not delete_all:
+        _abort("Provide an environment ID or use --all to delete all environments.")
+    
+    if env_id and delete_all:
+        _abort("Cannot specify both environment ID and --all flag.")
+    
+    if delete_all:
+        # Delete all environments
+        envs = EnvMeta.all()
+        if not envs:
+            con.print("[yellow]No environments to delete.[/]")
+            return
+        
+        # Show what will be deleted
+        con.print(f"[bold yellow]⚠ About to delete {len(envs)} environment(s):[/]")
+        for m in envs:
+            con.print(f"  • {m.env_id} ({m.source})")
+        
+        if not yes:
+            click.confirm(f"Delete all {len(envs)} environment(s)?", abort=True)
+        
+        # Delete each environment
+        from replicant.executors.local import remove_image
+        deleted_count = 0
+        for m in envs:
+            try:
+                remove_image(m.docker_image)
+                if not keep_code and m.code_path:
+                    p = Path(m.code_path)
+                    if p.exists():
+                        shutil.rmtree(p, ignore_errors=True)
+                m.delete()
+                deleted_count += 1
+            except Exception as e:
+                err.print(f"[yellow]Warning:[/] Failed to delete {m.env_id}: {e}")
+        
+        con.print(f"[green]✔[/] Deleted {deleted_count}/{len(envs)} environment(s).")
+    else:
+        # Delete single environment
+        m = _env(env_id)
+        if not yes:
+            click.confirm(f"Delete '{env_id}'?", abort=True)
+        from replicant.executors.local import remove_image
+        remove_image(m.docker_image)
+        if not keep_code and m.code_path:
+            p = Path(m.code_path)
+            if p.exists():
+                shutil.rmtree(p, ignore_errors=True)
+        m.delete()
+        con.print(f"[green]✔[/] Deleted [bold]{env_id}[/].")
+
 
 
 @main.command()
@@ -301,6 +346,80 @@ def validate(env_id):
         if not r.passed: ok = False
     con.print("[bold green]All passed.[/]" if ok else "[bold red]Some failed.[/]")
     if not ok: sys.exit(1)
+
+
+@main.command()
+@click.argument("corpus_file", type=click.Path(exists=True))
+@click.option("--output", "-o", default=None, type=click.Path(), help="Output directory for results (default: ~/.replicant/benchmark/).")
+@click.option("--timeout", "-t", default=600, type=int, show_default=True, help="Max seconds per paper Docker build.")
+@click.option("--workers", "-w", default=4, type=int, show_default=True, help="Number of parallel workers.")
+@click.option("--resume", is_flag=True, help="Skip papers that already have result files.")
+@click.pass_context
+def benchmark(ctx, corpus_file, output, timeout, workers, resume):
+    """Batch-run setup across a corpus of papers and collect structured failure data."""
+    if not os.getenv("GEMINI_API_KEY"):
+        _abort("GEMINI_API_KEY is required. Set it with: export GEMINI_API_KEY=your_key_here")
+
+    with _spin("Checking Docker…") as p:
+        p.add_task("Checking Docker…")
+        try:
+            from replicant.executors.local import check_docker; check_docker()
+        except RuntimeError as e: _abort(str(e))
+
+    from replicant.benchmark import load_corpus, run_benchmark
+    try:
+        corpus = load_corpus(corpus_file)
+    except Exception as e:
+        _abort(f"Failed to load corpus: {e}")
+
+    con.print(f"  Corpus: [cyan]{corpus_file}[/] ({len(corpus)} papers)")
+    if resume:
+        con.print("  [dim]Resume mode: skipping papers with existing results[/]")
+    con.print(f"  Workers: {workers} parallel | Timeout: {timeout}s per paper\n")
+
+    def _print_result(idx: int, total: int, pid: str, status: str, duration: float = 0):
+        if status == "cached":
+            con.print(f"  [{idx}/{total}] [cyan]{pid}[/] — [dim]cached (skipped)[/]")
+        elif status == "success":
+            con.print(f"  [{idx}/{total}] [cyan]{pid}[/] — [green]✓ success[/] [dim]({duration:.1f}s)[/]")
+        else:
+            con.print(f"  [{idx}/{total}] [cyan]{pid}[/] — [red]✗ {status}[/] [dim]({duration:.1f}s)[/]")
+
+    try:
+        output_dir = run_benchmark(corpus, output_dir=output, timeout=timeout, resume=resume, max_workers=workers, result_callback=_print_result)
+    except Exception as e:
+        _abort(f"Benchmark failed: {e}")
+
+    import json as _json
+    summary_path = output_dir / "summary.json"
+    if summary_path.exists():
+        con.print()
+        _print_benchmark_summary(_json.loads(summary_path.read_text()), output_dir)
+
+
+def _print_benchmark_summary(s: dict, output_dir):
+    """Pretty-print the benchmark summary."""
+    t = Table(title="Benchmark Summary", show_lines=True)
+    t.add_column("Metric", style="bold cyan", min_width=20)
+    t.add_column("Value")
+    total_done = s["outcomes"]["success"] + s["outcomes"]["failure"]
+    rate = (s["outcomes"]["success"] / total_done * 100) if total_done else 0
+    for label, val in [
+        ("Corpus size", s["corpus_size"]), ("Completed", s["completed"]),
+        ("Skipped (cached)", s["skipped"]), ("Duration", f"{s['total_duration_seconds']:.0f}s"),
+        ("", ""), ("[green]Successes[/]", f"{s['outcomes']['success']}  ({rate:.0f}%)"),
+        ("[red]Failures[/]", s["outcomes"]["failure"]),
+    ]:
+        t.add_row(str(label), str(val))
+    for section, data in [("Failure breakdown", s.get("failure_breakdown")),
+                          ("Failure by stage", s.get("failure_by_stage"))]:
+        if data:
+            t.add_row(section, "\n".join(f"{k}: {v}" for k, v in data.items()))
+    if s.get("by_subfield"):
+        t.add_row("By subfield", "\n".join(f"{sf}: ✔{c['success']} ✘{c['failure']}" for sf, c in s["by_subfield"].items()))
+    con.print(t)
+    con.print(f"\n  Results: [bold]{output_dir}[/]")
+    con.print(f"  Summary: [bold]{output_dir / 'summary.json'}[/]")
 
 
 @main.command(name="llm-config")

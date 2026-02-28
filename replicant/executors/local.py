@@ -21,25 +21,39 @@ def has_gpu() -> bool:
 def build(build_dir: str | Path, tag: str, verbose=False) -> bool:
     ensure_dirs()
     log_path = LOGS / f"{tag}.log"
-    client = docker.from_env()
-    lines: list[str] = []
+    
+    # Use regular docker build with platform flag and BuildKit enabled
+    env = os.environ.copy()
+    env['DOCKER_BUILDKIT'] = '1'
+    
+    cmd = [
+        "docker", "build",
+        "--platform", "linux/amd64",
+        "-t", tag,
+        "-f", str(Path(build_dir) / "Dockerfile"),
+        str(build_dir)
+    ]
+    
     try:
-        _, log = client.images.build(path=str(build_dir), tag=tag, rm=True, forcerm=True)
-        for chunk in log:
-            if s := chunk.get("stream", ""):
-                lines.append(s)
-                if verbose: print(s, end="")
-        log_path.write_text("".join(lines))
-        return True
-    except BuildError as e:
-        for chunk in e.build_log:
-            if s := (chunk.get("stream","") or chunk.get("error","")):
-                lines.append(s)
-                if verbose: print(s, end="", file=sys.stderr)
-        log_path.write_text("".join(lines))
-        return False
-    except APIError as e:
-        log_path.write_text(f"Docker API error: {e}\n")
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            check=False,
+            env=env
+        )
+        
+        # Combine stdout and stderr for the log
+        output = result.stdout + result.stderr
+        log_path.write_text(output)
+        
+        if verbose:
+            print(output, end="")
+        
+        return result.returncode == 0
+        
+    except Exception as e:
+        log_path.write_text(f"Build error: {e}\n")
         return False
 
 def shell(meta: EnvMeta, gpu=False):
