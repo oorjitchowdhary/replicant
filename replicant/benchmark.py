@@ -105,6 +105,11 @@ class PaperResult(BaseModel):
 
 # Failure pattern matching: (category, default_stage, compiled_regex)
 _FAILURE_PATTERNS: list[tuple[str, str, re.Pattern[str]]] = [
+    ("missing_env_spec", "env_detection", re.compile(
+        r"No environment file found in repo|No environment specification found|"
+        r"COPY\s+requirements\.txt.*not found|"
+        r"Invalid requirement:|requirements\.txt.*does not exist|"
+        r"failed to calculate checksum.*requirements\.txt", re.I)),
     ("build_order_dependency", "docker_build", re.compile(
         r"ModuleNotFoundError:\s*No module named|ImportError.*No module named|"
         r"setup\.py.*import.*failed|ModuleNotFoundError.*at metadata generation", re.I)),
@@ -136,7 +141,25 @@ def categorize_failure(error_msg: str, build_log: str = "", stage: str = "") -> 
             for line in combined[max(0, m.start()-100):m.end()+200].splitlines():
                 if pattern.search(line):
                     return category, line.strip()[:300], stage or default_stage
-    return "unknown_build_error", (error_msg[:500] or "Unknown error"), stage or "docker_build"
+    return "unknown_build_error", _extract_failure_detail(combined), stage or "docker_build"
+
+
+def _extract_failure_detail(text: str) -> str:
+    """Extract a concise and useful failure detail from noisy build output."""
+    if not text:
+        return "Unknown error"
+
+    lines = [ln.strip() for ln in text.splitlines() if ln and ln.strip()]
+    if not lines:
+        return "Unknown error"
+
+    priority = ("ERROR", "error:", "failed to", "Traceback", "Exception", "No environment file")
+    for line in reversed(lines):
+        if any(token in line for token in priority):
+            return line[:500]
+
+    tail = "\n".join(lines[-5:])
+    return tail[:500]
 
 
 def _infer_stage(error_msg: str) -> str:
@@ -329,7 +352,7 @@ def run_single_paper(
             _fail(result, "unknown_build_error", str(exc)[:500], "llm_analysis")
             return result
 
-        if not spec.env_files:
+        if not spec.primary_env:
             # Classify into three more granular categories
             category, detail = _classify_no_env_file(code_path)
             _fail(result, category, detail, "env_detection")
@@ -355,7 +378,13 @@ def run_single_paper(
             build_dir = generate(spec, eid)
         except Exception as exc:
             log.warning("[%s] Dockerfile generation failed: %s", entry.paper_arxiv_id, exc)
-            _fail(result, "unknown_build_error", str(exc)[:500], "docker_build")
+            message = str(exc)
+            inferred_stage = _infer_stage(message) or "docker_build"
+            if "no environment file" in message.lower():
+                category, detail = _classify_no_env_file(code_path)
+                _fail(result, category, detail, "env_detection")
+            else:
+                _fail(result, "unknown_build_error", message[:500], inferred_stage)
             return result
 
         # Step 6: Build Docker image
@@ -376,7 +405,7 @@ def run_single_paper(
             result.build_success = True
             result.failure_category = "success"
         else:
-            cat, detail, stg = categorize_failure(build_log[-3000:] if build_log else "", build_log, "docker_build")
+            cat, detail, stg = categorize_failure(build_log, build_log, "docker_build")
             _fail(result, cat, detail, stg)
 
         # Save EnvMeta
@@ -417,6 +446,13 @@ def _build_with_timeout(build_dir: Path, tag: str, timeout: int) -> tuple[bool, 
         "-f", str(build_dir / "Dockerfile"),
         str(build_dir)
     ]
+
+    def _as_text(value: Any) -> str:
+        if value is None:
+            return ""
+        if isinstance(value, bytes):
+            return value.decode("utf-8", errors="replace")
+        return str(value)
     
     try:
         result = subprocess.run(
@@ -434,7 +470,7 @@ def _build_with_timeout(build_dir: Path, tag: str, timeout: int) -> tuple[bool, 
         return result.returncode == 0, output
         
     except subprocess.TimeoutExpired as e:
-        output = (e.stdout or "") + (e.stderr or "") + f"\n[TIMEOUT] Build exceeded {timeout}s limit.\n"
+        output = _as_text(e.stdout) + _as_text(e.stderr) + f"\n[TIMEOUT] Build exceeded {timeout}s limit.\n"
         log_path.write_text(output)
         raise _BuildTimeout()
     except Exception as e:

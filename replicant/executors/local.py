@@ -21,6 +21,13 @@ def has_gpu() -> bool:
 def build(build_dir: str | Path, tag: str, verbose=False) -> bool:
     ensure_dirs()
     log_path = LOGS / f"{tag}.log"
+
+    def _as_text(value) -> str:
+        if value is None:
+            return ""
+        if isinstance(value, bytes):
+            return value.decode("utf-8", errors="replace")
+        return str(value)
     
     # Use regular docker build with platform flag and BuildKit enabled
     env = os.environ.copy()
@@ -44,7 +51,7 @@ def build(build_dir: str | Path, tag: str, verbose=False) -> bool:
         )
         
         # Combine stdout and stderr for the log
-        output = result.stdout + result.stderr
+        output = _as_text(result.stdout) + _as_text(result.stderr)
         log_path.write_text(output)
         
         if verbose:

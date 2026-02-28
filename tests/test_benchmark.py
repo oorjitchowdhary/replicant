@@ -109,9 +109,41 @@ def test_categorize_with_build_log():
     assert cat == "phantom_dependency"
 
 
+def test_categorize_missing_env_spec_from_docker_copy_failure():
+    log = """
+    #10 [5/8] COPY requirements.txt .
+    #10 ERROR: failed to calculate checksum of ref abc: \"/requirements.txt\": not found
+    ERROR: failed to build: failed to solve: failed to compute cache key
+    """
+    cat, detail, stage = categorize_failure("docker build failed", build_log=log)
+    assert cat == "missing_env_spec"
+    assert "requirements.txt" in detail
+    assert stage == "docker_build"
+
+
+def test_categorize_invalid_requirement_as_missing_env_spec():
+    msg = "ERROR: Invalid requirement: 'robustbenchgit+https://github.com/RobustBench/robustbench.git'"
+    cat, detail, _ = categorize_failure(msg)
+    assert cat == "missing_env_spec"
+    assert "Invalid requirement" in detail
+
+
 def test_categorize_preserves_explicit_stage():
     _, _, stage = categorize_failure("ModuleNotFoundError: No module named 'torch'", stage="llm_analysis")
     assert stage == "llm_analysis"
+
+
+def test_categorize_unknown_uses_relevant_error_line_from_tail():
+    noisy = "\n".join([
+        "#7 12.67 debconf: delaying package configuration",
+        "#7 13.02 Unpacking liberror-perl (0.17029-1) ...",
+        "#7 13.63 Unpacking git (1:2.25.1-1ubuntu3.14) ...",
+        "#10 lots of output...",
+        "ERROR: final downstream command failed with exit code 2",
+    ])
+    cat, detail, _ = categorize_failure("build failed", build_log=noisy)
+    assert cat == "unknown_build_error"
+    assert "final downstream command failed" in detail
 
 
 # PaperResult schema
