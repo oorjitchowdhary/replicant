@@ -14,6 +14,7 @@ This is the core intelligence that makes replicant "just work" - users should
 never encounter dependency hell because the AI proactively solves it.
 """
 from __future__ import annotations
+import json
 import os
 import subprocess
 from datetime import datetime
@@ -22,9 +23,11 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 
 try:
-    import google.genai as genai
+    import boto3
 except ImportError:
-    raise ImportError("google-genai is required. Install with: pip install google-genai")
+    raise ImportError("boto3 is required. Install with: pip install boto3")
+
+from replicant.utils.llm_config import BEDROCK_MODEL_ID, get_bedrock_client
 
 
 class DependencySpec(BaseModel):
@@ -74,11 +77,7 @@ def resolve_dependencies(
     Returns:
         ResolvedDependencies with all packages properly version-pinned
     """
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY required for dependency resolution")
-    
-    client = genai.Client(api_key=api_key)
+    client = get_bedrock_client()
     
     # Get repo vintage if not provided
     if repo_created_year is None:
@@ -93,19 +92,31 @@ def resolve_dependencies(
         repo_year=repo_created_year,
     )
     
-    response = client.models.generate_content(
-        model='gemini-3-flash-preview',
-        contents=prompt,
-        config={
-            "response_mime_type": "application/json",
-            "response_json_schema": ResolvedDependencies.model_json_schema(),
-        }
+    schema = json.dumps(ResolvedDependencies.model_json_schema(), indent=2)
+    full_prompt = (
+        f"{prompt}\n\n"
+        f"Respond with a single valid JSON object matching this schema exactly — "
+        f"no markdown, no commentary:\n\n{schema}"
     )
-    
+
+    response = client.converse(
+        modelId=BEDROCK_MODEL_ID,
+        inferenceConfig={"maxTokens": 4096},
+        messages=[{"role": "user", "content": [{"text": full_prompt}]}],
+    )
+
+    raw = response["output"]["message"]["content"][0]["text"].strip()
+    # Strip optional markdown code fences
+    if raw.startswith("```"):
+        raw = raw.split("```")[1]
+        if raw.startswith("json"):
+            raw = raw[4:]
+        raw = raw.strip()
+
     try:
-        return ResolvedDependencies.model_validate_json(response.text)
+        return ResolvedDependencies.model_validate_json(raw)
     except Exception as e:
-        raise ValueError(f"Failed to parse dependency resolution: {e}\nResponse: {response.text[:500]}")
+        raise ValueError(f"Failed to parse dependency resolution: {e}\nResponse: {raw[:500]}")
 
 
 def _build_dependency_prompt(
@@ -248,7 +259,7 @@ def _get_repo_year(repo_path: Path) -> int:
     return 2022  # Conservative default
 
 
-def extract_code_samples(repo_path: Path, max_chars: int = 30000) -> str:
+def extract_code_samples(repo_path: Path, max_chars: int = 15000) -> str:
     """Extract representative code samples that show framework usage patterns.
     
     Focuses on:

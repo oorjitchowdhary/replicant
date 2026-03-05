@@ -43,11 +43,11 @@ def setup(ctx, source, github):
     """Setup environment from arXiv ID, PDF, or GitHub URL."""
     verbose = ctx.obj["verbose"]
 
-    # Check for API key first
-    if not os.getenv("GEMINI_API_KEY"):
+    # Check for Bedrock bearer token
+    if not os.getenv("AWS_BEARER_TOKEN_BEDROCK"):
         _abort(
-            "GEMINI_API_KEY is required. Get your key from https://aistudio.google.com/app/apikey\n"
-            "Set it with: export GEMINI_API_KEY=your_key_here\n"
+            "AWS_BEARER_TOKEN_BEDROCK is required.\n"
+            "Set it with: export AWS_BEARER_TOKEN_BEDROCK=your_token\n"
             "Or run: replicant llm-config for help"
         )
 
@@ -357,8 +357,8 @@ def validate(env_id):
 @click.pass_context
 def benchmark(ctx, corpus_file, output, timeout, workers, resume):
     """Batch-run setup across a corpus of papers and collect structured failure data."""
-    if not os.getenv("GEMINI_API_KEY"):
-        _abort("GEMINI_API_KEY is required. Set it with: export GEMINI_API_KEY=your_key_here")
+    if not os.getenv("AWS_BEARER_TOKEN_BEDROCK"):
+        _abort("AWS_BEARER_TOKEN_BEDROCK is required. Set it with: export AWS_BEARER_TOKEN_BEDROCK=your_token")
 
     with _spin("Checking Docker…") as p:
         p.add_task("Checking Docker…")
@@ -425,10 +425,10 @@ def _print_benchmark_summary(s: dict, output_dir):
 @main.command(name="llm-config")
 def llm_config():
     """Check and configure LLM integration."""
-    from replicant.utils.llm_config import check_gemini_setup, get_config_instructions
-    
-    is_configured, message = check_gemini_setup()
-    
+    from replicant.utils.llm_config import check_bedrock_setup, get_config_instructions
+
+    is_configured, message = check_bedrock_setup()
+
     if is_configured:
         con.print(f"[green]✔[/] {message}")
     else:

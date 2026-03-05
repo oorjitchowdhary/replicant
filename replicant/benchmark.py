@@ -168,7 +168,7 @@ def _infer_stage(error_msg: str) -> str:
         (("arxiv", "paper", "pdf"), "paper_parse"),
         (("clone", "git", "repository not found"), "github_discovery"),
         (("no environment file", "no env file", "no runnable code", "missing env spec", "self contained"), "env_detection"),
-        (("gemini", "llm", "dependency resolution"), "llm_analysis"),
+        (("bedrock", "claude", "boto3", "llm", "dependency resolution"), "llm_analysis"),
         (("docker", "build", "pip install"), "docker_build"),
     ]:
         if any(k in lower for k in keywords):
