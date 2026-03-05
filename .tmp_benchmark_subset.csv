@@ -1,6 +1,0 @@
-paper_arxiv_id,paper_title,repo_url,framework,year,subfield,conference,is_official,mentioned_in_paper
-2301.12151,Selecting Models based on the Risk of Damage Caused by Adversarial Attacks,https://github.com/duesenfranz/risk_scores_paper_code,none,2023.0,uncategorized,,True,True
-2407.09835,Investigating Low-Rank Training in Transformer Language Models: Efficiency and Scaling Analysis,https://github.com/claire-labo/structuredffn,pytorch,2024.0,uncategorized,,True,True
-2410.08334,Exploring Natural Language-Based Strategies for Efficient Number Learning in Children through Reinforcement Learning,https://github.com/tirthankar95/numberlearninginchildren_rl_nlp,pytorch,2024.0,rl_robotics,,True,True
-2505.00284,LightEMMA: Lightweight End-to-End Multimodal Model for Autonomous Driving,https://github.com/michigan-traffic-lab/lightemma,none,2025.0,rl_robotics,,True,True
-2505.08032,Online Learning-based Adaptive Beam Switching for 6G Networks: Enhancing Efficiency and Resilience,https://github.com/clis-wpi/ol-beam-switching-6g,pytorch,2025.0,rl_robotics,,True,True
