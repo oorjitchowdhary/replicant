@@ -2,9 +2,10 @@
 
 Extracts: title, GitHub URLs, named datasets, download URLs, framework/library
 mentions, hardware requirements, model checkpoints, and setup instructions.
-Uses Google Gemini AI for intelligent paper analysis.
+Uses Anthropic Claude via AWS Bedrock for intelligent paper analysis.
 """
 from __future__ import annotations
+import json
 import os
 from pathlib import Path
 from pydantic import BaseModel, Field
@@ -13,11 +14,13 @@ from replicant.sources.pdf import extract_text
 from replicant.sources.arxiv import fetch
 
 try:
-    import google.genai as genai
+    import boto3
 except ImportError:
     raise ImportError(
-        "google-genai is required for paper analysis. Install with: pip install google-genai"
+        "boto3 is required for paper analysis. Install with: pip install boto3"
     )
+
+from replicant.utils.llm_config import BEDROCK_MODEL_ID, get_bedrock_client
 
 
 class PaperContext(BaseModel):
@@ -77,51 +80,43 @@ def _analyze_from_pdf(pdf_path: str | Path) -> PaperContext:
 
 def _extract_context(full_text: str, title: str, hyperlinks: list[str]) -> PaperContext:
     """Extract structured context from paper text and hyperlinks using LLM intelligence."""
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError(
-            "GEMINI_API_KEY environment variable is required for paper analysis.\n"
-            "Get your API key from: https://aistudio.google.com/app/apikey\n"
-            "Set it with: export GEMINI_API_KEY=your_key_here"
-        )
-    
     return _extract_context_llm(full_text, title, hyperlinks)
 
 
 def _extract_context_llm(full_text: str, title: str, hyperlinks: List[str]) -> PaperContext:
-    """Use Gemini LLM with structured output to extract context from paper."""
-    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-    
-    # Prepare the prompt with paper content
+    """Use Claude via AWS Bedrock converse API to extract context from paper."""
+    client = get_bedrock_client()
+
+    schema = json.dumps(PaperContext.model_json_schema(), indent=2)
     prompt = _build_analysis_prompt(full_text, title, hyperlinks)
-    
-    response = client.models.generate_content(
-        model='gemini-3-flash-preview',
-        contents=prompt,
-        config={
-            "response_mime_type": "application/json",
-            "response_json_schema": PaperContext.model_json_schema(),
-        }
+    full_prompt = (
+        f"{prompt}\n\n"
+        f"Respond with a single valid JSON object matching this schema exactly — "
+        f"no markdown, no commentary:\n\n{schema}"
     )
 
-    # Parse and validate the structured response
+    response = client.converse(
+        modelId=BEDROCK_MODEL_ID,
+        inferenceConfig={"maxTokens": 4096},
+        messages=[{"role": "user", "content": [{"text": full_prompt}]}],
+    )
+
+    raw = response["output"]["message"]["content"][0]["text"].strip()
+    # Strip optional markdown code fences
+    if raw.startswith("```"):
+        raw = raw.split("```")[1]
+        if raw.startswith("json"):
+            raw = raw[4:]
+        raw = raw.strip()
+
     try:
-        return PaperContext.model_validate_json(response.text)
+        return PaperContext.model_validate_json(raw)
     except Exception as e:
-        raise ValueError(f"Failed to parse LLM structured response: {str(e)}\nResponse: {response.text[:500]}")
+        raise ValueError(f"Failed to parse LLM structured response: {str(e)}\nResponse: {raw[:500]}")
 
 
 def _build_analysis_prompt(full_text: str, title: str, hyperlinks: List[str]) -> str:
     """Build the analysis prompt for the LLM."""
-    # Truncate text if too long to avoid token limits
-    max_text_length = 50000  # Adjust based on model limits
-    if len(full_text) > max_text_length:
-        # Take first part and last part to get intro + conclusion
-        mid_point = max_text_length // 2
-        truncated_text = full_text[:mid_point] + "\n\n[... content truncated ...]\n\n" + full_text[-mid_point:]
-    else:
-        truncated_text = full_text
-    
     hyperlink_text = "\n".join(hyperlinks) if hyperlinks else "None"
     
     return f"""Analyze this research paper and extract environment setup information. Focus on:
@@ -141,4 +136,4 @@ Paper Title: {title}
 Hyperlinks from PDF: {hyperlink_text}
 
 Paper Content:
-{truncated_text}"""
+{full_text}"""
