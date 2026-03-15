@@ -381,6 +381,9 @@ def run_single_paper(
             message = str(exc)
             inferred_stage = _infer_stage(message) or "docker_build"
             if "no environment file" in message.lower():
+                # No usable env file — correct the fields set above before generate() was called
+                result.env_file_found = False
+                result.env_file_type = ""
                 category, detail = _classify_no_env_file(code_path)
                 _fail(result, category, detail, "env_detection")
             else:
@@ -464,7 +467,7 @@ def _build_with_timeout(build_dir: Path, tag: str, timeout: int) -> tuple[bool, 
             env=env
         )
         
-        output = result.stdout + result.stderr
+        output = _as_text(result.stdout) + _as_text(result.stderr)
         log_path.write_text(output)
         
         return result.returncode == 0, output
