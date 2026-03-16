@@ -253,11 +253,27 @@ def _classify_no_env_file(repo_path: Path) -> tuple[str, str]:
     external_imports = _detect_external_imports(repo_path)
     
     if external_imports:
-        # Has code with dependencies but no env spec
+        # Before giving up, do a broader scan — env files may exist in non-standard locations
+        # that the main detector didn't pick up.
+        hidden_files: list[str] = []
+        for p in repo_path.rglob("requirements*.txt"):
+            hidden_files.append(str(p.relative_to(repo_path)))
+        for p in repo_path.rglob("environment*.y*ml"):
+            hidden_files.append(str(p.relative_to(repo_path)))
+        for p in repo_path.rglob("setup.py"):
+            hidden_files.append(str(p.relative_to(repo_path)))
+        for p in repo_path.rglob("Pipfile"):
+            hidden_files.append(str(p.relative_to(repo_path)))
+
         deps_str = ", ".join(sorted(external_imports)[:10])
         if len(external_imports) > 10:
             deps_str += f" (+{len(external_imports) - 10} more)"
-        return "missing_env_spec", f"Code has dependencies ({deps_str}) but no requirements file"
+
+        if hidden_files:
+            note = "; env-like files found at unexpected paths: " + ", ".join(hidden_files[:5])
+        else:
+            note = ""
+        return "missing_env_spec", f"Code has dependencies ({deps_str}) but no requirements file{note}"
     
     # Case 3: Self-contained code with only stdlib
     return "self_contained", "Code is self-contained (stdlib only, no env spec needed)"

@@ -1,9 +1,13 @@
 """Clone GitHub repos."""
 from __future__ import annotations
+import os
 import re
 from pathlib import Path
 from git import Repo
 from replicant.utils.config import REPOS, ensure_dirs
+
+# Prevent git from blocking on credential prompts for private/deleted repos.
+os.environ["GIT_TERMINAL_PROMPT"] = "0"
 
 _GH_RE = re.compile(r"https?://github\.com/([A-Za-z0-9_.\-]+)/([A-Za-z0-9_.\-]+)")
 
@@ -20,5 +24,5 @@ def clone(url: str, dest: Path | None = None) -> Path:
         except Exception: pass
     else:
         dest.mkdir(parents=True, exist_ok=True)
-        Repo.clone_from(clone_url, str(dest))
+        Repo.clone_from(clone_url, str(dest), env={"GIT_TERMINAL_PROMPT": "0"})
     return dest

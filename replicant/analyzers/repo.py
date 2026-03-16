@@ -43,12 +43,13 @@ _ENTRY_PATTERNS = re.compile(r"""(?:train|main|run|demo|test|eval|evaluate|infer
 # Python version
 _PY_VER = re.compile(r"""python[_\-]?(?:requires)?\s*[=><!]*\s*['"]?(\d+\.\d+)""", re.I)
 
-# Env file priority
+# Env file priority (exact names only — globs are handled in _find_env_files)
 ENV_FILES = [
     "Dockerfile", "docker/Dockerfile",
-    "environment.yml", "environment.yaml", "conda_environment.yml",
+    "environment.yml", "environment.yaml", "conda_environment.yml", "conda.yml", "conda.yaml",
     "requirements.txt", "requirements/requirements.txt",
-    "setup.py", "pyproject.toml",
+    "reqs.txt",
+    "setup.py", "pyproject.toml", "setup.cfg", "Pipfile",
 ]
 
 
@@ -79,18 +80,7 @@ def analyze(repo: str | Path, pdf_path: str | Path | None = None) -> Environment
     spec = EnvironmentSpec(repo_path=repo)
 
     # 1. env files
-    for name in ENV_FILES:
-        p = repo / name
-        if p.exists(): spec.env_files[name] = p
-    for df in repo.rglob("Dockerfile"):
-        key = str(df.relative_to(repo))
-        if key not in spec.env_files: spec.env_files[key] = df
-
-    for name in ENV_FILES:
-        if name in spec.env_files:
-            spec.primary_env = name
-            spec.primary_env_path = spec.env_files[name]
-            break
+    spec.env_files, spec.primary_env, spec.primary_env_path = _find_env_files(repo)
 
     # 2. scan all text files for packages, datasets, hardware, entrypoints
     all_text = _slurp_repo(repo)
@@ -251,6 +241,136 @@ def _resolve_with_ai(repo: Path, spec: EnvironmentSpec) -> "ResolvedDependencies
 
 
 # ── helpers ─────────────────────────────────────────────────────────────────
+
+def _find_env_files(repo: Path) -> tuple[dict[str, Path], str | None, Path | None]:
+    """Scan a repo for env/dependency files and return (all_found, primary_name, primary_path).
+
+    Priority order:
+      1. Dockerfile (root, then docker/)
+      2. environment.yml / .yaml / conda variants
+      3. requirements.txt (root)
+      4. requirements-*.txt / requirements_*.txt at root (largest wins)
+      5. requirements/*.txt (largest wins, requirements/requirements.txt preferred)
+      6. setup.py
+      7. pyproject.toml
+      8. setup.cfg
+      9. Pipfile
+      10. One-level-deep fallbacks (*/requirements.txt, */setup.py, etc.)
+    """
+    found: dict[str, Path] = {}
+
+    # --- exact paths ---
+    for name in ENV_FILES:
+        p = repo / name
+        if p.exists():
+            found[name] = p
+
+    # --- glob patterns ---
+    for p in repo.glob("requirements-*.txt"):
+        found[p.name] = p
+    for p in repo.glob("requirements_*.txt"):
+        found[p.name] = p
+    for p in repo.glob("requirements/*.txt"):
+        found[str(p.relative_to(repo))] = p
+    for p in repo.glob("docker/Dockerfile*"):
+        found[str(p.relative_to(repo))] = p
+    for p in repo.glob("*/requirements.txt"):
+        key = str(p.relative_to(repo))
+        if key not in found:
+            found[key] = p
+    for df in repo.rglob("Dockerfile"):
+        key = str(df.relative_to(repo))
+        if key not in found:
+            found[key] = df
+
+    # --- one-level-deep fallbacks for setup files ---
+    for child in repo.iterdir():
+        if not child.is_dir() or child.name.startswith("."):
+            continue
+        for name in ("setup.py", "pyproject.toml", "setup.cfg", "Pipfile",
+                     "environment.yml", "environment.yaml"):
+            p = child / name
+            if p.exists():
+                key = str(p.relative_to(repo))
+                if key not in found:
+                    found[key] = p
+
+    # --- determine primary by priority ---
+    primary: str | None = None
+    primary_path: Path | None = None
+
+    def _set(name: str) -> bool:
+        nonlocal primary, primary_path
+        if name in found:
+            primary, primary_path = name, found[name]
+            return True
+        return False
+
+    # 1. Dockerfile at root or docker/
+    for name in ("Dockerfile", "docker/Dockerfile"):
+        if _set(name):
+            break
+
+    # 2. Conda/environment files
+    if primary is None:
+        for name in ("environment.yml", "environment.yaml", "conda_environment.yml",
+                     "conda.yml", "conda.yaml"):
+            if _set(name):
+                break
+
+    # 3. requirements.txt at root
+    if primary is None:
+        _set("requirements.txt")
+
+    # 4. requirements*.txt at root (largest wins)
+    if primary is None:
+        root_reqs = [
+            (name, p) for name, p in found.items()
+            if re.match(r"requirements[-_].+\.txt$", name) and "/" not in name
+        ]
+        if root_reqs:
+            best_name, best_path = max(root_reqs, key=lambda x: x[1].stat().st_size)
+            primary, primary_path = best_name, best_path
+
+    # 5. requirements/*.txt (prefer requirements/requirements.txt, else largest)
+    if primary is None:
+        subdir_reqs = [
+            (name, p) for name, p in found.items()
+            if name.startswith("requirements/") and name.endswith(".txt")
+        ]
+        if subdir_reqs:
+            base = next((x for x in subdir_reqs if x[0] == "requirements/requirements.txt"), None)
+            if base:
+                primary, primary_path = base
+            else:
+                best_name, best_path = max(subdir_reqs, key=lambda x: x[1].stat().st_size)
+                primary, primary_path = best_name, best_path
+
+    # 6–9. setup.py, pyproject.toml, setup.cfg, Pipfile
+    if primary is None:
+        for name in ("setup.py", "pyproject.toml", "setup.cfg", "Pipfile", "reqs.txt"):
+            if _set(name):
+                break
+
+    # 10. One-level-deep setup files (lowest priority)
+    if primary is None:
+        for name, p in found.items():
+            if "/" in name and any(
+                name.endswith(s) for s in ("setup.py", "pyproject.toml", "setup.cfg", "Pipfile",
+                                           "environment.yml", "environment.yaml")
+            ):
+                primary, primary_path = name, p
+                break
+
+    # Fallback: any Dockerfile found anywhere
+    if primary is None:
+        for name, p in found.items():
+            if "Dockerfile" in name:
+                primary, primary_path = name, p
+                break
+
+    return found, primary, primary_path
+
 
 def _slurp_repo(repo: Path, max_bytes: int = 5_000_000) -> str:
     """Read all text files up to a budget. Skip binary/vendored."""
