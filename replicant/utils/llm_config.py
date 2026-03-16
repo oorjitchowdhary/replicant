@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 
 
-BEDROCK_MODEL_ID = os.getenv("BEDROCK_MODEL_ID", "us.anthropic.anthropic.claude-sonnet-4-6")
+BEDROCK_MODEL_ID = os.getenv("BEDROCK_MODEL_ID", "us.anthropic.claude-sonnet-4-6")
 AWS_REGION = os.getenv("AWS_DEFAULT_REGION", "us-west-2")
 
 
