@@ -33,3 +33,7 @@ htmlcov/
 
 # Data
 *.csv
+*.json
+
+# Keys
+*.pem
