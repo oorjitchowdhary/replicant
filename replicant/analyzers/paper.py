@@ -97,7 +97,7 @@ def _extract_context_llm(full_text: str, title: str, hyperlinks: List[str]) -> P
 
     response = client.converse(
         modelId=BEDROCK_MODEL_ID,
-        inferenceConfig={"maxTokens": 4096},
+        inferenceConfig={"maxTokens": 8192},
         messages=[{"role": "user", "content": [{"text": full_prompt}]}],
     )
 

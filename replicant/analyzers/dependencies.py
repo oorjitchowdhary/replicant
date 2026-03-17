@@ -20,7 +20,7 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 try:
     import boto3
@@ -34,8 +34,13 @@ class DependencySpec(BaseModel):
     """A single dependency with version constraints and reasoning."""
     package: str = Field(description="The pip package name")
     version_spec: str = Field(description="Version specifier (e.g., '==1.15.0', '>=2.0,<3.0', '~=1.4.0')")
-    reason: str = Field(description="Brief explanation of why this version constraint was chosen")
+    reason: str = Field(default="", description="Brief explanation of why this version constraint was chosen")
     is_critical: bool = Field(default=False, description="True if this is a core framework dependency")
+
+    @field_validator("reason")
+    @classmethod
+    def truncate_reason(cls, v: str) -> str:
+        return v[:100] if v else ""
 
 
 class ResolvedDependencies(BaseModel):
@@ -95,13 +100,13 @@ def resolve_dependencies(
     schema = json.dumps(ResolvedDependencies.model_json_schema(), indent=2)
     full_prompt = (
         f"{prompt}\n\n"
-        f"Respond with a single valid JSON object matching this schema exactly — "
-        f"no markdown, no commentary:\n\n{schema}"
+        f"Respond with ONLY a valid JSON object matching this schema. "
+        f"Keep ALL reason fields under 10 words. No markdown, no commentary.\n\n{schema}"
     )
 
     response = client.converse(
         modelId=BEDROCK_MODEL_ID,
-        inferenceConfig={"maxTokens": 4096},
+        inferenceConfig={"maxTokens": 8192},
         messages=[{"role": "user", "content": [{"text": full_prompt}]}],
     )
 
@@ -116,7 +121,26 @@ def resolve_dependencies(
     try:
         return ResolvedDependencies.model_validate_json(raw)
     except Exception as e:
+        recovered = _try_recover_truncated_json(raw)
+        if recovered:
+            return recovered
         raise ValueError(f"Failed to parse dependency resolution: {e}\nResponse: {raw[:500]}")
+
+
+def _try_recover_truncated_json(raw: str) -> "ResolvedDependencies | None":
+    """Attempt to recover a truncated JSON response by closing open structures."""
+    for end_marker in ['}\n  ]', '}\n    ]', '}']:
+        last_complete = raw.rfind(end_marker)
+        if last_complete > 0:
+            truncated = raw[:last_complete + len(end_marker)]
+            open_brackets = truncated.count('[') - truncated.count(']')
+            open_braces = truncated.count('{') - truncated.count('}')
+            truncated += ']' * open_brackets + '}' * open_braces
+            try:
+                return ResolvedDependencies.model_validate_json(truncated)
+            except Exception:
+                continue
+    return None
 
 
 def _build_dependency_prompt(
@@ -129,103 +153,55 @@ def _build_dependency_prompt(
 ) -> str:
     """Build the comprehensive prompt for dependency resolution."""
     
-    return f"""You are an expert Python dependency resolver. Your job is to analyze this repository and produce WORKING dependency specifications that will install and run without errors.
+    return f"""You are a Python dependency resolver. Analyze this repository and produce working, version-pinned dependency specifications.
 
-## YOUR CRITICAL MISSION
-Users of this tool should NEVER encounter dependency hell. You must:
-1. Analyze the actual code to understand what framework versions are needed
-2. Detect API patterns that indicate specific version requirements
-3. Pin versions precisely enough to ensure compatibility
-4. Anticipate and prevent common conflicts
+GOALS:
+1. Choose the correct Python version based on the code era and package requirements
+2. Pin all packages to specific compatible versions
+3. Anticipate common conflicts (numpy 2.0 breaking changes, protobuf version conflicts, etc.)
+4. Respect existing version pins in requirements files — only override if they're clearly wrong
 
-## FRAMEWORK API KNOWLEDGE YOU MUST APPLY
+REPOSITORY INFORMATION:
 
-### TensorFlow Version Detection
-- `tf.train.Optimizer`, `tf.Session`, `tf.placeholder`, `tf.get_variable`, `tf.contrib` → TensorFlow 1.x (use tensorflow==1.15.0)
-- These APIs were REMOVED in TensorFlow 2.0 and WILL crash if you install TF 2.x
-- `tf.keras`, `@tf.function`, `tf.GradientTape` → TensorFlow 2.x compatible
-- If code uses TF 1.x APIs, you MUST pin to tensorflow==1.15.0 (the last 1.x version)
+Repository Year/Era: {repo_year}
 
-### PyTorch Version Detection  
-- `torch.cuda.amp` → PyTorch >= 1.6
-- `torch.nn.TransformerEncoder` → PyTorch >= 1.2
-- Old-style `Variable` wrapping → PyTorch < 0.4
-- `torch.compile` → PyTorch >= 2.0
-
-### Other Common Issues
-- numpy>=2.0 breaks many older packages - pin to numpy<2.0 for pre-2024 repos
-- scipy and numpy version compatibility matters
-- transformers library versions must match model compatibility
-- CUDA toolkit version must match PyTorch/TensorFlow builds
-
-## REPOSITORY INFORMATION
-
-### Repository Year/Era: {repo_year}
-This tells you approximately when the code was written. Use this to inform version choices.
-
-### Existing requirements.txt:
+Existing requirements.txt:
 ```
 {existing_requirements if existing_requirements else "Not present"}
 ```
 
-### Existing environment.yml:
+Existing environment.yml:
 ```
 {existing_env_yml if existing_env_yml else "Not present"}
 ```
 
-### setup.py / pyproject.toml:
+setup.py / pyproject.toml:
 ```
 {setup_py_content if setup_py_content else "Not present"}
 ```
 
-### Code Samples (showing actual framework usage):
+Code Samples:
 ```python
 {code_samples if code_samples else "No code samples provided"}
 ```
 
-### README Setup Instructions:
+README Setup Instructions:
 ```
-{readme_content[:3000] if readme_content else "Not present"}
+{readme_content[:2000] if readme_content else "Not present"}
 ```
 
-## YOUR TASK
+VERSION SELECTION RULES:
+- If requirements.txt has pinned versions, keep them unless they conflict
+- If versions are unpinned, choose versions from the repo's era (use repo_year)
+- For Python version: check .python-version, runtime.txt, environment.yml first; infer from package compatibility otherwise
+- numpy>=2.0 breaks many pre-2024 packages — pin numpy<2.0 for repos before 2024
+- protobuf>=4.0 breaks many older packages — pin protobuf<4.0 for pre-2023 repos
 
-Analyze all the information above and produce a ResolvedDependencies object that:
-
-1. **python_version**: Choose the right Python version
-   - TensorFlow 1.x works best with Python 3.7
-   - Very old repos may need Python 3.6
-   - Most modern repos work with Python 3.10
-   - Consider framework compatibility
-
-2. **dependencies**: For EACH dependency:
-   - **package**: Exact pip package name
-   - **version_spec**: Precise version constraint that WILL work
-   - **reason**: Brief explanation (e.g., "Code uses tf.Session which requires TF 1.x")
-   - **is_critical**: True for core frameworks (tensorflow, torch, jax)
-
-3. **compatibility_notes**: Any important warnings or notes
-
-4. **install_order_matters**: True if order matters (rare)
-
-5. **install_commands**: Special commands if needed
-
-## CRITICAL RULES
-
-1. NEVER leave core frameworks unpinned - tensorflow, torch, jax MUST have specific versions
-2. If you see TensorFlow 1.x API patterns, pin to tensorflow==1.15.0 with Python 3.7
-3. If requirements.txt says just "tensorflow" but code uses TF 1.x APIs, OVERRIDE it with the correct version
-4. For TensorFlow 1.x projects: use RANGE constraints for non-TF packages (e.g., numpy>=1.16,<1.19 instead of numpy==1.18.5)
-   - The official tensorflow/tensorflow:1.15.0-py3 Docker image uses Python 3.6, so exact pins may not be available
-   - Use flexible ranges that will resolve in older Python environments
-5. When in doubt about version, pin conservatively to known-working versions
-6. Include transitive dependencies that commonly cause issues (numpy, scipy, protobuf)
-7. For repos from 2018-2020, assume they need older package versions
-8. For protobuf with TF 1.x, use protobuf>=3.8,<4.0 (not exact pins)
-
-## OUTPUT
-
-Return a complete ResolvedDependencies JSON object. Every framework dependency MUST have a specific version pin. The user should be able to pip install these and have the code JUST WORK."""
+COMMON FRAMEWORK NOTES (apply only if relevant):
+- TensorFlow 1.x (tf.Session, tf.placeholder, tf.contrib) requires tensorflow==1.15.0 + Python 3.7
+- PyTorch version must match torchvision and torchaudio versions
+- JAX/Flax versions must be compatible with jaxlib
+- CUDA-dependent packages (flash-attn, apex, cupy) often need special install commands"""
 
 
 def _get_repo_year(repo_path: Path) -> int:
