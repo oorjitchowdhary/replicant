@@ -34,6 +34,7 @@ htmlcov/
 # Data
 *.csv
 *.json
+benchmark_merged/
 
 # Keys
 *.pem

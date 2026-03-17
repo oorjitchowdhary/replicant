@@ -12,10 +12,11 @@ def generate(spec: EnvironmentSpec, eid: str) -> Path:
     p = spec.primary_env
     if not p:
         raise RuntimeError("No environment file found in repo.")
-    if p.endswith("Dockerfile"):       return _existing(spec, d)
-    if p.endswith((".yml", ".yaml")):   return _conda(spec, d)
-    if "requirements" in p:            return _pip(spec, d)
-    if p in ("setup.py","pyproject.toml"): return _setuppy(spec, d)
+    if p.endswith("Dockerfile"):            return _existing(spec, d)
+    if p.endswith((".yml", ".yaml")):       return _conda(spec, d)
+    if "requirements" in p or p.endswith(("reqs.txt",)):  return _pip(spec, d)
+    if p.endswith(("setup.py", "pyproject.toml", "setup.cfg")): return _setuppy(spec, d)
+    if p.endswith("Pipfile"):               return _pipenv(spec, d)
     raise RuntimeError(f"Can't handle: {p}")
 
 
@@ -144,6 +145,25 @@ def _filter_tensorflow_from_requirements(requirements_content: str) -> str:
         else:
             filtered.append(line)
     return "\n".join(filtered)
+
+
+def _pipenv(spec: EnvironmentSpec, d: Path) -> Path:
+    shutil.copy2(spec.primary_env_path, d / "Pipfile")
+    lockfile = spec.primary_env_path.parent / "Pipfile.lock"
+    if lockfile.exists():
+        shutil.copy2(lockfile, d / "Pipfile.lock")
+    v = spec.python_version
+    if v.count(".") > 1: v = ".".join(v.split(".")[:2])
+    (d / "Dockerfile").write_text(f"""\
+FROM python:{v}-slim
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential git && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir pipenv
+COPY Pipfile* /tmp/
+RUN cd /tmp && pipenv install --system --deploy --ignore-pipfile || pipenv install --system
+WORKDIR /workspace
+CMD ["/bin/bash"]
+""")
+    return d
 
 
 def _setuppy(spec: EnvironmentSpec, d: Path) -> Path:
