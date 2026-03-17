@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
@@ -104,11 +105,21 @@ def resolve_dependencies(
         f"Keep ALL reason fields under 10 words. No markdown, no commentary.\n\n{schema}"
     )
 
-    response = client.converse(
-        modelId=BEDROCK_MODEL_ID,
-        inferenceConfig={"maxTokens": 8192},
-        messages=[{"role": "user", "content": [{"text": full_prompt}]}],
-    )
+    # Retry with backoff on throttling (applies to remaining daily quota, not per-minute limits)
+    for attempt in range(3):
+        try:
+            response = client.converse(
+                modelId=BEDROCK_MODEL_ID,
+                inferenceConfig={"maxTokens": 8192},
+                messages=[{"role": "user", "content": [{"text": full_prompt}]}],
+            )
+            break
+        except Exception as e:
+            if "ThrottlingException" in type(e).__name__ or "ThrottlingException" in str(e):
+                if attempt < 2:
+                    time.sleep(30 * (attempt + 1))  # 30s, 60s
+                    continue
+            raise
 
     raw = response["output"]["message"]["content"][0]["text"].strip()
     # Strip optional markdown code fences

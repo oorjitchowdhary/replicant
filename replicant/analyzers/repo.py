@@ -180,8 +180,9 @@ def analyze(repo: str | Path, pdf_path: str | Path | None = None) -> Environment
             spec.python_version = paper_ctx.python_version
 
     # === AI-POWERED DEPENDENCY RESOLUTION ===
-    # This is the core intelligence that prevents dependency hell
-    spec.resolved_deps = _resolve_with_ai(repo, spec)
+    # Only run if we have an env file — skip for repos that will fail at env_detection anyway
+    if spec.primary_env:
+        spec.resolved_deps = _resolve_with_ai(repo, spec)
     
     # Update python version from AI resolution if provided
     if spec.resolved_deps and spec.resolved_deps.python_version:
