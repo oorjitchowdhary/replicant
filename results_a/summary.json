@@ -1,0 +1,57 @@
+{
+  "corpus_size": 919,
+  "completed": 500,
+  "skipped": 419,
+  "total_duration_seconds": 96898.42,
+  "outcomes": {
+    "success": 56,
+    "failure": 444
+  },
+  "failure_breakdown": {
+    "missing_env_spec": 197,
+    "phantom_dependency": 65,
+    "no_runnable_code": 63,
+    "build_timeout": 39,
+    "unknown_build_error": 27,
+    "version_conflict": 16,
+    "platform_mismatch": 13,
+    "build_order_dependency": 11,
+    "missing_system_dep": 11,
+    "repo_inaccessible": 2,
+    "self_contained": 1
+  },
+  "failure_by_stage": {
+    "env_detection": 254,
+    "docker_build": 188,
+    "github_discovery": 2,
+    "llm_analysis": 1
+  },
+  "by_subfield": {
+    "other_ml": {
+      "success": 33,
+      "failure": 290
+    },
+    "computer_vision": {
+      "success": 23,
+      "failure": 154
+    }
+  },
+  "by_framework": {
+    "tf": {
+      "success": 4,
+      "failure": 15
+    },
+    "none": {
+      "success": 12,
+      "failure": 114
+    },
+    "pytorch": {
+      "success": 38,
+      "failure": 297
+    },
+    "jax": {
+      "success": 2,
+      "failure": 18
+    }
+  }
+}

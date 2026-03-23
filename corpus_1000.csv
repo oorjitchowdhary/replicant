@@ -1,0 +1,1002 @@
+paper_arxiv_id,paper_title,repo_url,framework,year,subfield,conference,is_official,mentioned_in_paper
+2405.12299,Perturbing the Gradient for Alleviating Meta Overfitting,https://github.com/manasgg44/meta_overfit,tf,2024,other_ml,,True,True
+2304.05869,LMR: Lane Distance-Based Metric for Trajectory Prediction,https://github.com/schmidt-ju/lane-miss-rate,none,2023,other_ml,,True,True
+2412.14642,TOMG-Bench: Evaluating LLMs on Text-based Open Molecule Generation,https://github.com/phenixace/tomg-bench,pytorch,2024,other_ml,,True,True
+2203.07807,End-to-end P300 BCI using Bayesian accumulation of Riemannian probabilities,https://github.com/timeflux/demos,none,2022,other_ml,,True,True
+2401.16024,Probabilistic Abduction for Visual Abstract Reasoning via Learning Rules in Vector-symbolic Architectures,https://github.com/ibm/learn-vector-symbolic-architectures-rule-formulations,pytorch,2024,other_ml,,True,True
+2406.12742,"Benchmarking Multi-Image Understanding in Vision and Language Models: Perception, Knowledge, Reasoning, and Multi-Hop Reasoning",https://github.com/dtennant/mirb_eval,pytorch,2024,other_ml,,True,True
+2312.04328,A Multi-scale Information Integration Framework for Infrared and Visible Image Fusion,https://github.com/ssyangguang/mda,pytorch,2023,other_ml,,True,True
+2410.07627,Automatic Curriculum Expert Iteration for Reliable LLM Reasoning,https://github.com/salesforceairesearch/auto-cei,none,2024,other_ml,,True,True
+2209.10926,Equivariant Transduction through Invariant Alignment,https://github.com/rycolab/equivariant-transduction,pytorch,2022,other_ml,,True,True
+2209.10637,Benchmarking Apache Spark and Hadoop MapReduce on Big Data Classification,https://github.com/tekdogan/iccbdc-21,none,2022,other_ml,,True,True
+2406.17911,X-ray Made Simple: Lay Radiology Report Generation and Robust Evaluation,https://github.com/hegehongcha/laymanrrg,none,2024,other_ml,,True,True
+2204.13886,Learning Adaptive Warping for Real-World Rolling Shutter Correction,https://github.com/ljzycmd/bsrsc,pytorch,2022,other_ml,,True,True
+2306.09296,KoLA: Carefully Benchmarking World Knowledge of Large Language Models,https://github.com/thu-keg/kola,none,2023,other_ml,,True,True
+2402.05675,Is Adversarial Training with Compressed Datasets Effective?,https://github.com/saintslab/pytoch,pytorch,2024,other_ml,,True,True
+2211.04867,Trackerless freehand ultrasound with sequence modelling and auxiliary transformation over past and future frames,https://github.com/ucl-candi/freehand,pytorch,2022,other_ml,,True,True
+2308.11771,3ET: Efficient Event-based Eye Tracking using a Change-Based ConvLSTM Network,https://github.com/qinche106/cb-convlstm-eyetracking,pytorch,2023,other_ml,,True,True
+2408.07545,$χ$SPN: Characteristic Interventional Sum-Product Networks for Causal Inference in Hybrid Domains,https://github.com/harpoonix/chi-spn,pytorch,2024,other_ml,,True,True
+2206.06644,SpecNet2: Orthogonalization-free spectral embedding by neural networks,https://github.com/ziyuchen7/specnet2,none,2022,other_ml,,True,True
+2203.06468,Unsupervised Lifelong Person Re-identification via Contrastive Rehearsal,https://github.com/chenhao2345/ucr,pytorch,2022,other_ml,,True,True
+2401.17728,COMET: Contrastive Mean Teacher for Online Source-Free Universal Domain Adaptation,https://github.com/pascalschlachter/comet,pytorch,2024,other_ml,,True,True
+2310.03738,Robust Novelty Detection through Style-Conscious Feature Ranking,https://github.com/bit-ml/Stylist,pytorch,2023,other_ml,,True,True
+2504.17568,Beyond Cox Models: Assessing the Performance of Machine-Learning Methods in Non-Proportional Hazards and Non-Linear Survival Analysis,https://github.com/compbiomed-unito/survhive,none,2025,other_ml,,True,True
+2410.17309,Literature Meets Data: A Synergistic Approach to Hypothesis Generation,https://github.com/chicagohai/hypothesis-generation,none,2024,other_ml,,True,True
+2406.11827,WPO: Enhancing RLHF with Weighted Preference Optimization,https://github.com/wzhouad/wpo,pytorch,2024,other_ml,,True,True
+2212.08846,Painterly Image Harmonization in Dual Domains,https://github.com/bcmi/phdnet-painterly-image-harmonization,pytorch,2022,other_ml,,True,True
+2305.09253,Online Continual Learning Without the Storage Constraint,https://github.com/drimpossible/acm,pytorch,2023,other_ml,,True,True
+2503.12866,SCAP: Transductive Test-Time Adaptation via Supportive Clique-based Attribute Prompting,https://github.com/zhoujiahuan1991/cvpr2025-scap,pytorch,2025,other_ml,scap-transductive-test-time-adaptation-via,True,True
+2401.06967,NHANES-GCP: Leveraging the Google Cloud Platform and BigQuery ML for reproducible machine learning with data from the National Health and Nutrition Examination Survey,https://github.com/in-vivo-group/nhanes-gcp,none,2024,other_ml,,True,True
+2404.18209,4DBInfer: A 4D Benchmarking Toolbox for Graph-Centric Predictive Modeling on Relational DBs,https://github.com/awslabs/multi-table-benchmark,pytorch,2024,other_ml,,True,True
+2412.00088,Stochastic Taylor Derivative Estimator: Efficient amortization for arbitrary differential operators,https://github.com/sail-sg/stde,jax,2024,other_ml,,True,True
+2411.05979,Variance-Aware Linear UCB with Deep Representation for Neural Contextual Bandits,https://github.com/angie-lab-jhu/neuralvarlinucb,pytorch,2024,other_ml,,True,True
+2409.09927,"Towards Data Contamination Detection for Modern Large Language Models: Limitations, Inconsistencies, and Oracle Challenges",https://github.com/vsamuel2003/data-contamination,none,2024,other_ml,,True,True
+2506.05027,Tuning the Right Foundation Models is What you Need for Partial Label Learning,https://github.com/seu-hk/partialclip,pytorch,2025,other_ml,,True,True
+2305.06459,SlicerTMS: Real-Time Visualization of Transcranial Magnetic Stimulation for Mental Health Treatment,https://github.com/lorifranke/SlicerTMS,pytorch,2023,other_ml,,True,True
+2203.16392,On learning adaptive acquisition policies for undersampled multi-coil MRI reconstruction,https://github.com/facebookresearch/fastMRI,pytorch,2022,other_ml,,True,True
+2506.10378,Discovering Hierarchical Latent Capabilities of Language Models via Causal Representation Learning,https://github.com/hlzhang109/causal-eval,pytorch,2025,other_ml,,True,True
+2209.15632,ExtrudeNet: Unsupervised Inverse Sketch-and-Extrude for Shape Parsing,https://github.com/kimren227/extrudenet,pytorch,2022,other_ml,,True,True
+2409.00129,Estimating the number of reachable positions in Minishogi,https://github.com/u-tokyo-gps-tanaka-lab/minishogi-position-ranking,none,2024,other_ml,,True,True
+2302.01806,Mitigating Data Scarcity for Large Language Models,https://github.com/vanh17/techqa,pytorch,2023,other_ml,,True,True
+2302.13846,Domain Adaptive Decision Trees: Implications for Accuracy and Fairness,https://github.com/nobias-project/domain-adaptive-trees,none,2023,other_ml,,True,True
+2412.16119,Deciphering the Underserved: Benchmarking LLM OCR for Low-Resource Scripts,https://github.com/abdullahsohaill/cs6303-researchproject,none,2024,other_ml,,True,True
+2304.12244,WizardLM: Empowering Large Language Models to Follow Complex Instructions,https://github.com/nlpxucan/wizardlm,pytorch,2023,other_ml,,True,True
+2410.02428,Collective Critics for Creative Story Generation,https://github.com/emnlp-2024-critics/collective-critics-for-creative-story-generation,none,2024,other_ml,,True,True
+2308.15116,Mixup-Augmented Meta-Learning for Sample-Efficient Fine-Tuning of Protein Simulators,https://github.com/jingbang-chen/mixup-meta-protein-simulators,pytorch,2023,other_ml,,True,True
+2204.09224,ContentVec: An Improved Self-Supervised Speech Representation by Disentangling Speakers,https://github.com/auspicious3000/contentvec,pytorch,2022,other_ml,,True,True
+2305.10898,Estimation Beyond Data Reweighting: Kernel Method of Moments,https://github.com/heinerkremer/conditional-moment-restrictions,pytorch,2023,other_ml,,True,True
+2506.10609,MSTAR: Box-free Multi-query Scene Text Retrieval with Attention Recycling,https://github.com/yingift/mstar,none,2025,other_ml,,True,True
+2308.01785,Lexicon and Rule-based Word Lemmatization Approach for the Somali Language,https://github.com/shafieabdi/somalilemmatizer,none,2023,other_ml,,True,True
+2207.09036,Schooling and Labor Market Consequences of School Construction in Indonesia: Comment,https://github.com/droodman/duflo-2001,none,2022,other_ml,,True,True
+2501.04155,MM-GEN: Enhancing Task Performance Through Targeted Multimodal Data Curation,https://github.com/sjoshi804/mm-gen,pytorch,2025,other_ml,,True,True
+2402.00184,The Mixed Aggregate Preference Logit Model: A Machine Learning Approach to Modeling Unobserved Heterogeneity in Discrete Choice Analysis,https://github.com/crforsythe/havan-paper,none,2024,other_ml,,True,True
+2411.03651,Policy Aggregation,https://github.com/praal/policy-aggregation,none,2024,other_ml,,True,True
+2412.13577,Bridge then Begin Anew: Generating Target-relevant Intermediate Model for Source-free Visual Emotion Adaptation,https://github.com/zhuzhu804/bba,none,2024,other_ml,,True,True
+2305.15835,PDE+: Enhancing Generalization via PDE with Adaptive Distributional Diffusion,https://github.com/yuanyige/pde-add,pytorch,2023,other_ml,,True,True
+2310.20211,Calibration by Distribution Matching: Trainable Kernel Calibration Metrics,https://github.com/kernel-calibration/kernel-calibration,pytorch,2023,other_ml,calibration-by-distribution-matching,True,True
+2310.07659,Well Begun is Half Done: Generator-agnostic Knowledge Pre-Selection for Knowledge-Grounded Dialogue,https://github.com/qinlang14/gate,pytorch,2023,other_ml,,True,True
+2403.05778,Spatial Clustering Approach for Vessel Path Identification,https://github.com/mohamedabuella/path_clustering,none,2024,other_ml,,True,True
+2205.00534,Generalized Reference Kernel for One-class Classification,https://github.com/jenniraitoharju/generalizedreferencekernel,none,2022,other_ml,,True,True
+2409.01416,Active Symbolic Discovery of Ordinary Differential Equations via Phase Portrait Sketching,https://github.com/jiangnanhugo/apps-ode,none,2024,other_ml,,True,True
+2404.12753,AutoScraper: A Progressive Understanding Web Agent for Web Scraper Generation,https://github.com/ez-hwh/autoscraper,none,2024,other_ml,,True,True
+2307.16045,Automatic Extraction of the Romanian Academic Word List: Data and Methods,https://github.com/bucuram/ro-awl,none,2023,other_ml,,True,True
+2205.06688,A Unified Framework for Implicit Sinkhorn Differentiation,https://github.com/marvin-eisenberger/implicit-sinkhorn,pytorch,2022,other_ml,,True,True
+2406.02056,CAP: A Context-Aware Neural Predictor for NAS,https://github.com/jihan4431/CAP,pytorch,2024,other_ml,,True,True
+2310.11978,Can bin-wise scaling improve consistency and adaptivity of prediction uncertainty for machine learning regression ?,https://github.com/ppernot/2023_bvs,none,2023,other_ml,,True,True
+2309.03576,DropPos: Pre-Training Vision Transformers by Reconstructing Dropped Positions,https://github.com/haochen-wang409/droppos,pytorch,2023,other_ml,droppos-pre-training-vision-transformers-by,True,True
+2307.04916,Rapid Deforestation and Burned Area Detection using Deep Multimodal Learning on Satellite Imagery,https://github.com/h2oai/cvpr-multiearth-deforestation-segmentation,none,2023,other_ml,,True,True
+2310.10467,Stance Detection with Collaborative Role-Infused LLM-Based Agents,https://github.com/tsinghua-fib-lab/cola,none,2023,other_ml,,True,True
+2406.14670,Exploring Design Choices for Building Language-Specific LLMs,https://github.com/atutej/token-language-adaptation,none,2024,other_ml,,True,True
+2411.05900,Enhancing Cardiovascular Disease Prediction through Multi-Modal Self-Supervised Learning,https://github.com/fragirla/mmssl-for-cvd-pred,pytorch,2024,other_ml,,True,True
+2211.03122,Computational anatomy atlas using multilayer perceptron with Lipschitz regularization,https://github.com/nndt-team/nndt,jax,2022,other_ml,,True,True
+2206.08420,Generalised Bayesian Inference for Discrete Intractable Likelihood,https://github.com/takuomatsubara/discrete-fisher-bayes,pytorch,2022,other_ml,,True,True
+2301.12995,FedFA: Federated Feature Augmentation,https://github.com/tfzhou/fedfa,pytorch,2023,other_ml,,True,True
+2506.04193,Understanding challenges to the interpretation of disaggregated evaluations of algorithmic fairness,https://github.com/google-research/google-research,tf,2025,other_ml,,True,True
+2501.13492,Quantized Spike-driven Transformer,https://github.com/bollossom/qsd-transformer,pytorch,2025,other_ml,,True,True
+2312.06153,Open Datasheets: Machine-readable Documentation for Open Datasets and Responsible AI Assessments,https://github.com/microsoft/opendatasheets-framework,none,2023,other_ml,,True,True
+2302.12189,"HL Dataset: Visually-grounded Description of Scenes, Actions and Rationales",https://github.com/michelecafagna26/hl-dataset,none,2023,other_ml,,True,True
+2207.09239,Assaying Out-Of-Distribution Generalization in Transfer Learning,https://github.com/amazon-research/assaying-ood,pytorch,2022,other_ml,,True,True
+2205.10093,Visual Concepts Tokenization,https://github.com/thomasmry/vct,pytorch,2022,other_ml,,True,True
+2402.18312,How to think step-by-step: A mechanistic understanding of chain-of-thought reasoning,https://github.com/joykirat18/how-to-think-step-by-step,jax,2024,other_ml,,True,True
+2206.03362,Building Robust Ensembles via Margin Boosting,https://github.com/zdhnarsil/margin-boosting,pytorch,2022,other_ml,,True,True
+2204.10848,MOLE: Digging Tunnels Through Multimodal Multi-Objective Landscapes,https://github.com/schaepermeier/moleopt,none,2022,other_ml,,True,True
+2206.08768,C-Pack of IPAs: A C90 Program Benchmark of Introductory Programming Assignments,https://github.com/pmorvalho/c-pack-ipas,none,2022,other_ml,,True,True
+2203.15285,Semantic Line Detection Using Mirror Attention and Comparative Ranking and Matching,https://github.com/dongkwonjin/Semantic-Line-DRM,pytorch,2022,other_ml,semantic-line-detection-using-mirror,True,True
+2306.13854,Similarity Preserving Adversarial Graph Contrastive Learning,https://github.com/yeonjun-in/torch-sp-agcl,pytorch,2023,other_ml,,True,True
+2411.08992,IDCIA: Immunocytochemistry Dataset for Cellular Image Analysis,https://github.com/isu-nrt-d4/cell-analysis,none,2024,other_ml,,True,True
+2208.03318,Delta Hedging Liquidity Positions on Automated Market Makers,https://github.com/adamkhakhar/lp-delta-hedge,pytorch,2022,other_ml,,True,True
+2308.06129,Uncertainty Quantification for Image-based Traffic Prediction across Cities,https://github.com/alextimans/traffic4cast-uncertainty,pytorch,2023,other_ml,,True,True
+2503.05776,FAA-CLIP: Federated Adversarial Adaptation of CLIP,https://github.com/aipmlab/faa-clip,pytorch,2025,other_ml,,True,True
+2312.09887,Probabilistic learning of the Purkinje network from the electrocardiogram,https://github.com/fsahli/purkinje-learning,jax,2023,other_ml,,True,True
+2210.05574,Motion Aware Self-Supervision for Generic Event Boundary Detection,https://github.com/rayush7/motion_ssl_gebd,none,2022,other_ml,,True,True
+2304.12616,Weakly-Supervised Temporal Action Localization with Bidirectional Semantic Consistency Constraint,https://github.com/lgzlilili/biscc,pytorch,2023,other_ml,,True,True
+2409.15268,Style Outweighs Substance: Failure Modes of LLM Judges in Alignment Benchmarking,https://github.com/penfever/sos-bench,none,2024,other_ml,,True,True
+2206.08901,SYMBA: Symbolic Computation of Squared Amplitudes in High Energy Physics with Machine Learning,https://github.com/ml4sci/symbahep,pytorch,2022,other_ml,,True,True
+2310.17153,Hierarchical Semi-Implicit Variational Inference with Application to Diffusion Model Acceleration,https://github.com/longinyu/hsivi,pytorch,2023,other_ml,hierarchical-semi-implicit-variational,True,True
+2505.11935,ChartEdit: How Far Are MLLMs From Automating Chart Analysis? Evaluating MLLMs' Capability via Chart Editing,https://github.com/xxlllz/chartedit,none,2025,other_ml,,True,True
+2312.07500,Multi-Branch Network for Imagery Emotion Prediction,https://github.com/baoninh2808/multi-branch-network-for-imagery-emotion-prediction,pytorch,2023,other_ml,,True,True
+2501.10466,Improving the Efficiency of Self-Supervised Adversarial Training through Latent Clustering-Based Selection,https://github.com/somrita99/SSATwithLCS,pytorch,2025,other_ml,,True,True
+2201.05282,Domain-shift adaptation via linear transformations,https://github.com/rvegaml/da_linear,tf,2022,other_ml,,True,True
+2307.03705,Intelligent Robotic Sonographer: Mutual Information-based Disentangled Reward Learning from Few Demonstrations,https://github.com/yuan-12138/mi-gpsr,pytorch,2023,other_ml,,True,True
+2401.09031,Data Attribution for Diffusion Models: Timestep-induced Bias in Influence Estimation,https://github.com/txie1/diffusion-retrac,pytorch,2024,other_ml,,True,True
+2501.13418,Rethinking the Sample Relations for Few-Shot Classification,https://github.com/HobbitLong/SupContrast,pytorch,2025,other_ml,,True,True
+2310.02277,"Pruning Small Pre-Trained Weights Irreversibly and Monotonically Impairs ""Difficult"" Downstream Tasks in LLMs",https://github.com/vita-group/junk_dna_hypothesis,pytorch,2023,other_ml,,True,True
+2303.16209,AmorProt: Amino Acid Molecular Fingerprints Repurposing based Protein Fingerprint,https://github.com/mhlee216/amorprot,none,2023,other_ml,,True,True
+2208.02645,Neural network accelerator for quantum control,https://github.com/fastmachinelearning/ml4quantum-release,tf,2022,other_ml,,True,True
+2503.04835,Distilling Dataset into Neural Field,https://github.com/aailab-kaist/ddif,pytorch,2025,other_ml,,True,True
+2205.04843,Assessing Streamline Plausibility Through Randomized Iterative Spherical-Deconvolution Informed Tractogram Filtering,https://github.com/djoerch/randomised_filtering,tf,2022,other_ml,,True,True
+2405.09579,Scalable Sparse Regression for Model Discovery: The Fast Lane to Insight,https://github.com/mgolden30/spider,none,2024,other_ml,,True,True
+2303.01483,Auxiliary Functions as Koopman Observables: Data-Driven Analysis of Dynamical Systems via Polynomial Optimization,https://github.com/dcn-fau-avh/edmd-sos,none,2023,other_ml,,True,True
+2312.09108,Greedy Shapley Client Selection for Communication-Efficient Federated Learning,https://github.com/pringlesinghal/greedyfed,pytorch,2023,other_ml,,True,True
+2305.11575,The Deep Promotion Time Cure Model,https://github.com/vhmedina/deepcure,tf,2023,other_ml,,True,True
+2409.06618,Hierarchical Multi-Label Classification with Missing Information for Benthic Habitat Imagery,https://github.com/dalhousieai/benthicnet_probes,pytorch,2024,other_ml,,True,True
+2404.13752,Adversarial Representation Engineering: A General Model Editing Framework for Large Language Models,https://github.com/zhang-yihao/adversarial-representation-engineering,pytorch,2024,other_ml,,True,True
+2302.04527,Toward Extremely Lightweight Distracted Driver Recognition With Distillation-Based Neural Architecture Search and Knowledge Transfer,https://github.com/dichao-liu/lightweight_distracted_driver_recognition_with_distillation-based_nas_and_knowledge_transfer,pytorch,2023,other_ml,,True,True
+2410.12671,New Paradigm of Adversarial Training: Breaking Inherent Trade-Off between Accuracy and Robustness via Dummy Classes,https://github.com/FlaAI/DUCAT,pytorch,2024,other_ml,,True,True
+2202.08312,Improved Differential Privacy for SGD via Optimal Private Linear Operators on Adaptive Streams,https://github.com/google-research/federated,tf,2022,other_ml,,True,True
+2306.02301,rPPG-MAE: Self-supervised Pre-training with Masked Autoencoders for Remote Physiological Measurement,https://github.com/linuxsino/rppg-mae,pytorch,2023,other_ml,,True,True
+2309.02317,A study on the impact of pre-trained model on Just-In-Time defect prediction,https://github.com/aresxd/jit_defect_prediciton,pytorch,2023,other_ml,,True,True
+2503.14495,Temporal Consistency for LLM Reasoning Process Error Identification,https://github.com/jcguo123/temporal-consistency,pytorch,2025,other_ml,,True,True
+2202.08413,Entropic Associative Memory for Manuscript Symbols,https://github.com/eam-experiments/emnist,tf,2022,other_ml,,True,True
+2205.07838,Physics-informed machine learning techniques for edge plasma turbulence modelling in computational theory and experiment,https://github.com/AbhilashMathews/PlasmaPINNtheory,tf,2022,other_ml,,True,True
+2310.08785,DeltaSpace: A Semantic-aligned Feature Space for Flexible Text-guided Image Editing,https://github.com/yueming6568/deltaedit,pytorch,2023,other_ml,,True,True
+2204.13679,Curriculum Learning for Dense Retrieval Distillation,https://github.com/hansizeng/cl-drd,pytorch,2022,other_ml,,True,True
+2412.09530,Dynamic-VLM: Simple Dynamic Visual Token Compression for VideoLLM,https://github.com/hon-wong/bytevideollm,pytorch,2024,other_ml,,True,True
+2303.09877,On the Effects of Self-supervision and Contrastive Alignment in Deep Multi-view Clustering,https://github.com/danieltrosten/deepmvc,pytorch,2023,other_ml,,True,True
+2402.16017,Spectrum Extraction and Clipping for Implicitly Linear Layers,https://github.com/ali-e/fastclip,pytorch,2024,other_ml,,True,True
+2409.05282,Improving Tree Probability Estimation with Stochastic Optimization and Variance Reduction,https://github.com/tyuxie/rwsvr,pytorch,2024,other_ml,,True,True
+2210.04186,Analogy Generation by Prompting Large Language Models: A Case Study of InstructGPT,https://github.com/bhaavya/instructgpt-analogies,none,2022,other_ml,,True,True
+2305.17611,Bayesian Decision Making to Localize Visual Queries in 2D,https://github.com/s-m-asjad/ego4d_vq2d,pytorch,2023,other_ml,,True,True
+2207.08869,FLAIR: Federated Learning Annotated Image Repository,https://github.com/apple/ml-flair,tf,2022,other_ml,,True,True
+2306.03284,Optimizing Sampling Patterns for Compressed Sensing MRI with Diffusion Generative Models,https://github.com/sriram-ravula/mri_sampling_diffusion,pytorch,2023,other_ml,,True,True
+2503.08580,Comparing Next-Day Wildfire Predictability of MODIS and VIIRS Satellite Data,https://github.com/justuskarlsson/wildfire-mod14-vnp14,pytorch,2025,other_ml,,True,True
+2507.10714,A Simple Approximate Bayesian Inference Neural Surrogate for Stochastic Petri Net Models,https://github.com/brightmanu-lang/spn-param-recovery,pytorch,2025,other_ml,,True,True
+2205.12120,Extended molt phenology models improve inferences about molt duration and timing,https://github.com/pboesu/moultmcmc,none,2022,other_ml,,True,True
+2204.02004,Bimodal Distributed Binarized Neural Networks,https://github.com/blueanon/bd-bnn,pytorch,2022,other_ml,,True,True
+2204.12062,Scheduling Virtual Conferences Fairly: Achieving Equitable Participant and Speaker Satisfaction,https://github.com/gourabkumarpatro/fairconf,none,2022,other_ml,,True,True
+2404.00848,Predictive Performance Comparison of Decision Policies Under Confounding,https://github.com/lguerdan/icml24_predictive_performance_comparison_dps,none,2024,other_ml,,True,True
+2412.04789,"DrIFT: Autonomous Drone Dataset with Integrated Real and Synthetic Data, Flexible Views, and Transformed Domains",https://github.com/CARG-uOttawa/DrIFT,none,2024,other_ml,,True,True
+2209.15210,Multi-Prompt Alignment for Multi-Source Unsupervised Domain Adaptation,https://github.com/haoranchen/multi-prompt-alignment-for-msuda,pytorch,2022,other_ml,multi-prompt-alignment-for-multi-source,True,True
+2302.03924,CCRep: Learning Code Change Representations via Pre-Trained Code Model and Query Back,https://github.com/zju-ctag/ccrep,pytorch,2023,other_ml,,True,True
+2501.02994,NeuroPMD: Neural Fields for Density Estimation on Product Manifolds,https://github.com/will-consagra/neuropmd,pytorch,2025,other_ml,,True,True
+2410.01556,Integrative Decoding: Improve Factuality via Implicit Self-consistency,https://github.com/yicheng98/integrativedecoding,pytorch,2024,other_ml,,True,True
+2206.05891,Anchor Sampling for Federated Learning with Partial Client Participation,https://github.com/harliwu/fedamd,pytorch,2022,other_ml,,True,True
+2410.13415,Shavette: Low Power Neural Network Acceleration via Algorithm-level Error Detection and Undervolting,https://github.com/northund/ocdnn,none,2024,other_ml,,True,True
+2210.08855,PeerDA: Data Augmentation via Modeling Peer Relation for Span Identification Tasks,https://github.com/damo-nlp-sg/peerda,pytorch,2022,other_ml,,True,True
+2402.13402,Towards accelerating physical discovery via non-interactive and interactive multi-fidelity Bayesian Optimization: Current challenges and future opportunities,https://github.com/arpanbiswas52/imfbo_ising,none,2024,other_ml,,True,True
+2306.06965,NF4 Isn't Information Theoretically Optimal (and that's Good),https://github.com/davisyoshida/abnormal-floats,jax,2023,other_ml,,True,True
+2405.02201,Regularized Q-learning through Robust Averaging,https://github.com/2raq/code,none,2024,other_ml,,True,True
+2207.12258,Equivariance and Invariance Inductive Bias for Learning from Insufficient Data,https://github.com/wangt-cn/eqinv,pytorch,2022,other_ml,,True,True
+2407.19906,Reverse Map Projections as Equivariant Quantum Embeddings,https://github.com/kezmcd1903/equivariant_qnns,none,2024,other_ml,,True,True
+2310.17468,Cross-modal Active Complementary Learning with Self-refining Correspondence,https://github.com/qinyang79/crcl,pytorch,2023,other_ml,cross-modal-active-complementary-learning,True,True
+2410.23844,Commonsense Knowledge Editing Based on Free-Text in LLMs,https://github.com/huangxiusheng/dem,none,2024,other_ml,,True,True
+2410.13831,The Disparate Benefits of Deep Ensembles,https://github.com/ml-jku/disparate-benefits,pytorch,2024,other_ml,,True,True
+2501.06713,MiniRAG: Towards Extremely Simple Retrieval-Augmented Generation,https://github.com/hkuds/minirag,none,2025,other_ml,,True,True
+2308.12108,The Local Learning Coefficient: A Singularity-Aware Complexity Measure,https://github.com/edmundlth/scalable_learning_coefficient_with_sgld,jax,2023,other_ml,,True,True
+2310.01433,AI-Aristotle: A Physics-Informed framework for Systems Biology Gray-Box Identification,https://github.com/mariodeflorio/ai-aristotle,jax,2023,other_ml,,True,True
+2401.08328,Un-Mixing Test-Time Normalization Statistics: Combatting Label Temporal Correlation,https://github.com/devavrattomar/unmixtns,pytorch,2024,other_ml,,True,True
+2310.05791,Problem-Solving Guide: Predicting the Algorithm Tags and Difficulty for Competitive Programming Problems,https://github.com/sronger/psg_predicting_algorithm_tags_and_difficulty,pytorch,2023,other_ml,,True,True
+2312.03441,UFineBench: Towards Text-based Person Retrieval with Ultra-fine Granularity,https://github.com/zplusdragon/ufinebench,pytorch,2023,other_ml,,True,True
+2504.01980,Information Gain Is Not All You Need,https://github.com/lericson/datrie,none,2025,other_ml,,True,True
+2308.11783,Coarse-to-Fine Multi-Scene Pose Regression with Transformers,https://github.com/yolish/c2f-ms-transformer,pytorch,2023,other_ml,,True,True
+2312.17590,DSBplot: Indels in DNA Double-strand Break Repair Experiments,https://github.com/tchannagiri/dsbplot,none,2023,other_ml,,True,True
+2404.02478,FedSelect: Personalized Federated Learning with Customized Selection of Parameters for Fine-Tuning,https://github.com/lapisrocks/fedselect,pytorch,2024,other_ml,,True,True
+2507.07883,SAMO: A Lightweight Sharpness-Aware Approach for Multi-Task Optimization with Joint Global-Local Perturbation,https://github.com/OptMN-Lab/SAMO,pytorch,2025,other_ml,,True,True
+2310.00796,SIP: Injecting a Structural Inductive Bias into a Seq2Seq Model by Simulation,https://github.com/namednil/sip,pytorch,2023,other_ml,,True,True
+2404.18114,Deep Boosting Learning: A Brand-new Cooperative Approach for Image-Text Matching,https://github.com/Paranioar/DBL,pytorch,2024,other_ml,,True,True
+2305.14964,Detecting Multidimensional Political Incivility on Social Media,https://github.com/sagipend/detecting-multidimensional-political-incivility-on-social-media,none,2023,other_ml,,True,True
+2301.12379,FedRC: Tackling Diverse Distribution Shifts Challenge in Federated Learning by Robust Clustering,https://github.com/lins-lab/fedrc,pytorch,2023,other_ml,,True,True
+2306.08189,Language models are not naysayers: An analysis of language models on negation benchmarks,https://github.com/joey234/llm-neg-bench,none,2023,other_ml,,True,True
+2305.00195,Data-Driven Subgroup Identification for Linear Regression,https://github.com/zleizzo/ddgroup,none,2023,other_ml,,True,True
+2412.17723,Asynchronous Federated Learning: A Scalable Approach for Decentralized Machine Learning,https://github.com/ali-forootani/asynchronous-federated-learning,pytorch,2024,other_ml,,True,True
+2302.08466,Marich: A Query-efficient Distributionally Equivalent Model Extraction Attack using Public Data,https://github.com/debabrota-basu/marich,pytorch,2023,other_ml,,True,True
+2501.10131,ACE: Anatomically Consistent Embeddings in Composition and Decomposition,https://github.com/jlianglab/ace,pytorch,2025,other_ml,,True,True
+2407.06136,Mamba-FSCIL: Dynamic Adaptation with Selective State Space Model for Few-Shot Class-Incremental Learning,https://github.com/xiaojieli0903/mamba-fscil,pytorch,2024,other_ml,,True,True
+2305.07863,A Flow-Based Generative Model for Rare-Event Simulation,https://github.com/hoergems/rare-event-simulation-normalizing-flows,pytorch,2023,other_ml,,True,True
+2401.09949,SymbolNet: Neural Symbolic Regression with Adaptive Dynamic Pruning for Compression,https://github.com/hftsoi/symbolnet,tf,2024,other_ml,,True,True
+2205.07496,Efficient Knowledge Compilation Beyond Weighted Model Counting,https://github.com/raki123/cc,none,2022,other_ml,,True,True
+2407.11186,Empowering Persian LLMs for Instruction Following: A Novel Dataset and Training Approach,https://github.com/Hojjat-Mokhtarabadi/FarsInstruct,pytorch,2024,other_ml,,True,True
+2303.07110,Upcycling Models under Domain and Category Shift,https://github.com/ispc-lab/glc,pytorch,2023,other_ml,,True,True
+2506.07066,From Axioms to Algorithms: Mechanized Proofs of the vNM Utility Theorem,https://github.com/jingyuanli-hk/vNM-Theorem-pub,none,2025,other_ml,,True,True
+2406.11711,OGNI-DC: Robust Depth Completion with Optimization-Guided Neural Iterations,https://github.com/princeton-vl/ogni-dc,pytorch,2024,other_ml,,True,True
+2306.16680,Exploring the Representation Power of SPLADE Models,https://github.com/ielab/understanding-splade,jax,2023,other_ml,,True,True
+2303.03300,Chasing Fairness Under Distribution Shift: A Model Weight Perturbation Approach,https://github.com/zhimengj0326/rfr_neurips23,pytorch,2023,other_ml,,True,True
+2209.07896,3D VSG: Long-term Semantic Scene Change Prediction through 3D Variable Scene Graphs,https://github.com/ethz-asl/3d_vsg,pytorch,2022,other_ml,,True,True
+2210.09770,EventGraph at CASE 2021 Task 1: A General Graph-based Approach to Protest Event Extraction,https://github.com/huiling-y/eventgraph_at_case,pytorch,2022,other_ml,,True,True
+2311.07954,A Closer Look at the Self-Verification Abilities of Large Language Models in Logical Reasoning,https://github.com/raising-hrx/fallacies,none,2023,other_ml,,True,True
+2209.03315,Riemannian optimization for non-centered mixture of scaled Gaussian distributions,https://github.com/antoinecollas/optim_compound,none,2022,other_ml,,True,True
+2305.14380,Finding the Pillars of Strength for Multi-Head Attention,https://github.com/psycoy/acl-2023-grouped-head-attention,pytorch,2023,other_ml,,True,True
+2502.13170,Unveiling the Magic of Code Reasoning through Hypothesis Decomposition and Amendment,https://github.com/tntwow/code_reasoning,none,2025,other_ml,,True,True
+2310.15689,Creating a silver standard for patent simplification,https://github.com/slvcsl/patentsilverstandard,none,2023,other_ml,,True,True
+2505.09655,DRA-GRPO: Exploring Diversity-Aware Reward Adjustment for R1-Zero-Like Training of Large Language Models,https://github.com/xiwenc1/dra-grpo,pytorch,2025,other_ml,,True,True
+2412.09074,DomCLP: Domain-wise Contrastive Learning with Prototype Mixup for Unsupervised Domain Generalization,https://github.com/jinsuby/domclp,pytorch,2024,other_ml,,True,True
+2404.04556,Rethinking Self-training for Semi-supervised Landmark Detection: A Selection-free Approach,https://github.com/jhb86253817/stld,pytorch,2024,other_ml,,True,True
+2310.02124,Exploring Collaboration Mechanisms for LLM Agents: A Social Psychology View,https://github.com/zjunlp/machinesom,none,2023,other_ml,,True,True
+2408.08258,Snuffy: Efficient Whole Slide Image Classifier,https://github.com/jafarinia/snuffy,pytorch,2024,other_ml,,True,True
+2411.08341,"Generative AI for Data Augmentation in Wireless Networks: Analysis, Applications, and Case Study",https://github.com/jinbowen00/gda-for-wi-fi-gesture-recognization,none,2024,other_ml,,True,True
+2308.06447,A Sequential Meta-Transfer (SMT) Learning to Combat Complexities of Physics-Informed Neural Networks: Application to Composites Autoclave Processing,https://github.com/miladramzy/sequentialmetatransferpinns,jax,2023,other_ml,,True,True
+2408.17244,Categorical data clustering: 25 years beyond K-modes,https://github.com/ClarkDinh/Categorical-data-clustering-25-years-beyond-K-modes,none,2024,other_ml,,True,True
+2311.05237,Widely Applicable Strong Baseline for Sports Ball Detection and Tracking,https://github.com/nttcom/wasb-sbdt,pytorch,2023,other_ml,,True,True
+2209.04593,Towards Diversity-tolerant RDF-stores,https://github.com/m-salehpour/spq,none,2022,other_ml,,True,True
+2202.08441,Modeling High-Dimensional Data with Unknown Cut Points: A Fusion Penalized Logistic Threshold Regression,https://github.com/ynlin11/filter,none,2022,other_ml,,True,True
+2412.13542,Multi-Granularity Open Intent Classification via Adaptive Granular-Ball Decision Boundary,https://github.com/liyanhuaa/mogb,pytorch,2024,other_ml,,True,True
+2402.11317,Debiased Offline Representation Learning for Fast Online Adaptation in Non-stationary Dynamics,https://github.com/lamda-rl/dora,pytorch,2024,other_ml,,True,True
+2206.03352,Searching for Optimal Subword Tokenization in Cross-domain NER,https://github.com/rtmaww/x-piece,pytorch,2022,other_ml,,True,True
+2210.04477,HiCo: Hierarchical Contrastive Learning for Ultrasound Video Model Pretraining,https://github.com/983632847/hico,pytorch,2022,other_ml,,True,True
+2205.10343,Towards Understanding Grokking: An Effective Theory of Representation Learning,https://github.com/ejmichaud/grokking-squared,pytorch,2022,other_ml,,True,True
+2504.12401,NTIRE 2025 Challenge on Event-Based Image Deblurring: Methods and Results,https://github.com/ahupujr/ntire2025_eventdeblur_challenge,pytorch,2025,other_ml,,True,True
+2305.16534,Variation Spaces for Multi-Output Neural Networks: Insights on Multi-Task Learning and Network Compression,https://github.com/joeshenouda/vv-spaces-nn-width,pytorch,2023,other_ml,,True,True
+2406.15038,Online detection and infographic explanation of spam reviews with data drift adaptation,https://github.com/nlpgti/data_drift,none,2024,other_ml,,True,True
+2210.17409,Deep Model Reassembly,https://github.com/adamdad/dery,pytorch,2022,other_ml,,True,True
+2405.20905,"VENI, VINDy, VICI: a variational reduced-order modeling framework with uncertainty quantification",https://github.com/jkneifl/VENI-VINDy-VICI,tf,2024,other_ml,,True,True
+2312.12385,Input Compression with Positional Consistency for Efficient Training and Inference of Transformer Neural Networks,https://github.com/amrnag/icpc,pytorch,2023,other_ml,,True,True
+2410.20444,Vector Quantization Prompting for Continual Learning,https://github.com/jiaolifengmi/vq-prompt,pytorch,2024,other_ml,,True,True
+2212.09390,Fast Converging Anytime Model Counting,https://github.com/meelgroup/kcbox,none,2022,other_ml,,True,True
+2305.12880,"Yes, this Way! Learning to Ground Referring Expressions into Actions with Intra-episodic Feedback from Supportive Teachers",https://github.com/clp-research/intra-episodic-feedback,none,2023,other_ml,,True,True
+2305.07687,Mastering Percolation-like Games with Deep Learning,https://github.com/spcornelius/blue_zero,pytorch,2023,other_ml,,True,True
+2210.02041,Natural Color Fool: Towards Boosting Black-box Unrestricted Attacks,https://github.com/ylhz/natural-color-fool,pytorch,2022,other_ml,,True,True
+2502.04416,CMoE: Fast Carving of Mixture-of-Experts for Efficient LLM Inference,https://github.com/JarvisPei/CMoE,pytorch,2025,other_ml,,True,True
+2408.16025,Improving Adversarial Robustness in Android Malware Detection by Reducing the Impact of Spurious Correlations,https://github.com/hamidbostani2021/robust-feature-space,none,2024,other_ml,,True,True
+2502.18225,Liver Cirrhosis Stage Estimation from MRI with Deep Learning,https://github.com/junzengz/cirrhosisstage,pytorch,2025,other_ml,,True,True
+2305.19812,A Survey of Label-Efficient Deep Learning for 3D Point Clouds,https://github.com/xiaoaoran/3d_label_efficient_learning,none,2023,other_ml,,True,True
+2504.07807,Cluster-Driven Expert Pruning for Mixture-of-Experts Large Language Models,https://github.com/fighoture/moe_unsupervised_pruning,pytorch,2025,other_ml,,True,True
+2403.09069,Dyadic Interaction Modeling for Social Behavior Generation,https://github.com/boese0601/dyadic-interaction-modeling,pytorch,2024,other_ml,,True,True
+2409.19967,"Magnet: We Never Know How Text-to-Image Diffusion Models Work, Until We Learn How Vision-Language Models Function",https://github.com/i2-multimedia-lab/magnet,pytorch,2024,other_ml,,True,True
+2502.19785,SCU: An Efficient Machine Unlearning Scheme for Deep Learning Enabled Semantic Communications,https://github.com/wwq5-code/scu,pytorch,2025,other_ml,,True,True
+2406.05510,Representation Learning with Conditional Information Flow Maximization,https://github.com/zerohd4869/CIFM,pytorch,2024,other_ml,,True,True
+2308.16258,Robust Principles: Architectural Design Principles for Adversarially Robust CNNs,https://github.com/poloclub/robust-principles,pytorch,2023,other_ml,,True,True
+2306.04454,Training-Free Neural Active Learning with Initialization-Robustness Guarantees,https://github.com/apivich-h/init-robust-al,jax,2023,other_ml,,True,True
+2401.17739,Operator learning without the adjoint,https://github.com/nboulle/operatorlearningadjoint,none,2024,other_ml,,True,True
+2305.16675,Multiview Identifiers Enhanced Generative Retrieval,https://github.com/liyongqi67/minder,none,2023,other_ml,,True,True
+2506.10009,The Iris File Extension,https://github.com/IrisDigitalPathology/Iris-File-Extension,none,2025,other_ml,,True,True
+2408.11823,Mamba-Spike: Enhancing the Mamba Architecture with a Spiking Front-End for Efficient Temporal Data Processing,https://github.com/ecnu-cross-innovation-lab/mamba-spike,pytorch,2024,other_ml,,True,True
+2503.13304,GFSNetwork: Differentiable Feature Selection via Gumbel-Sigmoid Relaxation,https://github.com/wwydmanski/GFSNetwork,pytorch,2025,other_ml,,True,True
+2310.20210,UWFormer: Underwater Image Enhancement via a Semi-Supervised Multi-Scale Transformer,https://github.com/leiyingtie/UWFormer,pytorch,2023,other_ml,,True,True
+2311.04155,Black-Box Prompt Optimization: Aligning Large Language Models without Model Training,https://github.com/thu-coai/bpo,pytorch,2023,other_ml,,True,True
+2501.08201,Globally Convergent Variational Inference,https://github.com/declanmcnamara/gcvi_neurips,pytorch,2025,other_ml,,True,True
+2305.19915,Source Code Data Augmentation for Deep Learning: A Survey,https://github.com/terryyz/dataaug4code,none,2023,other_ml,,True,True
+2402.05942,Cooperative Knowledge Distillation: A Learner Agnostic Approach,https://github.com/mlivanos/cooperative-knowledge-distillation,none,2024,other_ml,,True,True
+2201.13409,A framework for bilevel optimization that enables stochastic and global variance reduction algorithms,https://github.com/benchopt/benchmark_bilevel,jax,2022,other_ml,,True,True
+2504.01212,Cooper: A Library for Constrained Optimization in Deep Learning,https://github.com/cooper-org/cooper,pytorch,2025,other_ml,,True,True
+2206.00832,Fast Benchmarking of Accuracy vs. Training Time with Cyclic Learning Rates,https://github.com/jacobfulano/cyclic-learning-rate-schedules,pytorch,2022,other_ml,,True,True
+2306.09064,Learning by Analogy: Diverse Questions Generation in Math Word Problem,https://github.com/zhouzihao501/diversemwp,none,2023,other_ml,,True,True
+2306.04335,Semantic web technologies in sensor-based personal health monitoring systems: A systematic mapping study,https://github.com/mbithenzomo/semantic_phms_mapping_study,none,2023,other_ml,,True,True
+2306.08827,PINNacle: A Comprehensive Benchmark of Physics-Informed Neural Networks for Solving PDEs,https://github.com/i207m/pinnacle,jax,2023,other_ml,,True,True
+2404.17249,Making Better Use of Unlabelled Data in Bayesian Active Learning,https://github.com/fbickfordsmith/epig,pytorch,2024,other_ml,,True,True
+2311.02971,TabRepo: A Large Scale Repository of Tabular Model Evaluations and its AutoML Applications,https://github.com/autogluon/tabrepo,none,2023,other_ml,,True,True
+2307.05747,Integrating Curricula with Replays: Its Effects on Continual Learning,https://github.com/zhanglab-deepneurocoglab/integrating-curricula-with-replays,pytorch,2023,other_ml,,True,True
+2402.14882,Deep Generative Model-based Synthesis of Four-bar Linkage Mechanisms with Target Conditions,https://github.com/jihoonkim888/linkgan,pytorch,2024,other_ml,,True,True
+2212.10923,Language Models as Inductive Reasoners,https://github.com/zongliny/inductive_reasoning,pytorch,2022,other_ml,,True,True
+2301.12511,Fast-BEV: A Fast and Strong Bird's-Eye View Perception Baseline,https://github.com/sense-gvt/fast-bev,pytorch,2023,other_ml,,True,True
+2411.14141,Differentiable SVD based on Moore-Penrose Pseudoinverse for Inverse Imaging Problems,https://github.com/yhao-z/svd-inv,pytorch,2024,other_ml,,True,True
+2312.15184,ZO-AdaMU Optimizer: Adapting Perturbation by the Momentum and Uncertainty in Zeroth-order Optimization,https://github.com/mathisall/zo-adamu,pytorch,2023,other_ml,,True,True
+2505.14549,Can Large Language Models Really Recognize Your Name?,https://github.com/dzungvpham/llm-name-detection,none,2025,other_ml,,True,True
+2308.10819,Evaluating the Instruction-Following Robustness of Large Language Models to Prompt Injection,https://github.com/leezekun/instruction-following-robustness-eval,none,2023,other_ml,,True,True
+2305.14077,Mind the spikes: Benign overfitting of kernels and neural networks in fixed dimension,https://github.com/moritzhaas/mind-the-spikes,pytorch,2023,other_ml,,True,True
+2304.13865,highway2vec -- representing OpenStreetMap microregions with respect to their road network characteristics,https://github.com/calychas/highway2vec,none,2023,other_ml,,True,True
+2501.10463,"GLow -- A Novel, Flower-Based Simulated Gossip Learning Strategy",https://github.com/aitorb16/glow,pytorch,2025,other_ml,,True,True
+2403.16194,Pose-Guided Self-Training with Two-Stage Clustering for Unsupervised Landmark Discovery,https://github.com/skt9/pose-proxy-uld,none,2024,other_ml,,True,True
+2205.06514,Toward A Formalized Approach for Spike Sorting Algorithms and Hardware Evaluation,https://github.com/timothyzh/mwscas2022spikesortingcriteria,pytorch,2022,other_ml,,True,True
+2402.10517,"Any-Precision LLM: Low-Cost Deployment of Multiple, Different-Sized LLMs",https://github.com/snu-arc/any-precision-llm,pytorch,2024,other_ml,,True,True
+2309.05922,A Survey of Hallucination in Large Foundation Models,https://github.com/vr25/hallucination-foundation-model-survey,none,2023,other_ml,,True,True
+2410.00945,Evaluating Deep Regression Models for WSI-Based Gene-Expression Prediction,https://github.com/mahmoodlab/uni,pytorch,2024,other_ml,,True,True
+2206.09449,SNN2ANN: A Fast and Memory-Efficient Training Framework for Spiking Neural Networks,https://github.com/tjxtt/snn2ann,pytorch,2022,other_ml,,True,True
+2502.11300,CORDIAL: Can Multimodal Large Language Models Effectively Understand Coherence Relationships?,https://github.com/aashish2000/cordial,none,2025,other_ml,,True,True
+2407.15500,TextureCrop: Enhancing Synthetic Image Detection through Texture-based Cropping,https://github.com/mever-team/texture-crop,pytorch,2024,other_ml,,True,True
+2305.19800,Accurate and Efficient Structural Ensemble Generation of Macrocyclic Peptides using Internal Coordinate Diffusion,https://github.com/genentech/ringer,pytorch,2023,other_ml,,True,True
+2401.10354,Towards providing reliable job completion time predictions using PCS,https://github.com/abdullahfsm/pcs,none,2024,other_ml,,True,True
+2409.15395,Parse Trees Guided LLM Prompt Compression,https://github.com/lengendaryhippopotamus/partprompt,pytorch,2024,other_ml,,True,True
+2407.09392,Open-Canopy: Towards Very High Resolution Forest Monitoring,https://github.com/fajwel/open-canopy,pytorch,2024,other_ml,,True,True
+2305.13541,ConvBoost: Boosting ConvNets for Sensor-based Activity Recognition,https://github.com/sshao2013/convboost,pytorch,2023,other_ml,,True,True
+2402.01799,Faster and Lighter LLMs: A Survey on Current Challenges and Way Forward,https://github.com/nyunai/faster-llm-survey,pytorch,2024,other_ml,,True,True
+2502.19982,Erasing Without Remembering: Implicit Knowledge Forgetting in Large Language Models,https://github.com/maybelizzy/ugbench,pytorch,2025,other_ml,,True,True
+2207.14431,Learning idempotent representation for subspace clustering,https://github.com/weilyshmtu/learning-idempotent-representation-for-subspace-segmentation,none,2022,other_ml,,True,True
+2406.07230,Needle In A Multimodal Haystack,https://github.com/opengvlab/mm-niah,pytorch,2024,other_ml,,True,True
+2311.06510,Band-wise Hyperspectral Image Pansharpening using CNN Model Propagation,https://github.com/giu-guarino/r-pnn,pytorch,2023,other_ml,,True,True
+2305.10204,Shielded Representations: Protecting Sensitive Attributes Through Iterative Gradient-Based Projection,https://github.com/technion-cs-nlp/igbp_nonlinear-removal,pytorch,2023,other_ml,,True,True
+2406.08723,ECBD: Evidence-Centered Benchmark Design for NLP,https://github.com/isle-dev/ecbd,none,2024,other_ml,,True,True
+2502.05225,BitAbuse: A Dataset of Visually Perturbed Texts for Defending Phishing Attacks,https://github.com/CAU-AutoML/Bitabuse,none,2025,other_ml,,True,True
+2204.10810,Learning to Scaffold: Optimizing Model Explanations for Teaching,https://github.com/coderpat/learning-scaffold,jax,2022,other_ml,,True,True
+2502.07577,Automated Capability Discovery via Model Self-Exploration,https://github.com/conglu1997/acd,none,2025,other_ml,,True,True
+2208.10238,Learning Branched Fusion and Orthogonal Projection for Face-Voice Association,https://github.com/msaadsaeed/FOP,pytorch,2022,other_ml,,True,True
+2505.18412,Rehabilitation Exercise Quality Assessment and Feedback Generation Using Large Language Models with Prompt Engineering,https://github.com/jessicaxtang/exercisellm,none,2025,other_ml,,True,True
+2503.12856,Island-Based Evolutionary Computation with Diverse Surrogates and Adaptive Knowledge Transfer for High-Dimensional Data-Driven Optimization,https://github.com/labgong/dskt-ddea,none,2025,other_ml,,True,True
+2310.17372,Dialogue-based generation of self-driving simulation scenarios using Large Language Models,https://github.com/avmb/dialogllmscenic,none,2023,other_ml,,True,True
+2407.16539,Enhancing Encrypted Internet Traffic Classification Through Advanced Data Augmentation Techniques,https://github.com/arielcyber/itc-data-augmentations-,tf,2024,other_ml,,True,True
+2409.17363,Improving satellite imagery segmentation using multiple Sentinel-2 revisits,https://github.com/Lindsay-Lab/substation-seg,pytorch,2024,other_ml,,True,True
+2409.16081,Online Multi-level Contrastive Representation Distillation for Cross-Subject fNIRS Emotion Recognition,https://github.com/lzhili/fnirs-omcrd,pytorch,2024,other_ml,,True,True
+2407.18540,A Universal Prompting Strategy for Extracting Process Model Information from Natural Language Text using Large Language Models,https://github.com/julianneuberger/llm-process-generation,none,2024,other_ml,,True,True
+2401.10011,CPCL: Cross-Modal Prototypical Contrastive Learning for Weakly Supervised Text-based Person Re-Identification,https://github.com/codegallery24/cpcl,pytorch,2024,other_ml,,True,True
+2309.10979,Towards Data-centric Graph Machine Learning: Review and Outlook,https://github.com/Data-Centric-GraphML/awesome-papers,none,2023,other_ml,,True,True
+2304.11910,Addressing distributional shifts in operations management: The case of order fulfillment in customized production,https://github.com/mkuzma96/customprod,tf,2023,other_ml,,True,True
+2404.16710,LayerSkip: Enabling Early Exit Inference and Self-Speculative Decoding,https://github.com/facebookresearch/layerskip,pytorch,2024,other_ml,,True,True
+2212.08498,Evaluating vaccine allocation strategies using simulation-assisted causal modelling,https://github.com/akekic/covid-vaccine-evaluation,none,2022,other_ml,,True,True
+2202.06777,Multi-scale Attention Guided Pose Transfer,https://github.com/prasunroy/pose-transfer,pytorch,2022,other_ml,,True,True
+2411.04090,A Collaborative Content Moderation Framework for Toxicity Detection based on Conformalized Estimates of Annotation Disagreement,https://github.com/themrguiller/collaborative-content-moderation,pytorch,2024,other_ml,,True,True
+2209.00462,MA-RECON: Mask-aware deep-neural-network for robust fast MRI k-space interpolation,https://github.com/nitzanavidan/pd_recon,pytorch,2022,other_ml,,True,True
+2305.02305,Calibrated Explanations: with Uncertainty Information and Counterfactuals,https://github.com/moffran/calibrated_explanations,none,2023,other_ml,,True,True
+2211.15744,Sketch-and-solve approaches to k-means clustering by semidefinite programming,https://github.com/kkylie/sketch-and-solve_kmeans,none,2022,other_ml,,True,True
+2406.18731,"WavRx: a Disease-Agnostic, Generalizable, and Privacy-Preserving Speech Health Diagnostic Model",https://github.com/zhu00121/wavrx,pytorch,2024,other_ml,,True,True
+2505.11211,Bayesian Hierarchical Invariant Prediction,https://github.com/fmfsa/bhip_paper,jax,2025,other_ml,,True,True
+2205.09723,Robust and Efficient Medical Imaging with Self-Supervision,https://github.com/google-research/big_transfer,jax,2022,other_ml,,True,True
+2204.04494,DeepLIIF: An Online Platform for Quantification of Clinical Pathology Slides,https://github.com/nadeemlab/deepliif,pytorch,2022,other_ml,,True,True
+2310.12808,Model Merging by Uncertainty-Based Gradient Matching,https://github.com/ukplab/iclr2024-model-merging,none,2023,other_ml,,True,True
+2411.19443,Auto-RAG: Autonomous Retrieval-Augmented Generation for Large Language Models,https://github.com/ictnlp/auto-rag,pytorch,2024,other_ml,,True,True
+2304.06729,Meta-Learned Models of Cognition,https://github.com/marcelbinz/meta-learned-models,none,2023,other_ml,,True,True
+2403.08216,PaddingFlow: Improving Normalizing Flows with Padding-Dimensional Noise,https://github.com/adamqlmeng/paddingflow,pytorch,2024,other_ml,,True,True
+2502.15436,Fed-SB: A Silver Bullet for Extreme Communication Efficiency and Performance in (Private) Federated LoRA Fine-Tuning,https://github.com/CERT-Lab/fed-sb,pytorch,2025,other_ml,,True,True
+2409.09778,Rewind-to-Delete: Certified Machine Unlearning for Nonconvex Functions,https://github.com/anonymous-1234567/r2d,pytorch,2024,other_ml,,True,True
+2403.06315,A Study on Domain Generalization for Failure Detection through Human Reactions in HRI,https://github.com/mteresaparreira/baddata,pytorch,2024,other_ml,,True,True
+2210.12595,Online Probabilistic Model Identification using Adaptive Recursive MCMC,https://github.com/pagand/armcmc,none,2022,other_ml,,True,True
+2307.02031,Improving Automatic Parallel Training via Balanced Memory Workload Optimization,https://github.com/pku-dair/hetu-galvatron,pytorch,2023,other_ml,,True,True
+2307.06243,Reconstructing Spatiotemporal Data with C-VAEs,https://github.com/ciic-c-t-polytechnic-of-leiria/reconstr_cvae_paper,none,2023,other_ml,,True,True
+2306.17031,Medoid splits for efficient random forests in metric spaces,https://github.com/matthieubulte/metricrandomforest,none,2023,other_ml,,True,True
+2209.02544,XSimGCL: Towards Extremely Simple Graph Contrastive Learning for Recommendation,https://github.com/coder-yu/selfrec,pytorch,2022,other_ml,,True,True
+2207.05024,Intra-Modal Constraint Loss For Image-Text Retrieval,https://github.com/canonchen/imc,pytorch,2022,other_ml,,True,True
+2409.19245,"Forgetting, Ignorance or Myopia: Revisiting Key Challenges in Online Continual Learning",https://github.com/wxr99/Forgetting-Ignorance-or-Myopia-Revisiting-Key-Challenges-in-Online-Continual-Learning,pytorch,2024,other_ml,,True,True
+2407.02327,QSync: Quantization-Minimized Synchronous Distributed Training Across Hybrid Devices,https://github.com/bytedance/QSync,pytorch,2024,other_ml,,True,True
+2410.19725,On the Benefits of Active Data Collection in Operator Learning,https://github.com/unique-subedi/active-operator-learning,pytorch,2024,other_ml,,True,True
+2303.16247,Data Efficient Contrastive Learning in Histopathology using Active Sampling,https://github.com/reasat/data_efficient_cl,pytorch,2023,other_ml,,True,True
+2202.10769,Adaptive Cholesky Gaussian Processes,https://github.com/simonbartels/acgp,pytorch,2022,other_ml,,True,True
+2405.00611,Addressing Topic Granularity and Hallucination in Large Language Models for Topic Modelling,https://github.com/gatenlp/topicllm_granularity_hallucination,pytorch,2024,other_ml,,True,True
+2311.10811,A novel post-hoc explanation comparison metric and applications,https://github.com/11301858/xaisuite,pytorch,2023,other_ml,,True,True
+2308.08742,PMET: Precise Model Editing in a Transformer,https://github.com/xpq-tech/pmet,pytorch,2023,other_ml,,True,True
+2403.19522,Model Stock: All we need is just a few fine-tuned models,https://github.com/naver-ai/model-stock,pytorch,2024,other_ml,,True,True
+2409.17020,PTQ4RIS: Post-Training Quantization for Referring Image Segmentation,https://github.com/gugu511yy/ptq4ris,pytorch,2024,computer_vision,,True,True
+2303.02437,ConZIC: Controllable Zero-shot Image Captioning by Sampling-Based Polishing,https://github.com/joeyz0z/conzic,pytorch,2023,computer_vision,,True,True
+2212.01529,Laplacian Convolutional Representation for Traffic Time Series Imputation,https://github.com/xinychen/transdim,tf,2022,computer_vision,,True,True
+2307.14786,Towards Deeply Unified Depth-aware Panoptic Segmentation with Bi-directional Guidance Learning,https://github.com/jwh97nn/DeepDPS,pytorch,2023,computer_vision,,True,True
+2503.18483,Explaining Domain Shifts in Language: Concept erasing for Interpretable Image Classification,https://github.com/joeyz0z/lance,pytorch,2025,computer_vision,,True,True
+2403.15063,"Towards a Comprehensive, Efficient and Promptable Anatomic Structure Segmentation Model using 3D Whole-body CT Scans",https://github.com/alibaba-damo-academy/ct-sam3d,pytorch,2024,computer_vision,,True,True
+2410.23775,In-Context LoRA for Diffusion Transformers,https://github.com/ali-vilab/In-Context-LoRA,none,2024,computer_vision,,True,True
+2408.04449,EARBench: Towards Evaluating Physical Risk Awareness for Task Planning of Foundation Model-based Embodied AI Agents,https://github.com/zihao-ai/earbench,none,2024,computer_vision,,True,True
+2208.02355,CAVE: Cerebral Artery-Vein Segmentation in Digital Subtraction Angiography,https://github.com/ruishengsu/cave_dsa,pytorch,2022,computer_vision,,True,True
+2405.01725,Development of Skip Connection in Deep Neural Networks for Computer Vision and Medical Image Analysis: A Survey,https://github.com/apple1986/residual_learning_for_images,pytorch,2024,computer_vision,,True,True
+2204.07730,Bidirectional Self-Training with Multiple Anisotropic Prototypes for Domain Adaptive Semantic Segmentation,https://github.com/luyvlei/BiSMAPs,pytorch,2022,computer_vision,,True,True
+2207.10666,TinyViT: Fast Pretraining Distillation for Small Vision Transformers,https://github.com/microsoft/cream,pytorch,2022,computer_vision,,True,True
+2405.03541,RepVGG-GELAN: Enhanced GELAN with VGG-STYLE ConvNets for Brain Tumour Detection,https://github.com/thensib/repvgg-gelan,pytorch,2024,computer_vision,,True,True
+2503.15931,DnLUT: Ultra-Efficient Color Image Denoising via Channel-Aware Lookup Tables,https://github.com/stephen0808/dnlut,pytorch,2025,computer_vision,,True,True
+2210.02231,Decanus to Legatus: Synthetic training for 2D-3D human pose lifting,https://github.com/zhuyue0324/decanus-to-legatus,pytorch,2022,computer_vision,,True,True
+2504.18447,Iterative Event-based Motion Segmentation by Variational Contrast Maximization,https://github.com/aoki-media-lab/event_based_segmentation_vcmax,none,2025,computer_vision,,True,True
+2304.14837,IMP: Iterative Matching and Pose Estimation with Adaptive Pooling,https://github.com/feixue94/imp-release,pytorch,2023,computer_vision,,True,True
+2407.02014,Multi-Grained Contrast for Data-Efficient Unsupervised Representation Learning,https://github.com/visresearch/mgc,pytorch,2024,computer_vision,,True,True
+2505.14709,FastCar: Cache Attentive Replay for Fast Auto-Regressive Video Generation on the Edge,https://github.com/shawnricecake/fast-car,pytorch,2025,computer_vision,,True,True
+2403.01105,Depth Information Assisted Collaborative Mutual Promotion Network for Single Image Dehazing,https://github.com/zhoushen1/dcmpnet,pytorch,2024,computer_vision,,True,True
+2505.13740,Improving Compositional Generation with Diffusion Models Using Lift Scores,https://github.com/rainorangelemon/complift,pytorch,2025,computer_vision,,True,True
+2303.09064,"Dual skip connections in U-Net, ResUnet and U-Net3+ for remote extraction of buildings",https://github.com/bipulneupane/dualskipunets,none,2023,computer_vision,,True,True
+2210.06881,RaP: Redundancy-aware Video-language Pre-training for Text-Video Retrieval,https://github.com/caskcsg/vlp,pytorch,2022,computer_vision,,True,True
+2502.00896,LoR-VP: Low-Rank Visual Prompting for Efficient Vision Model Adaptation,https://github.com/jincan333/lor-vp,pytorch,2025,computer_vision,,True,True
+2404.08603,Training-free Boost for Open-Vocabulary Object Detection with Confidence Aggregation,https://github.com/warlockwendell/aggdet,pytorch,2024,computer_vision,,True,True
+2304.01519,LiDAR-Based 3D Object Detection via Hybrid 2D Semantic Scene Generation,https://github.com/yanghtr/ssgnet,pytorch,2023,computer_vision,,True,True
+2404.09275,TrafficVLM: A Controllable Visual Language Model for Traffic Video Captioning,https://github.com/quangminhdinh/trafficvlm,pytorch,2024,computer_vision,,True,True
+2207.13415,TransNorm: Transformer Provides a Strong Spatial Normalization Mechanism for a Deep Segmentation Model,https://github.com/rezazad68/transnorm,pytorch,2022,computer_vision,,True,True
+2302.14045,Language Is Not All You Need: Aligning Perception with Language Models,https://github.com/microsoft/unilm,pytorch,2023,computer_vision,language-is-not-all-you-need-aligning,True,True
+2503.08511,PCGS: Progressive Compression of 3D Gaussian Splatting,https://github.com/yihangchen-ee/pcgs,pytorch,2025,computer_vision,,True,True
+2302.11813,Deep OC-SORT: Multi-Pedestrian Tracking by Adaptive Re-Identification,https://github.com/gerardmaggiolino/deep-oc-sort,pytorch,2023,computer_vision,,True,True
+2406.11503,GeoGPT4V: Towards Geometric Multi-modal Large Language Models with Geometric Image Generation,https://github.com/lanyu0303/geogpt4v_project,none,2024,computer_vision,,True,True
+2502.09039,Large Images are Gaussians: High-Quality Large Image Representation with Levels of 2D Gaussian Splatting,https://github.com/hku-medai/lig,jax,2025,computer_vision,,True,True
+2410.00900,OSSA: Unsupervised One-Shot Style Adaptation,https://github.com/robingerster7/ossa,pytorch,2024,computer_vision,,True,True
+2412.09465,OFTSR: One-Step Flow for Image Super-Resolution with Tunable Fidelity-Realism Trade-offs,https://github.com/yuanzhi-zhu/oftsr,pytorch,2024,computer_vision,,True,True
+2406.18522,ChronoMagic-Bench: A Benchmark for Metamorphic Evaluation of Text-to-Time-lapse Video Generation,https://github.com/pku-yuangroup/chronomagic-bench,pytorch,2024,computer_vision,,True,True
+2406.08324,LaMOT: Language-Guided Multi-Object Tracking,https://github.com/nathan-li123/lamot,none,2024,computer_vision,,True,True
+2410.07795,Optimal-state Dynamics Estimation for Physics-based Human Motion Capture from Videos,https://github.com/cuongle1206/osdcap,pytorch,2024,computer_vision,,True,True
+2310.08949,EasyGen: Easing Multimodal Generation with BiDiffuser and LLMs,https://github.com/zxy556677/easygen,pytorch,2023,computer_vision,,True,True
+2303.10883,Explicit Visual Prompting for Low-Level Structure Segmentations,https://github.com/nifangbaage/explicit-visual-prompt,pytorch,2023,computer_vision,,True,True
+2502.12080,HumanGif: Single-View Human Diffusion with Generative Prior,https://github.com/skhu101/humangif,pytorch,2025,computer_vision,,True,True
+2505.04657,"EvEnhancer: Empowering Effectiveness, Efficiency and Generalizability for Continuous Space-Time Video Super-Resolution with Events",https://github.com/w-shuoyan/evenhancer,pytorch,2025,computer_vision,,True,True
+2501.13710,YOLO11-JDE: Fast and Accurate Multi-Object Tracking with Self-Supervised Re-ID,https://github.com/inakierregueab/yolo11-jde,pytorch,2025,computer_vision,,True,True
+2305.08491,Masked Collaborative Contrast for Weakly Supervised Semantic Segmentation,https://github.com/fwu11/mcc,pytorch,2023,computer_vision,,True,True
+2311.01432,Transformation Decoupling Strategy based on Screw Theory for Deterministic Point Cloud Registration with Gravity Prior,https://github.com/xinyi-tum/4dof-registration,none,2023,computer_vision,,True,True
+2306.03878,Conditional Diffusion Models for Weakly Supervised Medical Image Segmentation,https://github.com/xhu248/cond_ddpm_wsss,pytorch,2023,computer_vision,,True,True
+2406.10427,Adaptive Randomized Smoothing: Certified Adversarial Robustness for Multi-Step Defences,https://github.com/ubc-systopia/adaptive-randomized-smoothing,pytorch,2024,computer_vision,,True,True
+2306.01598,Towards Source-free Domain Adaptive Semantic Segmentation via Importance-aware and Prototype-contrast Learning,https://github.com/yihong-97/source-free_iapc,pytorch,2023,computer_vision,,True,True
+2408.08870,SAM2-UNet: Segment Anything 2 Makes Strong Encoder for Natural and Medical Image Segmentation,https://github.com/wzh0120/sam2-unet,pytorch,2024,computer_vision,,True,True
+2303.13842,FishDreamer: Towards Fisheye Semantic Completion via Unified Image Outpainting and Segmentation,https://github.com/masterhow/fishdreamer,pytorch,2023,computer_vision,,True,True
+2208.02313,Image-based Detection of Surface Defects in Concrete during Construction,https://github.com/jdkuhnke/hic,none,2022,computer_vision,,True,True
+2208.05592,Patching open-vocabulary models by interpolating weights,https://github.com/mlfoundations/patching,pytorch,2022,computer_vision,,True,True
+2204.01475,Unsupervised Learning of Accurate Siamese Tracking,https://github.com/florinshum/ulast,none,2022,computer_vision,,True,True
+2311.05779,Language-guided Robot Grasping: CLIP-based Referring Grasp Synthesis in Clutter,https://github.com/gtziafas/ocid-vlg,pytorch,2023,computer_vision,,True,True
+2503.01334,Composed Multi-modal Retrieval: A Survey of Approaches and Applications,https://github.com/kkzhang95/awesome-composed-multi-modal-retrieval,pytorch,2025,computer_vision,,True,True
+2209.13586,Learning-Based Dimensionality Reduction for Computing Compact and Effective Local Feature Descriptors,https://github.com/prbonn/descriptor-dr,pytorch,2022,computer_vision,,True,True
+2201.13338,Modeling the Background for Incremental and Weakly-Supervised Semantic Segmentation,https://github.com/fcdl94/MiB,pytorch,2022,computer_vision,,True,True
+2312.04822,SiCP: Simultaneous Individual and Cooperative Perception for 3D Object Detection in Connected and Automated Vehicles,https://github.com/darrenqu/sicp,pytorch,2023,computer_vision,,True,True
+2403.13343,TiBiX: Leveraging Temporal Information for Bidirectional X-ray and Report Generation,https://github.com/biomedia-mbzuai/tibix,pytorch,2024,computer_vision,,True,True
+2507.07984,OST-Bench: Evaluating the Capabilities of MLLMs in Online Spatio-temporal Scene Understanding,https://github.com/rbler1234/ost-bench,pytorch,2025,computer_vision,,True,True
+2408.12245,Scalable Autoregressive Image Generation with Mamba,https://github.com/hp-l33/aim,pytorch,2024,computer_vision,,True,True
+2412.10051,TSGaussian: Semantic and Depth-Guided Target-Specific Gaussian Splatting from Sparse Views,https://github.com/leon2000-ai/tsgaussian,none,2024,computer_vision,,True,True
+2403.01807,ViewDiff: 3D-Consistent Image Generation with Text-to-Image Models,https://github.com/facebookresearch/viewdiff,pytorch,2024,computer_vision,,True,True
+2205.00400,Convex Combination Consistency between Neighbors for Weakly-supervised Action Localization,https://github.com/qinying-liu/c3bn,pytorch,2022,computer_vision,,True,True
+2404.14025,DHRNet: A Dual-Path Hierarchical Relation Network for Multi-Person Pose Estimation,https://github.com/yhdang/dhrnet-multi-pose-estimation,pytorch,2024,computer_vision,,True,True
+2301.12613,AudioEar: Single-View Ear Reconstruction for Personalized Spatial Audio,https://github.com/seanywang0408/audioear,pytorch,2023,computer_vision,,True,True
+2404.18203,LMM-PCQA: Assisting Point Cloud Quality Assessment with LMM,https://github.com/zzc-1998/lmm-pcqa,pytorch,2024,computer_vision,,True,True
+2404.07123,Semantically-correlated memories in a dense associative model,https://github.com/tfburns/cdam,none,2024,computer_vision,,True,True
+2310.04829,How To Effectively Train An Ensemble Of Faster R-CNN Object Detectors To Quantify Uncertainty,https://github.com/akola-mbey-denis/efficientensemble,pytorch,2023,computer_vision,,True,True
+2403.17765,MUTE-SLAM: Real-Time Neural SLAM with Multiple Tri-Plane Hash Representations,https://github.com/lumennyan/mute_slam,pytorch,2024,computer_vision,,True,True
+2505.24210,STORK: Improving the Fidelity of Mid-NFE Sampling for Diffusion and Flow Matching Models,https://github.com/zt220501/stork,pytorch,2025,computer_vision,,True,True
+2203.10912,Depth Completion using Geometry-Aware Embedding,https://github.com/Wenchao-Du/GAENet,pytorch,2022,computer_vision,,True,True
+2310.15402,Towards contrast-agnostic soft segmentation of the spinal cord,https://github.com/sct-pipeline/contrast-agnostic-softseg-spinalcord,pytorch,2023,computer_vision,,True,True
+2309.05490,Learning Semantic Segmentation with Query Points Supervision on Aerial Images,https://github.com/santiago2205/lssqps,pytorch,2023,computer_vision,,True,True
+2203.13009,CVF-SID: Cyclic multi-Variate Function for Self-Supervised Image Denoising by Disentangling Noise from Image,https://github.com/reyhanehne/cvf-sid_pytorch,pytorch,2022,computer_vision,,True,True
+2204.01960,FaceSigns: Semi-Fragile Neural Watermarks for Media Authentication and Countering Deepfakes,https://github.com/paarthneekhara/facesignsdemo,pytorch,2022,computer_vision,,True,True
+2209.00179,Universal Vision-Language Dense Retrieval: Learning A Unified Representation Space for Multi-Modal Retrieval,https://github.com/openmatch/univl-dr,pytorch,2022,computer_vision,,True,True
+2205.15469,GCoNet+: A Stronger Group Collaborative Co-Salient Object Detector,https://github.com/zhengpeng7/gconet_plus,pytorch,2022,computer_vision,,True,True
+2206.10897,How to Combine Variational Bayesian Networks in Federated Learning,https://github.com/ituvisionlab/bfl-p,pytorch,2022,computer_vision,,True,True
+2309.05548,Distance-Aware eXplanation Based Learning,https://github.com/msgun/xbl-d,tf,2023,computer_vision,,True,True
+2304.12685,Exploring the Mutual Influence between Self-Supervised Single-Frame and Multi-Frame Depth Estimation,https://github.com/xjixzz/mism,pytorch,2023,computer_vision,,True,True
+2412.14006,InstructSeg: Unifying Instructed Visual Segmentation with Multi-modal Large Language Models,https://github.com/congvvc/instructseg,pytorch,2024,computer_vision,,True,True
+2302.13288,Learning Pairwise Interaction for Generalizable DeepFake Detection,https://github.com/xuyingzhongguo/mcx-api,pytorch,2023,computer_vision,,True,True
+2308.13236,Black-box Unsupervised Domain Adaptation with Bi-directional Atkinson-Shiffrin Memory,https://github.com/jingyi0000/bimem,pytorch,2023,computer_vision,,True,True
+2205.06265,ELODI: Ensemble Logit Difference Inhibition for Positive-Congruent Training,https://github.com/amazon-science/regression-constraint-model-upgrade,pytorch,2022,computer_vision,,True,True
+2403.06138,BSDA: Bayesian Random Semantic Data Augmentation for Medical Image Classification,https://github.com/yaoyaozhu19/bsda,pytorch,2024,computer_vision,,True,True
+2409.17093,BitQ: Tailoring Block Floating Point Precision for Improved DNN Efficiency on Resource-Constrained Devices,https://github.com/cheliosoops/bitq,pytorch,2024,computer_vision,,True,True
+2304.04746,A Cheaper and Better Diffusion Language Model with Soft-Masked Noise,https://github.com/amazon-science/masked-diffusion-lm,jax,2023,computer_vision,,True,True
+2409.03110,MSTT-199: MRI Dataset for Musculoskeletal Soft Tissue Tumor Segmentation,https://github.com/reasat/mstt,pytorch,2024,computer_vision,,True,True
+2412.06647,Object Detection using Event Camera: A MoE Heat Conduction based Detector and A New Benchmark Dataset,https://github.com/event-ahu/openevdet,pytorch,2024,computer_vision,,True,True
+2403.17822,DN-Splatter: Depth and Normal Priors for Gaussian Splatting and Meshing,https://github.com/maturk/dn-splatter,pytorch,2024,computer_vision,,True,True
+2504.10041,Prior Does Matter: Visual Navigation via Denoising Diffusion Bridge Models,https://github.com/hren20/naivibridger,pytorch,2025,computer_vision,,True,True
+2304.01328,Grand Challenge On Detecting Cheapfakes,https://github.com/detecting-cheapfakes/detecting-cheapfakes-code,none,2023,computer_vision,,True,True
+2208.14893,Improving RGB-D Point Cloud Registration by Learning Multi-scale Local Linear Transformation,https://github.com/514dna/llt,pytorch,2022,computer_vision,,True,True
+2403.07851,12 mJ per Class On-Device Online Few-Shot Class-Incremental Learning,https://github.com/pulp-platform/fscil,pytorch,2024,computer_vision,,True,True
+2404.17063,WheelPose: Data Synthesis Techniques to Improve Pose Estimation Performance on Wheelchair Users,https://github.com/hilab-open-source/wheelpose,pytorch,2024,computer_vision,,True,True
+2408.11598,"Improving Calibration by Relating Focal Loss, Temperature Scaling, and Properness",https://github.com/slavikkom/focal_temperature_scaling,pytorch,2024,computer_vision,,True,True
+2209.00244,MM-PCQA: Multi-Modal Learning for No-reference Point Cloud Quality Assessment,https://github.com/zzc-1998/mm-pcqa,pytorch,2022,computer_vision,,True,True
+2202.13197,Relational Surrogate Loss Learning,https://github.com/hunto/reloss,pytorch,2022,computer_vision,relational-surrogate-loss-learning,True,True
+2505.13432,Synthetic-Powered Predictive Inference,https://github.com/meshiba/sppi,pytorch,2025,computer_vision,,True,True
+2403.13548,Diversity-aware Channel Pruning for StyleGAN Compression,https://github.com/jiwoogit/dcp-gan,pytorch,2024,computer_vision,,True,True
+2407.06129,Evaluating the Semantic Profiling Abilities of LLMs for Natural Language Utterances in Data Visualization,https://github.com/hdi-umd/semantic_profiling_llm_evaluation,none,2024,computer_vision,,True,True
+2207.01203,Towards Robust Referring Video Object Segmentation with Cyclic Relational Consensus,https://github.com/lxa9867/R2VOS,pytorch,2022,computer_vision,,True,True
+2207.09339,Vision Transformers: From Semantic Segmentation to Dense Prediction,https://github.com/fudan-zvg/SETR,pytorch,2022,computer_vision,,True,True
+2207.06104,Automated Detection of Label Errors in Semantic Segmentation Datasets via Deep Learning and Uncertainty Quantification,https://github.com/mrcoee/automatic-label-error-detection,none,2022,computer_vision,,True,True
+2209.08430,DytanVO: Joint Refinement of Visual Odometry and Motion Segmentation in Dynamic Environments,https://github.com/geniussh/dytanvo,pytorch,2022,computer_vision,,True,True
+2303.07648,SimFLE: Simple Facial Landmark Encoding for Self-Supervised Facial Expression Recognition in the Wild,https://github.com/jymoon0613/simfle,pytorch,2023,computer_vision,,True,True
+2311.04040,Data exploitation: multi-task learning of object detection and semantic segmentation on partially annotated data,https://github.com/lhoangan/multas,pytorch,2023,computer_vision,,True,True
+2305.14813,Semi-Supervised and Long-Tailed Object Detection with CascadeMatch,https://github.com/yuhangzang/cascadematch,pytorch,2023,computer_vision,,True,True
+2308.09345,Denoising diffusion-based MRI to CT image translation enables automated spinal segmentation,https://github.com/robert-graf/readable-conditional-denoising-diffusion,pytorch,2023,computer_vision,,True,True
+2410.13862,DepthSplat: Connecting Gaussian Splatting and Depth,https://github.com/cvg/depthsplat,jax,2024,computer_vision,,True,True
+2410.21273,On Inductive Biases That Enable Generalization of Diffusion Transformers,https://github.com/dit-generalization/dit-generalization.github.io,none,2024,computer_vision,,True,True
+2304.04395,Instance Neural Radiance Field,https://github.com/lyclyc52/instance_nerf,pytorch,2023,computer_vision,,True,True
+2303.14361,Spatio-Temporal Pixel-Level Contrastive Learning-based Source-Free Domain Adaptation for Video Semantic Segmentation,https://github.com/shaoyuanlo/stpl,pytorch,2023,computer_vision,,True,True
+2411.16196,Learn from Foundation Model: Fruit Detection Model without Manual Annotation,https://github.com/agroboticsresearch/sdm-d,pytorch,2024,computer_vision,,True,True
+2407.07427,Unified Embedding Alignment for Open-Vocabulary Video Instance Segmentation,https://github.com/fanghaook/ovformer,pytorch,2024,computer_vision,,True,True
+2505.17911,Object-level Cross-view Geo-localization with Location Enhancement and Multi-Head Cross Attention,https://github.com/zheyangh/ocgnet,pytorch,2025,computer_vision,,True,True
+2405.11500,Interpreting a Semantic Segmentation Model for Coastline Detection,https://github.com/conorosully/interpreting-coastline-unet,pytorch,2024,computer_vision,,True,True
+2402.03701,Unified Discrete Diffusion for Categorical Data,https://github.com/lingxiaoshawn/usd3,pytorch,2024,computer_vision,,True,True
+2201.09693,Shape-consistent Generative Adversarial Networks for multi-modal Medical segmentation maps,https://github.com/orhir/shape-consistent-generative-adversarial-networks-for-multi-modal-medical-segmentation-maps,pytorch,2022,computer_vision,,True,True
+2505.20714,Wideband RF Radiance Field Modeling Using Frequency-embedded 3D Gaussian Splatting,https://github.com/sim-2-real/wideband3dgs,none,2025,computer_vision,,True,True
+2312.01919,COTR: Compact Occupancy TRansformer for Vision-based 3D Occupancy Prediction,https://github.com/notacracker/cotr,pytorch,2023,computer_vision,,True,True
+2312.15644,UVAGaze: Unsupervised 1-to-2 Views Adaptation for Gaze Estimation,https://github.com/mickeyllg/uvagaze,pytorch,2023,computer_vision,,True,True
+2502.18411,OmniAlign-V: Towards Enhanced Alignment of MLLMs with Human Preference,https://github.com/phoenixz810/omnialign-v,pytorch,2025,computer_vision,,True,True
+2311.05770,PolyMaX: General Dense Prediction with Mask Transformer,https://github.com/google-research/deeplab2,tf,2023,computer_vision,,True,True
+2403.13148,SIFT-DBT: Self-supervised Initialization and Fine-Tuning for Imbalanced Digital Breast Tomosynthesis Image Classification,https://github.com/xypb/sift_dbt,pytorch,2024,computer_vision,,True,True
+2404.08514,NIR-Assisted Image Denoising: A Selective Fusion Approach and A Real-World Benchmark Dataset,https://github.com/ronjonxu/naid,pytorch,2024,computer_vision,,True,True
+2407.03563,Learning Video Temporal Dynamics with Cross-Modal Attention for Robust Audio-Visual Speech Recognition,https://github.com/sungnyun/avsr-temporal-dynamics,pytorch,2024,computer_vision,,True,True
+2408.17433,DARES: Depth Anything in Robotic Endoscopic Surgery with Self-supervised Vector-LoRA of the Foundation Model,https://github.com/mobarakol/dares,pytorch,2024,computer_vision,,True,True
+2409.08494,WheelPoser: Sparse-IMU Based Body Pose Estimation for Wheelchair Users,https://github.com/axle-lab/wheelposer,pytorch,2024,computer_vision,,True,True
+2204.10312,Unsupervised Human Action Recognition with Skeletal Graph Laplacian and Self-Supervised Viewpoints Invariance,https://github.com/iit-pavis/uhar_skeletal_laplacian,pytorch,2022,computer_vision,,True,True
+2503.07265,WISE: A World Knowledge-Informed Semantic Evaluation for Text-to-Image Generation,https://github.com/pku-yuangroup/wise,none,2025,computer_vision,,True,True
+2409.03470,Improving Uncertainty-Error Correspondence in Deep Bayesian Medical Image Segmentation,https://github.com/prerakmody/bayesuncertainty-error-correspondence,tf,2024,computer_vision,,True,True
+2411.15245,AnyText2: Visual Text Generation and Editing With Customizable Attributes,https://github.com/tyxsspa/anytext2,pytorch,2024,computer_vision,,True,True
+2207.11169,Rethinking Few-Shot Object Detection on a Multi-Domain Benchmark,https://github.com/amazon-research/few-shot-object-detection-benchmark,pytorch,2022,computer_vision,,True,True
+2408.16132,SVDD 2024: The Inaugural Singing Voice Deepfake Detection Challenge,https://github.com/svddchallenge/ctrsvdd2024_baseline,pytorch,2024,computer_vision,,True,True
+2505.06280,Show or Tell? A Benchmark To Evaluate Visual and Textual Prompts in Semantic Segmentation,https://github.com/FocoosAI/ShowOrTell,pytorch,2025,computer_vision,,True,True
+2206.07615,The SIGMORPHON 2022 Shared Task on Morpheme Segmentation,https://github.com/sigmorphon/2022segmentationst,none,2022,computer_vision,,True,True
+2404.14885,Domain adaptive pose estimation via multi-level alignment,https://github.com/sunshinglight/DAML_PoseEstimation,pytorch,2024,computer_vision,,True,True
+2403.13430,MTP: Advancing Remote Sensing Foundation Model via Multi-Task Pretraining,https://github.com/vitae-transformer/mtp,pytorch,2024,computer_vision,,True,True
+2404.02148,Diffusion$^2$: Dynamic 3D Content Generation via Score Composition of Video and Multi-view Diffusion Models,https://github.com/fudan-zvg/diffusion-square,pytorch,2024,computer_vision,,True,True
+2501.09054,NeurOp-Diff:Continuous Remote Sensing Image Super-Resolution via Neural Operator Diffusion,https://github.com/zerono000/neurop-diff,pytorch,2025,computer_vision,,True,True
+2404.03518,SDPose: Tokenized Pose Estimation via Circulation-Guide Self-Distillation,https://github.com/martyrpenink/sdpose,pytorch,2024,computer_vision,,True,True
+2405.13632,Task agnostic continual learning with Pairwise layer architecture,https://github.com/skeskinen/pairwise_online_learning,jax,2024,computer_vision,,True,True
+2301.00805,Betrayed by Captions: Joint Caption Grounding and Generation for Open Vocabulary Instance Segmentation,https://github.com/jzwu48033552/betrayed-by-captions,pytorch,2023,computer_vision,,True,True
+2410.02942,SymmetricDiffusers: Learning Discrete Diffusion on Finite Symmetric Groups,https://github.com/nickzhang53/symmetricdiffusers,pytorch,2024,computer_vision,,True,True
+2203.11593,Unified Negative Pair Generation toward Well-discriminative Feature Space for Face Recognition,https://github.com/jung-jun-uk/unpg,pytorch,2022,computer_vision,,True,True
+2501.08580,Densely Connected Parameter-Efficient Tuning for Referring Image Segmentation,https://github.com/jiaqihuang01/detris,pytorch,2025,computer_vision,,True,True
+2409.00665,Disparity Estimation Using a Quad-Pixel Sensor,https://github.com/zhuofeng-wu/qpdnet,pytorch,2024,computer_vision,,True,True
+2207.08185,Mind the Gap: Polishing Pseudo labels for Accurate Semi-supervised Object Detection,https://github.com/snowdusky/dualpolishlearning,pytorch,2022,computer_vision,,True,True
+2207.05526,"Long-term Leap Attention, Short-term Periodic Shift for Video Classification",https://github.com/videonetworks/laps-transformer,pytorch,2022,computer_vision,,True,True
+2304.04023,Attack-Augmentation Mixing-Contrastive Skeletal Representation Learning,https://github.com/1xbq1/a2mc,pytorch,2023,computer_vision,,True,True
+2304.01186,Follow Your Pose: Pose-Guided Text-to-Video Generation using Pose-Free Videos,https://github.com/mayuelala/followyourpose,pytorch,2023,computer_vision,,True,True
+2205.10706,GL-RG: Global-Local Representation Granularity for Video Captioning,https://github.com/ylqi/gl-rg,pytorch,2022,computer_vision,,True,True
+2403.12550,RGBD GS-ICP SLAM,https://github.com/lab-of-ai-and-robotics/gs_icp_slam,pytorch,2024,computer_vision,,True,True
+2310.14294,Deep MDP: A Modular Framework for Multi-Object Tracking,https://github.com/abhineet123/deep_mdp,pytorch,2023,computer_vision,,True,True
+2407.04687,Embracing Massive Medical Data,https://github.com/mrgiovanni/onlinelearning,pytorch,2024,computer_vision,,True,True
+2304.04708,CherryPicker: Semantic Skeletonization and Topological Reconstruction of Cherry Trees,https://github.com/meyerls/pc-skeletor,none,2023,computer_vision,,True,True
+2302.09779,Incremental Few-Shot Object Detection via Simple Fine-Tuning Approach,https://github.com/tmiu/itfa,none,2023,computer_vision,,True,True
+2304.02693,A Certified Radius-Guided Attack Framework to Image Segmentation Models,https://github.com/randomizedheap/cr_attack,pytorch,2023,computer_vision,,True,True
+2404.10130,NOISe: Nuclei-Aware Osteoclast Instance Segmentation for Mouse-to-Human Domain Transfer,https://github.com/michaelwwan/noise,pytorch,2024,computer_vision,,True,True
+2406.12650,Weakly Supervised Learning of Cortical Surface Reconstruction from Segmentations,https://github.com/m-qiang/CoSeg,pytorch,2024,computer_vision,,True,True
+2210.04265,3D Reconstruction of Sculptures from Single Images via Unsupervised Domain Adaptation on Implicit Models,https://github.com/mrzzy2021/sculpturerecon,pytorch,2022,computer_vision,,True,True
+2505.23343,Diffusion Sampling Path Tells More: An Efficient Plug-and-Play Strategy for Sample Filtering,https://github.com/wsx20003/cfg-rejection,pytorch,2025,computer_vision,,True,True
+2503.13777,8-Calves Image dataset,https://github.com/tonyfang04/8-calves,none,2025,computer_vision,,True,True
+2203.09694,Group Contextualization for Video Recognition,https://github.com/haoyanbin918/group-contextualization,pytorch,2022,computer_vision,,True,True
+2403.10778,HCF-Net: Hierarchical Context Fusion Network for Infrared Small Object Detection,https://github.com/zhengshuchen/hcfnet,pytorch,2024,computer_vision,,True,True
+2203.04554,ChiTransformer:Towards Reliable Stereo from Cues,https://github.com/isl-cv/chitransformer,pytorch,2022,computer_vision,,True,True
+2303.11647,Are uGLAD? Time will tell!,https://github.com/harshs27/tglad,pytorch,2023,computer_vision,,True,True
+2208.06073,Conditional Antibody Design as 3D Equivariant Graph Translation,https://github.com/thunlp-mt/mean,pytorch,2022,computer_vision,,True,True
+2410.15458,Allegro: Open the Black Box of Commercial-Level Video Generation Model,https://github.com/rhymes-ai/allegro,pytorch,2024,computer_vision,,True,True
+2402.03008,Diffusive Gibbs Sampling,https://github.com/Wenlin-Chen/DiGS,pytorch,2024,computer_vision,,True,True
+2211.10352,Towards Fast Single-Trial Online ERP based Brain-Computer Interface using dry EEG electrodes and neural networks: a pilot study,https://github.com/okbalefthanded/pylpov,tf,2022,computer_vision,,True,True
+2205.11434,SiSPRNet: End-to-End Learning for Single-Shot Phase Retrieval,https://github.com/qiustander/siprnet,pytorch,2022,computer_vision,,True,True
+2406.12246,TroL: Traversal of Layers for Large Language and Vision Models,https://github.com/byungkwanlee/trol,pytorch,2024,computer_vision,,True,True
+2501.05711,From My View to Yours: Ego-Augmented Learning in Large Vision Language Models for Understanding Exocentric Daily Living Activities,https://github.com/dominickrei/egoexo4adl,pytorch,2025,computer_vision,,True,True
+2410.07155,Trans4D: Realistic Geometry-Aware Transition for Compositional Text-to-4D Synthesis,https://github.com/yangling0818/trans4d,jax,2024,computer_vision,,True,True
+2308.02982,Beyond First Impressions: Integrating Joint Multi-modal Cues for Comprehensive 3D Representation,https://github.com/mr-neko/jm3d,pytorch,2023,computer_vision,,True,True
+2310.10301,Multi-Body Neural Scene Flow,https://github.com/kavisha725/MBNSF,pytorch,2023,computer_vision,,True,True
+2306.12153,DIAS: A Dataset and Benchmark for Intracranial Artery Segmentation in DSA sequences,https://github.com/lseventeen/dias,pytorch,2023,computer_vision,,True,True
+2410.19180,Noise Adaption Network for Morse Code Image Classification,https://github.com/apple1986/morsecodeimageclassify,pytorch,2024,computer_vision,,True,True
+2306.05037,Normalization-Equivariant Neural Networks with Application to Image Denoising,https://github.com/sherbret/normalization_equivariant_nn,pytorch,2023,computer_vision,normalization-equivariant-neural-networks,True,True
+2405.05259,OpenESS: Event-based Semantic Scene Understanding with Open Vocabularies,https://github.com/ldkong1205/openess,none,2024,computer_vision,,True,True
+2211.02111,Translated Skip Connections -- Expanding the Receptive Fields of Fully Convolutional Neural Networks,https://github.com/joshuadbruton/tsc,pytorch,2022,computer_vision,,True,True
+2306.10684,Visually-Guided Sound Source Separation with Audio-Visual Predictive Coding,https://github.com/zjsong/audio-visual-predictive-coding,pytorch,2023,computer_vision,,True,True
+2407.21438,A Plug-and-Play Method for Rare Human-Object Interactions Detection by Bridging Domain Gap,https://github.com/lijunzhang01/cefa,pytorch,2024,computer_vision,,True,True
+2212.04005,RainUNet for Super-Resolution Rain Movie Prediction under Spatio-temporal Shifts,https://github.com/jinyxp/weather4cast-2022,pytorch,2022,computer_vision,,True,True
+2504.03171,Real-Time Roadway Obstacle Detection for Electric Scooters Using Deep Learning and Multi-Sensor Fusion,https://github.com/zeyang-zheng/real-time-roadway-obstacle-detection-for-electric-scooters,pytorch,2025,computer_vision,,True,True
+2505.00043,EchoNet-Quality: Denoising Echocardiograms via Deep Generative Modeling of Ultrasound Noise,https://github.com/echonet/image_quality,pytorch,2025,computer_vision,,True,True
+2203.00131,"A Data-scalable Transformer for Medical Image Segmentation: Architecture, Model Efficiency, and Benchmark",https://github.com/yhygao/cbim-medical-image-segmentation,pytorch,2022,computer_vision,,True,True
+2403.14530,HAC: Hash-grid Assisted Context for 3D Gaussian Splatting Compression,https://github.com/yihangchen-ee/hac,pytorch,2024,computer_vision,,True,True
+2209.04097,MassMIND: Massachusetts Maritime INfrared Dataset,https://github.com/uml-marine-robotics/massmind,none,2022,computer_vision,,True,True
+2201.02693,BottleFit: Learning Compressed Representations in Deep Neural Networks for Effective and Efficient Split Computing,https://github.com/yoshitomo-matsubara/bottlefit-split_computing,pytorch,2022,computer_vision,,True,True
+2504.07991,SlicerNNInteractive: A 3D Slicer extension for nnInteractive,https://github.com/coendevente/nninteractive-slicer,pytorch,2025,computer_vision,,True,True
+2312.14830,Dreaming of Electrical Waves: Generative Modeling of Cardiac Excitation Waves using Diffusion Models,https://github.com/cardiacvision/diffusion,pytorch,2023,computer_vision,,True,True
+2307.16226,ScribbleVC: Scribble-supervised Medical Image Segmentation with Vision-Class Embedding,https://github.com/huanglizi/scribblevc,pytorch,2023,computer_vision,,True,True
+2409.02969,LibMOON: A Gradient-based MultiObjective OptimizatioN Library in PyTorch,https://github.com/xzhang2523/libmoon,pytorch,2024,computer_vision,,True,True
+2307.07168,Adaptive Region Selection for Active Learning in Whole Slide Image Semantic Segmentation,https://github.com/deepmicroscopy/adaptiveregionselection,pytorch,2023,computer_vision,,True,True
+2408.08125,Category-Prompt Refined Feature Learning for Long-Tailed Multi-Label Image Classification,https://github.com/jiexuanyan/cprfl,pytorch,2024,computer_vision,,True,True
+2203.05328,Backbone is All Your Need: A Simplified Architecture for Visual Object Tracking,https://github.com/lpxtt/simtrack,pytorch,2022,computer_vision,,True,True
+2401.04357,Iterative Feedback Network for Unsupervised Point Cloud Registration,https://github.com/ivanxie416/ifnet,pytorch,2024,computer_vision,,True,True
+2405.01028,Technical Report of NICE Challenge at CVPR 2024: Caption Re-ranking Evaluation Using Ensembled CLIP and Consensus Scores,https://github.com/DSBA-Lab/ECO,pytorch,2024,computer_vision,,True,True
+2210.06944,SageMix: Saliency-Guided Mixup for Point Clouds,https://github.com/mlvlab/SageMix,pytorch,2022,computer_vision,,True,True
+2412.20404,Open-Sora: Democratizing Efficient Video Production for All,https://github.com/hpcaitech/open-sora,pytorch,2024,computer_vision,,True,True
+2402.02968,Delving into Multi-modal Multi-task Foundation Models for Road Scene Understanding: From Learning Paradigm Perspectives,https://github.com/rolsheng/mm-vufm4ds,none,2024,computer_vision,,True,True
+2310.15317,Exploring the Potential of Large Language Models in Generating Code-Tracing Questions for Introductory Programming Courses,https://github.com/aysafanxm/llm_code_tracing_question_generation,none,2023,uncategorized,,True,True
+2301.12151,Selecting Models based on the Risk of Damage Caused by Adversarial Attacks,https://github.com/duesenfranz/risk_scores_paper_code,none,2023,uncategorized,,True,True
+2412.19537,Finger in Camera Speaks Everything: Unconstrained Air-Writing for Real-World,https://github.com/wmeiqi/awcv,none,2024,uncategorized,,True,True
+2412.03676,JPC: Flexible Inference for Predictive Coding Networks in JAX,https://github.com/thebuckleylab/jpc,jax,2024,uncategorized,,True,True
+2407.09835,Investigating Low-Rank Training in Transformer Language Models: Efficiency and Scaling Analysis,https://github.com/claire-labo/structuredffn,pytorch,2024,uncategorized,,True,True
+2212.01515,Orders Are Unwanted: Dynamic Deep Graph Convolutional Network for Personality Detection,https://github.com/djz233/d-dgcn,pytorch,2022,uncategorized,,True,True
+2401.12033,Momentum-SAM: Sharpness Aware Minimization without Computational Overhead,https://github.com/marlonbecker/msam,pytorch,2024,uncategorized,,True,True
+2405.14106,Nearly Tight Black-Box Auditing of Differentially Private Machine Learning,https://github.com/spalabucr/bb-audit-dpsgd,pytorch,2024,uncategorized,,True,True
+2505.03397,Quantum Feature Space of a Qubit Coupled to an Arbitrary Bath,https://github.com/ChrisWise07/quantum_feature_space,pytorch,2025,uncategorized,,True,True
+2405.14352,Explaining Graph Neural Networks via Structure-aware Interaction Index,https://github.com/ngocbh/mage,pytorch,2024,uncategorized,,True,True
+2503.10714,ZeroMerge: Parameter-Free KV Cache Compression for Memory-Efficient Long-Context LLMs,https://github.com/suscom-lab/zeromerge,pytorch,2025,uncategorized,,True,True
+2406.02824,Mathematical Methods for Assessing the Accuracy of Pre-Planned and Guided Surgical Osteotomies,https://github.com/monkeygobah/osteoplane,none,2024,uncategorized,,True,True
+2502.08560,Brain Latent Progression: Individual-based Spatiotemporal Disease Progression on 3D Brain MRIs via Latent Diffusion,https://github.com/lemuelpuglisi/brlp,pytorch,2025,uncategorized,,True,True
+2302.00401,Deterministic equivalent and error universality of deep random features learning,https://github.com/hugocui/drf,none,2023,uncategorized,,True,True
+2205.10504,How to Find Actionable Static Analysis Warnings: A Case Study with FindBugs,https://github.com/yrahul3910/static-code-warnings,tf,2022,uncategorized,,True,True
+2212.04590,Learning Options via Compression,https://github.com/yidingjiang/love,pytorch,2022,uncategorized,,True,True
+2406.10898,TrafficBots V1.5: Traffic Simulation via Conditional VAEs and Transformers with Relative Pose Encoding,https://github.com/zhejz/trafficbotsv1.5,pytorch,2024,uncategorized,,True,True
+2309.00079,On the Implicit Bias of Adam,https://github.com/borshigida/implicit-bias-of-adam,pytorch,2023,uncategorized,,True,True
+2410.18358,"Data Publishing in Mechanics and Dynamics: Challenges, Guidelines, and Examples from Engineering Design",https://github.com/raffmax/connectinggaitsinenergeticallyconservativeleggedsystems,none,2024,uncategorized,,True,True
+2307.09672,"Convex Geometry of ReLU-layers, Injectivity on the Ball and Local Reconstruction",https://github.com/danedane-haider/alpha-rectifying-frames,pytorch,2023,uncategorized,,True,True
+2401.12364,Guiding the Search Towards Failure-Inducing Test Inputs Using Support Vector Machines,https://github.com/ast-fortiss-tum/svm-paper-deeptest-24,none,2024,uncategorized,,True,True
+2407.09372,Segmentation Dataset for Reinforced Concrete Construction,https://github.com/dtu-pas/conrebseg,none,2024,uncategorized,,True,True
+2311.15333,Asymptotic Error Analysis of Multilevel Stochastic Approximations for the Value-at-Risk and Expected Shortfall,https://github.com/azarlouzi/avg_mlsa,none,2023,uncategorized,,True,True
+2504.10422,Foundation models for electronic health records: representation dynamics and transferability,https://github.com/bbj-lab/FMs-EHRs-Rep-Dynamics-and-Transfer,pytorch,2025,uncategorized,,True,True
+2208.08085,Detection and Mitigation of Byzantine Attacks in Distributed Training,https://github.com/kkonstantinidis/aspis,pytorch,2022,uncategorized,,True,True
+2209.12782,Learning GFlowNets from partial episodes for improved convergence and stability,https://github.com/gfnorg/gflownet,pytorch,2022,uncategorized,,True,True
+2309.08165,To Predict or to Reject: Causal Effect Estimation with Uncertainty on Networked Data,https://github.com/uqhwen2/graphdkl,pytorch,2023,uncategorized,,True,True
+2408.01603,FIVB ranking: Misstep in the right direction,https://github.com/brbalab/fivb,jax,2024,uncategorized,,True,True
+2207.04881,Simple and complex spiking neurons: perspectives and analysis in a simple STDP scenario,https://github.com/daevem/spyketorch-extended,pytorch,2022,uncategorized,,True,True
+2306.12785,MFCCGAN: A Novel MFCC-Based Speech Synthesizer Using Adversarial Learning,https://github.com/mohammdreza2020/mfccgan,none,2023,uncategorized,,True,True
+2207.01684,Robot Vitals and Robot Health: Towards Systematically Quantifying Runtime Performance Degradation in Robots Under Adverse Conditions,https://github.com/anikethramesh/robotVitals,none,2022,uncategorized,,True,True
+2207.13757,The Leaf Clinical Trials Corpus: a new resource for query generation from clinical trial eligibility criteria,https://github.com/uw-bionlp/clinical-trials-gov-data,none,2022,uncategorized,,True,True
+2406.10710,SyntheT2C: Generating Synthetic Data for Fine-Tuning Large Language Models on the Text2Cypher Task,https://github.com/ZGChung/SyntheT2C,none,2024,uncategorized,,True,True
+2305.14450,An Empirical Study on Information Extraction using Large Language Models,https://github.com/ridonghan/evaluation-of-chatgpt-on-information-extraction,none,2023,uncategorized,,True,True
+2202.04233,Deep Neural Networks to Correct Sub-Precision Errors in CFD,https://github.com/akasharidas/subprecision-cfd,jax,2022,uncategorized,,True,True
+2203.09476,Uncertainty with UAV Search of Multiple Goal-oriented Targets,https://github.com/morsinay/omega,none,2022,uncategorized,,True,True
+2206.05262,Meta Optimal Transport,https://github.com/facebookresearch/meta-ot,jax,2022,uncategorized,,True,True
+2210.12924,OLLA: Optimizing the Lifetime and Location of Arrays to Reduce the Memory Usage of Neural Networks,https://github.com/facebookresearch/olla,pytorch,2022,uncategorized,,True,True
+2210.10200,Helpful Neighbors: Leveraging Neighbors in Geographic Feature Pronunciation,https://github.com/google-research/google-research,tf,2022,uncategorized,,True,True
+2402.02053,Affordable Generative Agents,https://github.com/affordablegenerativeagents/affordable-generative-agents,none,2024,uncategorized,,True,True
+2401.07463,"Consistency of semi-supervised learning, stochastic tug-of-war games, and the p-Laplacian",https://github.com/jwcalder/p-laplace-consistency,none,2024,uncategorized,,True,True
+2305.01868,Pre-train and Search: Efficient Embedding Table Sharding with Pre-trained Neural Cost Models,https://github.com/daochenzha/neuroshard,pytorch,2023,uncategorized,,True,True
+2311.09071,How Vocabulary Sharing Facilitates Multilingualism in LLaMA?,https://github.com/cone-mt/vocabulary-sharing-facilitates-multilingualism,pytorch,2023,uncategorized,,True,True
+2210.01846,Shock propagation from the Russia-Ukraine conflict on international multilayer food production network determines global food availability,https://github.com/l-moni/shock-propagation-food-supply,none,2022,uncategorized,,True,True
+2405.11290,MBIAS: Mitigating Bias in Large Language Models While Retaining Context,https://github.com/shainarazavi/mbias,pytorch,2024,uncategorized,,True,True
+2505.18694,AI-Driven Climate Policy Scenario Generation for Sub-Saharan Africa,https://github.com/adethebade/cpsg,none,2025,uncategorized,,True,True
+2203.16871,Ransomware Detection using Process Memory,https://github.com/icfl-up/rdpm,none,2022,uncategorized,,True,True
+2306.14194,Autoencoders for a manifold learning problem with a Jacobian rank constraint,https://github.com/cvfrs/as,pytorch,2023,uncategorized,,True,True
+2212.05632,Blockchain Network Analysis: A Comparative Study of Decentralized Banks,https://github.com/sciecon/blockchain-network-analysis,none,2022,uncategorized,,True,True
+2209.11134,Neural Networks Based on Power Method and Inverse Power Method for Solving Linear Eigenvalue Problems,https://github.com/summerloverain/pmnn_ipmnn,pytorch,2022,uncategorized,,True,True
+2402.10588,Do Llamas Work in English? On the Latent Language of Multilingual Transformers,https://github.com/epfl-dlab/llm-latent-language,pytorch,2024,uncategorized,,True,True
+2312.13601,Front stability of infinitely steep travelling waves in population biology,https://github.com/alex-tam/onephase_porousfisherstefanstability,none,2023,uncategorized,,True,True
+2312.07767,Spatial Knowledge-Infused Hierarchical Learning: An Application in Flood Mapping on Earth Imagery,https://github.com/zelinxu2000/ski-hl,pytorch,2023,uncategorized,,True,True
+2203.08570,Undersmoothing Causal Estimators with Generative Trees,https://github.com/misoc-mml/undersmoothing-data-augmentation,none,2022,uncategorized,,True,True
+2202.08232,Quantum Lazy Training,https://github.com/phanous/quantum-lazy-training,none,2022,uncategorized,,True,True
+2205.10936,On Elimination Strategies for Bandit Fixed-Confidence Identification,https://github.com/andreatirinzoni/bandit-elimination,none,2022,uncategorized,,True,True
+2308.08871,Spatially and Spectrally Consistent Deep Functional Maps,https://github.com/rqhuang88/spatially-and-spectrally-consistent-deep-functional-maps,pytorch,2023,uncategorized,,True,True
+2404.13647,Mean Aggregator is More Robust than Robust Aggregators under Label Poisoning Attacks on Distributed Heterogeneous Data,https://github.com/pengj97/lpa,pytorch,2024,uncategorized,,True,True
+2405.07280,Humor Mechanics: Advancing Humor Generation with Multistep Reasoning,https://github.com/altsoph/humor-mechanics,none,2024,uncategorized,,True,True
+2204.05192,Task-Synchronized Recurrent Neural Networks,https://github.com/oshapio/task-synchronized-rnns,none,2022,uncategorized,,True,True
+2406.01552,Learning equivariant tensor functions with applications to sparse vector recovery,https://github.com/wilsongregory/tensorpolynomials,jax,2024,uncategorized,,True,True
+2405.10186,Introducing Learning Rate Adaptation CMA-ES into Rigid 2D/3D Registration for Robotic Navigation in Spine Surgery,https://github.com/m1nhengchen/cmaes-reg,pytorch,2024,uncategorized,,True,True
+2209.09315,Deep Linear Networks can Benignly Overfit when Shallow Ones Do,https://github.com/niladri-chatterji/benign-deep-linear,pytorch,2022,uncategorized,,True,True
+2303.01926,RAFEN -- Regularized Alignment Framework for Embeddings of Nodes,https://github.com/graphml-lab-pwr/rafen,pytorch,2023,uncategorized,,True,True
+2305.06625,Dropout Regularization in Extended Generalized Linear Models based on Double Exponential Families,https://github.com/luetkeschwienhorst/dropoutinextendedglms,none,2023,uncategorized,,True,True
+2410.14155,Towards Faithful Natural Language Explanations: A Study Using Activation Patching in Large Language Models,https://github.com/wj210/causal-faithfulness,pytorch,2024,uncategorized,,True,True
+2404.00620,Reporting Eye-Tracking Data Quality: Towards a New Standard,https://github.com/aeye-lab/pymovements,none,2024,uncategorized,,True,True
+2209.13971,3D Neural Sculpting (3DNS): Editing Neural Signed Distance Functions,https://github.com/pettza/3dns,pytorch,2022,uncategorized,,True,True
+2504.02607,Learning Geometrically-Informed Lyapunov Functions with Deep Diffeomorphic RBF Networks,https://github.com/stesfazgi/diffeomorphic-lyapunov-functions,none,2025,uncategorized,,True,True
+2405.18419,Exploring the Evolution of Altruistic Punishment with a PDE Model of Cultural Multilevel Selection,https://github.com/dbcooney/Multilevel-Altruistic-Punishment-Paper-Code,none,2024,uncategorized,,True,True
+2505.24037,Leave it to the Specialist: Repair Sparse LLMs with Sparse Fine-Tuning via Sparsity Evolution,https://github.com/qiaoxiao7282/seft,pytorch,2025,uncategorized,,True,True
+2401.03595,Quantifying T cell morphodynamics and migration in 3D collagen matrices,https://github.com/yeerenlow/tcells_paper_code,none,2024,uncategorized,,True,True
+2306.06547,Local-to-global Perspectives on Graph Neural Networks,https://github.com/chen-cai-osu/mpnn-gt-connection,pytorch,2023,uncategorized,,True,True
+2401.07529,MM-SAP: A Comprehensive Benchmark for Assessing Self-Awareness of Multimodal Large Language Models in Perception,https://github.com/yhwmz/mm-sap,none,2024,uncategorized,,True,True
+2210.10267,Synthetic Sonar Image Simulation with Various Seabed Conditions for Automatic Target Recognition,https://github.com/aprilab-uf/oceans-ue-synthetic-sonar-image,none,2022,uncategorized,,True,True
+2309.02711,Addressing Imperfect Symmetry: a Novel Symmetry-Learning Actor-Critic Extension,https://github.com/m-abr/Adaptive-Symmetry-Learning,pytorch,2023,uncategorized,,True,True
+2312.01884,Correlation and Unintended Biases on Univariate and Multivariate Decision Trees,https://github.com/msetzu/univariate-vs-multivariate-decision-trees,none,2023,uncategorized,,True,True
+2305.03328,Time-weighted Frequency Domain Audio Representation with GMM Estimator for Anomalous Sound Detection,https://github.com/liuyoude/twfr-gmm,pytorch,2023,uncategorized,,True,True
+2210.00743,An Embarrassingly Simple Approach for Intellectual Property Rights Protection on Recurrent Neural Networks,https://github.com/zhiqin1998/recurrentipr,pytorch,2022,uncategorized,,True,True
+2406.08467,DafnyBench: A Benchmark for Formal Software Verification,https://github.com/sun-wendy/dafnybench,none,2024,uncategorized,,True,True
+2502.14950,Symmetric observations without symmetric causal explanations,https://github.com/apozas/symmetric-causal,none,2025,uncategorized,,True,True
+2410.00210,End-to-end Piano Performance-MIDI to Score Conversion with Transformers,https://github.com/timfelixbeyer/midi2scoretransformer,pytorch,2024,uncategorized,,True,True
+2310.05657,A Closer Look into Automatic Evaluation Using Large Language Models,https://github.com/d223302/a-closer-look-to-llm-evaluation,none,2023,uncategorized,,True,True
+2212.09321,Learning from Training Dynamics: Identifying Mislabeled Data Beyond Manually Designed Features,https://github.com/Christophe-Jia/mislabel-detection,pytorch,2022,uncategorized,,True,True
+2504.02515,Exploration-Driven Generative Interactive Environments,https://github.com/insait-institute/genieredux,pytorch,2025,uncategorized,,True,True
+2406.12803,Scalable Rule Lists Learning with Sampling,https://github.com/VandinLab/SamRuLe,none,2024,uncategorized,,True,True
+2503.23219,Aurelia: Test-time Reasoning Distillation in Audio-Visual LLMs,https://github.com/schowdhury671/aurelia,none,2025,uncategorized,,True,True
+2206.01463,Safety Certification for Stochastic Systems via Neural Barrier Functions,https://github.com/dai-lab-herald/neural-barrier-functions,pytorch,2022,uncategorized,,True,True
+2403.04975,Deep Backward and Galerkin Methods for the Finite State Master Equation,https://github.com/ethanzell/dgme-and-dbme-algorithms,none,2024,uncategorized,,True,True
+2209.06015,Black-box Dataset Ownership Verification via Backdoor Watermarking,https://github.com/thuyimingli/dvbw,pytorch,2022,uncategorized,,True,True
+2410.20774,Are LLM-Judges Robust to Expressions of Uncertainty? Investigating the effect of Epistemic Markers on LLM-based Evaluation,https://github.com/dongryeollee96/ember,pytorch,2024,uncategorized,,True,True
+2307.04599,Bridging MDE and AI: A Systematic Review of Domain-Specific Languages and Model-Driven Practices in AI Software Systems Engineering,https://github.com/sraedler/model-driven-engineering4artificial-intelligence,none,2023,uncategorized,,True,True
+2501.12766,NExtLong: Toward Effective Long-Context Training without Long Documents,https://github.com/caskcsg/longcontext,pytorch,2025,uncategorized,,True,True
+2409.17213,Plurals: A System for Guiding LLMs Via Simulated Social Ensembles,https://github.com/josh-ashkinaze/plurals,none,2024,uncategorized,,True,True
+2404.15812,Facilitating Advanced Sentinel-2 Analysis Through a Simplified Computation of Nadir BRDF Adjusted Reflectance,https://github.com/esds-leipzig/sen2nbar,none,2024,uncategorized,,True,True
+2303.04030,PyXAB -- A Python Library for $\mathcal{X}$-Armed Bandit and Online Blackbox Optimization Algorithms,https://github.com/williamlwj/pyxab,pytorch,2023,uncategorized,,True,True
+2210.15031,Characterizing Datapoints via Second-Split Forgetting,https://github.com/pratyushmaini/ssft,pytorch,2022,uncategorized,,True,True
+2504.07210,MESA: Text-Driven Terrain Generation Using Latent Diffusion and Global Copernicus Data,https://github.com/PaulBorneP/MESA,pytorch,2025,uncategorized,,True,True
+2404.13307,Beyond Accuracy: Investigating Error Types in GPT-4 Responses to USMLE Questions,https://github.com/roysoumya/usmle-gpt4-error-taxonomy,none,2024,uncategorized,,True,True
+2204.04601,Explaining Deep Convolutional Neural Networks via Latent Visual-Semantic Filter Attention,https://github.com/yuyang0901/lavise,pytorch,2022,uncategorized,,True,True
+2506.10632,Hessian Geometry of Latent Space in Generative Models,https://github.com/alobashev/hessian-geometry-of-diffusion-models,pytorch,2025,uncategorized,,True,True
+2406.09038,CGP++ : A Modern C++ Implementation of Cartesian Genetic Programming,https://github.com/RomanKalkreuth/cgp-plusplus,none,2024,uncategorized,,True,True
+2307.14705,High Dynamic Range Imaging via Visual Attention Modules,https://github.com/alirezaomrani95/hdr-vam,tf,2023,uncategorized,,True,True
+2208.10286,Rigid Base Biasing in Molecular Dynamics enables enhanced sampling of DNA conformations,https://github.com/aderikvoorspoels/rbb-na,none,2022,uncategorized,,True,True
+2305.19428,Evaluating geospatial context information for travel mode detection,https://github.com/mie-lab/mode_detect,none,2023,uncategorized,,True,True
+2205.03749,GOCPT: Generalized Online Canonical Polyadic Tensor Factorization and Completion,https://github.com/ycq091044/gocpt,pytorch,2022,uncategorized,,True,True
+2308.04073,Learning Specialized Activation Functions for Physics-informed Neural Networks,https://github.com/leaplabthu/adaafforpinns,pytorch,2023,uncategorized,,True,True
+2310.05073,Enhancing Argument Structure Extraction with Efficient Leverage of Contextual Information,https://github.com/luoxiaoheics/ecase,pytorch,2023,uncategorized,,True,True
+2405.04271,Generating Feature Vectors from Phonetic Transcriptions in Cross-Linguistic Data Formats,https://github.com/cldf-clts/soundvectors,none,2024,uncategorized,,True,True
+2211.06578,"Affinity Feature Strengthening for Accurate, Complete and Robust Vessel Segmentation",https://github.com/TY-Shi/AFN,pytorch,2022,uncategorized,,True,True
+2407.03234,Self-Evaluation as a Defense Against Adversarial Attacks on LLMs,https://github.com/linlt-leon/self-eval,pytorch,2024,uncategorized,,True,True
+2410.03775,Beyond correlation: The Impact of Human Uncertainty in Measuring the Effectiveness of Automatic Evaluation and LLM-as-a-Judge,https://github.com/amazon-science/beyondcorrelation,none,2024,uncategorized,,True,True
+2205.13613,Circumventing Backdoor Defenses That Are Based on Latent Separability,https://github.com/unispac/circumventing-backdoor-defenses,pytorch,2022,uncategorized,,True,True
+2502.10325,Process Reward Models for LLM Agents: Practical Framework and Directions,https://github.com/sanjibanc/agent_prm,pytorch,2025,uncategorized,,True,True
+2405.16770,Physics informed cell representations for variational formulation of multiscale problems,https://github.com/YuxiangGao0321/Cell-based-MLP,pytorch,2024,uncategorized,,True,True
+2306.16126,More efficient manual review of automatically transcribed tabular data,https://github.com/histlab/more-efficient-manual-review-of-automatically-transcribed-tabular-data,none,2023,uncategorized,,True,True
+2310.11081,Understanding writing style in social media with a supervised contrastively pre-trained transformer,https://github.com/jahuerta92/star,pytorch,2023,uncategorized,,True,True
+2503.18312,Diff-Palm: Realistic Palmprint Generation with Polynomial Creases and Intra-Class Variation Controllable Diffusion Models,https://github.com/ukuer/diff-palm,pytorch,2025,uncategorized,,True,True
+2406.11944,Transcoders Find Interpretable LLM Feature Circuits,https://github.com/jacobdunefsky/transcoder_circuits,jax,2024,uncategorized,,True,True
+2405.14170,Large Language Models-guided Dynamic Adaptation for Temporal Knowledge Graph Reasoning,https://github.com/jiapuwang/LLM-DA,none,2024,uncategorized,,True,True
+2408.08381,Pre-processing and Compression: Understanding Hidden Representation Refinement Across Imaging Domains via Intrinsic Dimension,https://github.com/mazurowski-lab/intrinsic-properties,pytorch,2024,uncategorized,,True,True
+2401.17686,Deductive Beam Search: Decoding Deducible Rationale for Chain-of-Thought Reasoning,https://github.com/osu-nlp-group/deductive-beam-search,pytorch,2024,uncategorized,,True,True
+2505.03649,Weighted Random Dot Product Graphs,https://github.com/bmarenco/wrdpg,none,2025,uncategorized,,True,True
+2405.01817,Uniformly Stable Algorithms for Adversarial Training and Beyond,https://github.com/jiancongxiao/moreau-envelope-sgd,pytorch,2024,uncategorized,,True,True
+2502.00032,Querying Databases with Function Calling,https://github.com/weaviate/gorilla,none,2025,uncategorized,,True,True
+2505.18723,Bulls vs Bears: a Trinomial Model of a Financial Asset,https://github.com/nahueliarca/bullsvsbears,none,2025,uncategorized,,True,True
+2202.02981,Neural Tangent Kernel Analysis of Deep Narrow Neural Networks,https://github.com/lthilnklover/deep-narrow-ntk,pytorch,2022,uncategorized,,True,True
+2310.02994,Multiple Physics Pretraining for Physical Surrogate Models,https://github.com/PolymathicAI/multiple_physics_pretraining,pytorch,2023,uncategorized,,True,True
+2404.18155,ShapeMoiré: Channel-Wise Shape-Guided Network for Image Demoiréing,https://github.com/sichengs/shapemoire,pytorch,2024,uncategorized,,True,True
+2206.15254,Localizing the Recurrent Laryngeal Nerve via Ultrasound with a Bayesian Shape Framework,https://github.com/wulalago/rlnlocalization,pytorch,2022,uncategorized,,True,True
+2503.05142,RocketEval: Efficient Automated LLM Evaluation via Grading Checklist,https://github.com/joinn99/rocketeval-iclr,none,2025,uncategorized,,True,True
+2312.17306,Gradient Flossing: Improving Gradient Descent through Dynamic Control of Jacobians,https://github.com/rainerengelken/gradientflossing,none,2023,uncategorized,gradient-flossing-improving-gradient-descent,True,True
+2208.10010,NOSMOG: Learning Noise-robust and Structure-aware MLPs on Graphs,https://github.com/meettyj/nosmog,pytorch,2022,uncategorized,,True,True
+2502.20408,Brain-Inspired Exploration of Functional Networks and Key Neurons in Large Language Models,https://github.com/whataboutmystar/llm_activation,pytorch,2025,uncategorized,,True,True
+2311.15940,Physics-informed neural networks for transformed geometries and manifolds,https://github.com/samuelburbulla/trafo-pinn,pytorch,2023,uncategorized,,True,True
+2304.02811,HomPINNs: homotopy physics-informed neural networks for solving the inverse problems of nonlinear differential equations with multiple solutions,https://github.com/haoyangzheng1996/hompinn,pytorch,2023,uncategorized,,True,True
+2306.09739,Stabilized Neural Differential Equations for Learning Dynamics with Explicit Constraints,https://github.com/white-alistair/Stabilized-Neural-Differential-Equations,none,2023,uncategorized,,True,True
+2503.08923,Enhancing Large Language Models for Hardware Verification: A Novel SystemVerilog Assertion Dataset,https://github.com/anandmenon12/vert,none,2025,uncategorized,,True,True
+2407.05690,Pruning Large Language Models to Intra-module Low-rank Architecture with Transitional Activations,https://github.com/sbwww/transact-pruning,none,2024,uncategorized,,True,True
+2402.04613,Wasserstein Gradient Flows for Moreau Envelopes of f-Divergences in Reproducing Kernel Hilbert Spaces,https://github.com/viktorajstein/regularized_f_divergence_particle_flows,pytorch,2024,uncategorized,,True,True
+2403.17793,Neural Exponential Stabilization of Control-affine Nonlinear Systems,https://github.com/decodepfl/neural-exponential-stabilization,none,2024,uncategorized,,True,True
+2312.17025,Experiential Co-Learning of Software-Developing Agents,https://github.com/openbmb/chatdev,none,2023,uncategorized,,True,True
+2303.01886,Machine learning using magnetic stochastic synapses,https://github.com/mattoaellis/binary_stochastic_synapses,pytorch,2023,uncategorized,,True,True
+2210.09302,The impact of big winners on passive and active equity investment strategies,https://github.com/maxmarkov/stock-index,none,2022,uncategorized,,True,True
+2505.19339,Towards Humanoid Robot Autonomy: A Dynamic Architecture Integrating Continuous thought Machines (CTM) and Model Context Protocol (MCP),https://github.com/brucewang123456789/GeniusTrail,none,2025,uncategorized,,True,True
+2507.04626,Heterogeneous User Modeling for LLM-based Recommendation,https://github.com/honghuibao2000/hum,pytorch,2025,uncategorized,,True,True
+2205.05907,Machine Learning Workflow to Explain Black-box Models for Early Alzheimer's Disease Classification Evaluated for Multiple Datasets,https://github.com/louisebloch/alzheimerexplainablemlcorrelations,none,2022,uncategorized,,True,True
+2503.23786,MGD-SAM2: Multi-view Guided Detail-enhanced Segment Anything Model 2 for High-Resolution Class-agnostic Segmentation,https://github.com/sevenshr/mgd-sam2,none,2025,uncategorized,,True,True
+2207.07690,Support Vector Machines with the Hard-Margin Loss: Optimal Training via Combinatorial Benders' Cuts,https://github.com/vidalt/hard-margin-svm,none,2022,uncategorized,,True,True
+2503.08221,EgoBlind: Towards Egocentric Visual Assistance for the Blind,https://github.com/doc-doc/egoblind,none,2025,uncategorized,,True,True
+2409.03644,RealisHuman: A Two-Stage Approach for Refining Malformed Human Parts in Generated Images,https://github.com/wangbenzhi/realishuman,pytorch,2024,uncategorized,,True,True
+2210.10275,Towards Explaining Distribution Shifts,https://github.com/inouye-lab/explaining-distribution-shifts,pytorch,2022,uncategorized,,True,True
+2505.12328,LLMSR@XLLM25: An Empirical Study of LLM for Structural Reasoning,https://github.com/asdfo123/llmsr-asdfo123,pytorch,2025,uncategorized,,True,True
+2309.02888,Multi-Device Task-Oriented Communication via Maximal Coding Rate Reduction,https://github.com/chang-cai/taskcommmcr2,pytorch,2023,uncategorized,,True,True
+2504.20040,MP-SfM: Monocular Surface Priors for Robust Structure-from-Motion,https://github.com/cvg/mpsfm,pytorch,2025,uncategorized,,True,True
+2204.05746,BABD: A Bitcoin Address Behavior Dataset for Pattern Analysis,https://github.com/y-xiang-hub/bitcoin-address-behavior-analysis,none,2022,uncategorized,,True,True
+2309.07261,Simultaneous inference for generalized linear models with unmeasured confounders,https://github.com/jaydu1/gcate,none,2023,uncategorized,,True,True
+2402.04154,Read to Play (R2-Play): Decision Transformer with Multimodal Game Instruction,https://github.com/ygjin11/r2-play,pytorch,2024,uncategorized,,True,True
+2305.01656,Probabilistic Formal Modelling to Uncover and Interpret Interaction Styles,https://github.com/oanaandrei/temporalanalytics,none,2023,uncategorized,,True,True
+2506.13793,Med-REFL: Medical Reasoning Enhancement via Self-Corrected Fine-grained Reflection,https://github.com/tianyin123/med-refl,none,2025,nlp,,True,True
+2210.12553,Understanding Domain Learning in Language Models Through Subpopulation Analysis,https://github.com/zsquaredz/subpopulation_analysis,pytorch,2022,nlp,,True,True
+2305.19928,Supplementary Features of BiLSTM for Enhanced Sequence Labeling,https://github.com/conglei2xu/global-context-mechanism,pytorch,2023,nlp,,True,True
+2305.14072,When the Music Stops: Tip-of-the-Tongue Retrieval for Music,https://github.com/spotify-research/tot,none,2023,nlp,,True,True
+2403.12799,Investigating Text Shortening Strategy in BERT: Truncation vs Summarization,https://github.com/mirzaalimm/truncationvssummarization,none,2024,nlp,,True,True
+2205.01376,Textual Entailment for Event Argument Extraction: Zero- and Few-Shot with Multi-Source Learning,https://github.com/osainz59/Ask2Transformers,pytorch,2022,nlp,,True,True
+2211.03616,Learning Semantic Textual Similarity via Topic-informed Discrete Latent Variables,https://github.com/erxinyu/disbert,jax,2022,nlp,,True,True
+2209.07972,A Multi-turn Machine Reading Comprehension Framework with Rethink Mechanism for Emotion-Cause Pair Extraction,https://github.com/zhoucz97/ecpe-mm-r,pytorch,2022,nlp,,True,True
+2205.08755,Persian Natural Language Inference: A Meta-learning approach,https://github.com/hassanmojab/metanli,pytorch,2022,nlp,,True,True
+2506.07423,SEED: Enhancing Text-to-SQL Performance and Practical Usability Through Automatic Evidence Generation,https://github.com/felix01189/seed,none,2025,nlp,,True,True
+2210.11560,Finding Dataset Shortcuts with Grammar Induction,https://github.com/princeton-nlp/shortcutgrammar,pytorch,2022,nlp,,True,True
+2410.17081,Continuous Speech Tokenizer in Text To Speech,https://github.com/yixing-li/continuous-speech-tokenizer,none,2024,nlp,,True,True
+2409.09009,Optimizing Rare Word Accuracy in Direct Speech Translation with a Retrieval-and-Demonstration Approach,https://github.com/siqilii/retrieve-and-demonstration-st,pytorch,2024,nlp,,True,True
+2305.04522,Event Knowledge Incorporation with Posterior Regularization for Event-Centric Question Answering,https://github.com/lujunru/eventqaviapr,pytorch,2023,nlp,,True,True
+2411.15484,Seed-Free Synthetic Data Generation Framework for Instruction-Tuning LLMs: A Case Study in Thai,https://github.com/parinzee/seed-free-synthetic-instruct,none,2024,nlp,,True,True
+2305.01628,The Benefits of Bad Advice: Autocontrastive Decoding across Model Layers,https://github.com/ibm/auto-contrastive-generation,pytorch,2023,nlp,,True,True
+2312.14069,EmphAssess : a Prosodic Benchmark on Assessing Emphasis Transfer in Speech-to-Speech Models,https://github.com/facebookresearch/emphassess,pytorch,2023,nlp,,True,True
+2408.03125,COMMENTATOR: A Code-mixed Multilingual Text Annotation Framework,https://github.com/lingo-iitgn/commentator,none,2024,nlp,,True,True
+2506.00823,Probing the Geometry of Truth: Consistency and Generalization of Truth Directions in LLMs Across Logical Transformations and Question Answering Tasks,https://github.com/colored-dye/truthfulness_probe_generalization,pytorch,2025,nlp,,True,True
+2308.11432,A Survey on Large Language Model based Autonomous Agents,https://github.com/melih-unsal/demogpt,none,2023,nlp,,True,True
+2310.13506,Explaining Interactions Between Text Spans,https://github.com/copenlu/spanex,pytorch,2023,nlp,,True,True
+2212.07914,The Effects of In-domain Corpus Size on pre-training BERT,https://github.com/JasonZhangzy1757/the-effect-of-domain-corpus-size-for-pretraining,pytorch,2022,nlp,,True,True
+2205.12335,K-12BERT: BERT for K-12 education,https://github.com/ads-ai/k12-bert-aied-2022,none,2022,nlp,,True,True
+2405.16405,Intruding with Words: Towards Understanding Graph Injection Attacks at the Text Level,https://github.com/leirunlin/text-level-graph-attack,pytorch,2024,nlp,,True,True
+2212.10537,Does CLIP Bind Concepts? Probing Compositionality in Large Image Models,https://github.com/marthaflinderslewis/clip-binding,pytorch,2022,nlp,,True,True
+2305.02582,On the Expressivity Role of LayerNorm in Transformers' Attention,https://github.com/tech-srl/layer_norm_expressivity_role,pytorch,2023,nlp,,True,True
+2408.11330,Design Principle Transfer in Neural Architecture Search via Large Language Models,https://github.com/milkmilk511/lapt,none,2024,nlp,,True,True
+2312.17235,A Simple LLM Framework for Long-Range Video Question-Answering,https://github.com/ceezh/llovi,pytorch,2023,nlp,,True,True
+2409.02685,RouterRetriever: Routing over a Mixture of Expert Embedding Models,https://github.com/amy-hyunji/routerretriever,pytorch,2024,nlp,,True,True
+2206.14796,On the Robustness of Dialogue History Representation in Conversational Question Answering: A Comprehensive Study and a New Prompt-based Method,https://github.com/zorikg/marcqap,none,2022,nlp,,True,True
+2205.11465,SQuALITY: Building a Long-Document Summarization Dataset the Hard Way,https://github.com/nyu-mll/squality,none,2022,nlp,,True,True
+2403.17848,ArabicaQA: A Comprehensive Dataset for Arabic Question Answering,https://github.com/datascienceuibk/arabicaqa,pytorch,2024,nlp,,True,True
+2505.10527,WorldPM: Scaling Human Preference Modeling,https://github.com/qwenlm/worldpm,none,2025,nlp,,True,True
+2402.11142,Grasping the Essentials: Tailoring Large Language Models for Zero-Shot Relation Extraction,https://github.com/kevinsrr/repal,pytorch,2024,nlp,,True,True
+2203.09866,Under the Morphosyntactic Lens: A Multifaceted Evaluation of Gender Bias in Speech Translation,https://github.com/mgaido91/FBK-fairseq-ST,pytorch,2022,nlp,,True,True
+2204.13853,Detecting Textual Adversarial Examples Based on Distributional Characteristics of Data Representations,https://github.com/naliuanna/mdre,pytorch,2022,nlp,,True,True
+2505.16968,"CASS: Nvidia to AMD Transpilation with Data, Models, and Benchmark",https://github.com/gustavostahl/cass,pytorch,2025,nlp,,True,True
+2502.12085,APB: Accelerating Distributed Long-Context Inference by Passing Compressed Context Blocks across GPUs,https://github.com/thunlp/apb,none,2025,nlp,,True,True
+2205.12404,FLUTE: Figurative Language Understanding through Textual Explanations,https://github.com/tuhinjubcse/model-in-the-loop-fig-lang,pytorch,2022,nlp,,True,True
+2211.08633,MT Metrics Correlate with Human Ratings of Simultaneous Speech Translation,https://github.com/ufal/MT-metrics-in-SimST,none,2022,nlp,,True,True
+2306.07096,Global and Local Semantic Completion Learning for Vision-Language Pre-training,https://github.com/iigroup/scl,pytorch,2023,nlp,,True,True
+2304.00717,MiniRBT: A Two-stage Distilled Small Chinese Pre-trained Model,https://github.com/iflytek/minirbt,pytorch,2023,nlp,,True,True
+2308.02323,Dataflow Dialogue Generation,https://github.com/telepathylabsai/OpenDF,none,2023,nlp,,True,True
+2409.20434,QAEncoder: Towards Aligned Representation Learning in Question Answering System,https://github.com/IAAR-Shanghai/QAEncoder,none,2024,nlp,,True,True
+2403.12582,AlphaFin: Benchmarking Financial Analysis with Retrieval-Augmented Stock-Chain Framework,https://github.com/alphafin-proj/alphafin,pytorch,2024,nlp,,True,True
+2204.13355,Neighbors Are Not Strangers: Improving Non-Autoregressive Translation under Low-Frequency Lexical Constraints,https://github.com/sted-byte/act4nat,pytorch,2022,nlp,,True,True
+2302.07845,NL2CMD: An Updated Workflow for Natural Language to Bash Commands Translation,https://github.com/magnumresearchgroup/magnum-nlc2cmd,pytorch,2023,nlp,,True,True
+2307.07025,Data Augmentation for Machine Translation via Dependency Subtree Swapping,https://github.com/attilanagy234/syntax-augmentation-nmt,pytorch,2023,nlp,,True,True
+2403.04791,LLM vs. Lawyers: Identifying a Subset of Summary Judgments in a Large UK Case Law Dataset,https://github.com/anaffinis/llm-vs-lawyers,none,2024,nlp,,True,True
+2309.08047,"Bias in News Summarization: Measures, Pitfalls and Corpora",https://github.com/julmaxi/summary_bias,none,2023,nlp,,True,True
+2501.06025,"How to Tune a Multilingual Encoder Model for Germanic Languages: A Study of PEFT, Full Fine-Tuning, and Language Adapters",https://github.com/rominaoji/german-language-adapter,pytorch,2025,nlp,,True,True
+2208.00638,Composable Text Controls in Latent Space with ODEs,https://github.com/guangyliu/latentops,pytorch,2022,nlp,,True,True
+2211.08411,Large Language Models Struggle to Learn Long-Tail Knowledge,https://github.com/nkandpa2/long_tail_knowledge,none,2022,nlp,,True,True
+2305.09758,A Video Is Worth 4096 Tokens: Verbalize Videos To Understand Them In Zero Shot,https://github.com/midas-research/video-persuasion,none,2023,nlp,,True,True
+2207.13988,Sequence to sequence pretraining for a less-resourced Slovenian language,https://github.com/matejulcar/slot5-tools,none,2022,nlp,,True,True
+2406.02517,Deterministic Reversible Data Augmentation for Neural Machine Translation,https://github.com/BITHLP/DRDA,pytorch,2024,nlp,,True,True
+2304.01331,Creating Custom Event Data Without Dictionaries: A Bag-of-Tricks,https://github.com/philip-schrodt/ngec,none,2023,nlp,,True,True
+2210.04029,EDU-level Extractive Summarization with Varying Summary Lengths,https://github.com/yuping-wu/edu-vl,pytorch,2022,nlp,,True,True
+2411.16487,When Babies Teach Babies: Can student knowledge sharing outperform Teacher-Guided Distillation on small datasets?,https://github.com/ai-da-stc/generative-ai-research-babylm,none,2024,nlp,,True,True
+2411.19574,KV Shifting Attention Enhances Language Modeling,https://github.com/erogol/blagpt,pytorch,2024,nlp,,True,True
+2307.15051,Matching Patients to Clinical Trials with Large Language Models,https://github.com/ncbi-nlp/trialgpt,none,2023,nlp,,True,True
+2408.15796,Evaluating Named Entity Recognition Using Few-Shot Prompting with Large Language Models,https://github.com/geode-project/ner-llm,none,2024,nlp,,True,True
+2408.08087,ColorMamba: Towards High-quality NIR-to-RGB Spectral Translation with Mamba,https://github.com/alexyangxx/colormamba,pytorch,2024,nlp,,True,True
+2404.02013,"Breaking the Silence Detecting and Mitigating Gendered Abuse in Hindi, Tamil, and Indian English Online Spaces",https://github.com/advaithavetagiri/cnlp-nits-pp,none,2024,nlp,,True,True
+2409.03717,Sample-Efficient Diffusion for Text-To-Speech Synthesis,https://github.com/justinlovelace/sesd,pytorch,2024,nlp,,True,True
+2311.09205,When Is Multilinguality a Curse? Language Modeling for 250 High- and Low-Resource Languages,https://github.com/tylerachang/curse-of-multilinguality,none,2023,nlp,,True,True
+2207.00929,Generating Repetitions with Appropriate Repeated Words,https://github.com/titech-nlp/repetition-generation,pytorch,2022,nlp,,True,True
+2312.02538,A Multi-Granularity-Aware Aspect Learning Model for Multi-Aspect Dense Retrieval,https://github.com/sunxiaojie99/mural,jax,2023,nlp,,True,True
+2412.08795,Coverage-based Fairness in Multi-document Summarization,https://github.com/leehaoyuan/coverage_fairness,pytorch,2024,nlp,,True,True
+2409.01952,Exploiting the Vulnerability of Large Language Models via Defense-Aware Architectural Backdoor,https://github.com/sisl-uri/arch_backdoor_llm,pytorch,2024,nlp,,True,True
+2211.17142,Learning Label Modular Prompts for Text Classification in the Wild,https://github.com/salesforce/ModularPrompt,pytorch,2022,nlp,,True,True
+2306.14096,Chinese Fine-Grained Financial Sentiment Analysis with Large Language Models,https://github.com/yerayl/finchina-sa,pytorch,2023,nlp,,True,True
+2410.14515,Efficient Annotator Reliability Assessment and Sample Weighting for Knowledge-Based Misinformation Detection on Social Media,https://github.com/minieggz/effiara,none,2024,nlp,,True,True
+2503.18742,SFDLA: Source-Free Document Layout Analysis,https://github.com/s3setewe/sfdla-dladapter,pytorch,2025,nlp,,True,True
+2501.09928,Dialogue Benchmark Generation from Knowledge Graphs with Cost-Effective Retrieval-Augmented LLMs,https://github.com/cods-gcs/chatty-gen,none,2025,nlp,,True,True
+2305.01965,Analysing the Impact of Audio Quality on the Use of Naturalistic Long-Form Recordings for Infant-Directed Speech Research,https://github.com/SPEECHCOG/ids_audio_quality_analysis,none,2023,nlp,,True,True
+2406.12389,EMO-KNOW: A Large Scale Dataset on Emotion and Emotion-cause,https://github.com/iammia0o/EMO-KNOW,none,2024,nlp,,True,True
+2310.15959,NoteChat: A Dataset of Synthetic Doctor-Patient Conversations Conditioned on Clinical Notes,https://github.com/believewhat/dr.noteaid,none,2023,nlp,,True,True
+2410.21127,Retrieval-Enhanced Mutation Mastery: Augmenting Zero-Shot Prediction of Protein Language Model,https://github.com/tyang816/protrem,pytorch,2024,nlp,,True,True
+2409.19605,The Crucial Role of Samplers in Online Direct Preference Optimization,https://github.com/srzer/Samplers-in-Online-DPO,pytorch,2024,nlp,,True,True
+2504.10277,RealHarm: A Collection of Real-World Language Model Application Failures,https://github.com/giskard-ai/realharm,none,2025,nlp,,True,True
+2407.00938,MalAlgoQA: Pedagogical Evaluation of Counterfactual Reasoning in Large Language Models and Implications for AI in Education,https://github.com/luffycodes/MalAlgoQA-Dataset,none,2024,nlp,,True,True
+2409.19074,Show and Guide: Instructional-Plan Grounded Vision and Language Model,https://github.com/dmgcsilva/mmplanllm,pytorch,2024,nlp,,True,True
+2210.07535,AutoMoE: Heterogeneous Mixture-of-Experts with Adaptive Computation for Efficient Neural Machine Translation,https://github.com/microsoft/automoe,pytorch,2022,nlp,,True,True
+2310.09846,Generalizing Few-Shot Named Entity Recognizers to Unseen Domains with Type-Related Features,https://github.com/wzh-nlp/pltr,pytorch,2023,nlp,,True,True
+2412.18537,Harnessing Large Language Models for Knowledge Graph Question Answering via Adaptive Multi-Aspect Retrieval-Augmentation,https://github.com/Applied-Machine-Learning-Lab/AMAR,pytorch,2024,nlp,,True,True
+2406.13408,SQLFixAgent: Towards Semantic-Accurate Text-to-SQL Parsing via Consistency-Enhanced Multi-Agent Collaboration,https://github.com/cen-jipeng-suda/sqlfixagent,pytorch,2024,nlp,,True,True
+2306.00168,Measuring the Robustness of NLP Models to Domain Shifts,https://github.com/nitaytech/domainrobustness,none,2023,nlp,,True,True
+2208.04125,Is this Change the Answer to that Problem? Correlating Descriptions of Bug and Code Changes for Evaluating Patch Correctness,https://github.com/trustworthy-software/quatrain,tf,2022,nlp,,True,True
+2305.10985,Multi-CrossRE A Multi-Lingual Multi-Domain Dataset for Relation Extraction,https://github.com/mainlp/crossre,pytorch,2023,nlp,,True,True
+2406.14319,LiveMind: Low-latency Large Language Models with Simultaneous Inference,https://github.com/chuangtaochen-tum/livemind,none,2024,nlp,,True,True
+2412.13702,Typhoon 2: A Family of Open Text and Multimodal Thai Large Language Models,https://github.com/scb-10x/typhoon2-audio,pytorch,2024,nlp,,True,True
+2203.03235,Pre-trained Token-replaced Detection Model as Few-shot Learner,https://github.com/cjfarmer/trd_fsl,pytorch,2022,nlp,,True,True
+2305.11707,What Comes Next? Evaluating Uncertainty in Neural Text Generators Against Human Production Variability,https://github.com/dmg-illc/nlg-uncertainty-probes,pytorch,2023,nlp,,True,True
+2311.01740,SAC3: Reliable Hallucination Detection in Black-Box Language Models via Semantic-aware Cross-check Consistency,https://github.com/intuit/sac3,none,2023,nlp,,True,True
+2305.08348,Coreference-aware Double-channel Attention Network for Multi-party Dialogue Reading Comprehension,https://github.com/yanlingli-ai/cada,pytorch,2023,nlp,,True,True
+2407.11438,Trust No Bot: Discovering Personal Disclosures in Human-LLM Conversations in the Wild,https://github.com/mireshghallah/ChatGPT-personal-disclosures,none,2024,nlp,,True,True
+2210.04710,Empowering the Fact-checkers! Automatic Identification of Claim Spans on Twitter,https://github.com/lcs2-iiitd/daberta-emnlp-2022,pytorch,2022,nlp,,True,True
+2501.01588,"(WhyPHI) Fine-Tuning PHI-3 for Multiple-Choice Question Answering: Methodology, Results, and Challenges",https://github.com/mohamedhisham20/truthfulqa_phi,pytorch,2025,nlp,,True,True
+2405.11891,Unveiling and Manipulating Prompt Influence in Large Language Models,https://github.com/zijian678/tdd,pytorch,2024,nlp,,True,True
+2305.11993,Interpretable Word Sense Representations via Definition Generation: The Case of Semantic Change Analysis,https://github.com/ltgoslo/definition_modeling,none,2023,nlp,,True,True
+2209.09062,Overview of the SV-Ident 2022 Shared Task on Survey Variable Identification in Social Science Publications,https://github.com/vadis-project/sv-ident,none,2022,nlp,,True,True
+2407.01212,EconNLI: Evaluating Large Language Models on Economics Reasoning,https://github.com/irenehere/econnli,pytorch,2024,nlp,,True,True
+2412.11495,Exploring More from Multiple Gait Modalities for Human Identification,https://github.com/shiqiyu/opengait,pytorch,2024,nlp,,True,True
+2210.04366,KP-RNN: A Deep Learning Pipeline for Human Motion Prediction and Synthesis of Performance Art,https://github.com/patrickrperrine/comp-choreo,none,2022,nlp,,True,True
+2202.00291,XAlign: Cross-lingual Fact-to-Text Alignment and Generation for Low-Resource Languages,https://github.com/tushar117/xalign,pytorch,2022,nlp,,True,True
+2412.11376,ChatTime: A Unified Multimodal Time Series Foundation Model Bridging Numerical and Textual Data,https://github.com/forestsking/chattime,pytorch,2024,nlp,,True,True
+2305.14585,Faithful and Efficient Explanations for Neural Networks via Neural Tangent Kernel Surrogate Models,https://github.com/pnnl/projection_ntk,pytorch,2023,nlp,,True,True
+2203.07450,A Neural Pairwise Ranking Model for Readability Assessment,https://github.com/jlee118/nprm,tf,2022,nlp,,True,True
+2302.02900,Controllable Lexical Simplification for English,https://github.com/kimchengsheang/conls,pytorch,2023,nlp,,True,True
+2303.17829,Evaluation of Noise Reduction Methods for Sentence Recognition by Sinhala Speaking Listeners,https://github.com/chathukiket/evaluation-of-noise-reduction-methods,none,2023,nlp,,True,True
+2310.12746,TabuLa: Harnessing Language Models for Tabular Data Synthesis,https://github.com/zhao-zilong/tabula,pytorch,2023,nlp,,True,True
+2412.16963,LH-Mix: Local Hierarchy Correlation Guided Mixup over Hierarchical Prompt Tuning,https://github.com/fskong/lh-mix,pytorch,2024,nlp,,True,True
+2310.17703,The impact of responding to patient messages with large language model assistance,https://github.com/aim-harvard/oncqa,none,2023,nlp,,True,True
+2310.14520,QUDEVAL: The Evaluation of Questions Under Discussion Discourse Parsing,https://github.com/lingchensanwen/qudeval,pytorch,2023,nlp,,True,True
+2412.11803,UAlign: Leveraging Uncertainty Estimations for Factuality Alignment on Large Language Models,https://github.com/amourwaltz/ualign,pytorch,2024,nlp,,True,True
+2206.12866,Contextual embedding and model weighting by fusing domain knowledge on Biomedical Question Answering,https://github.com/leoleoasd/mlp-based-weighting,pytorch,2022,nlp,,True,True
+2310.05317,Task-Adaptive Tokenization: Enhancing Long-Form Text Generation Efficacy in Mental Health and Beyond,https://github.com/michigannlp/task-adaptive_tokenization,pytorch,2023,nlp,,True,True
+2501.04941,MyESL: Sparse learning in molecular evolution and phylogenetic analysis,https://github.com/kumarlabgit/myesl,none,2025,nlp,,True,True
+2503.00555,Safety Tax: Safety Alignment Makes Your Large Reasoning Models Less Reasonable,https://github.com/git-disl/safety-tax,pytorch,2025,nlp,,True,True
+2312.04193,Language Model Knowledge Distillation for Efficient Question Answering in Spanish,https://github.com/adrianbzg/tinyroberta-distillation-qa-es,pytorch,2023,nlp,,True,True
+2406.16464,InterCLIP-MEP: Interactive CLIP and Memory-Enhanced Predictor for Multi-modal Sarcasm Detection,https://github.com/CoderChen01/InterCLIP-MEP,pytorch,2024,nlp,,True,True
+2205.12870,Open-Domain Sign Language Translation Learned from Online Video,https://github.com/chevaliernoir/openasl,none,2022,nlp,,True,True
+2211.16971,"A Pipeline for Generating, Annotating and Employing Synthetic Data for Real World Question Answering",https://github.com/filamentai/qa-annotation,none,2022,nlp,,True,True
+2410.08334,Exploring Natural Language-Based Strategies for Efficient Number Learning in Children through Reinforcement Learning,https://github.com/tirthankar95/numberlearninginchildren_rl_nlp,pytorch,2024,rl_robotics,,True,True
+2505.00284,LightEMMA: Lightweight End-to-End Multimodal Model for Autonomous Driving,https://github.com/michigan-traffic-lab/lightemma,none,2025,rl_robotics,,True,True
+2505.08032,Online Learning-based Adaptive Beam Switching for 6G Networks: Enhancing Efficiency and Resilience,https://github.com/clis-wpi/ol-beam-switching-6g,pytorch,2025,rl_robotics,,True,True
+2404.13830,Deep Learning-Based Point Cloud Registration: A Comprehensive Survey and Taxonomy,https://github.com/yxzhang15/pcr,pytorch,2024,rl_robotics,,True,True
+2304.09854,Transformer-Based Visual Segmentation: A Survey,https://github.com/lxtgh/awesome-segmentation-with-transformer,pytorch,2023,rl_robotics,,True,True
+2406.03978,Mini Honor of Kings: A Lightweight Environment for Multi-Agent Reinforcement Learning,https://github.com/tencent-ailab/mini-hok,pytorch,2024,rl_robotics,,True,True
+2405.05258,Multi-Modal Data-Efficient 3D Scene Understanding for Autonomous Driving,https://github.com/ldkong1205/LaserMix,pytorch,2024,rl_robotics,,True,True
+2412.11974,Emma-X: An Embodied Multimodal Action Model with Grounded Chain of Thought and Look-ahead Spatial Reasoning,https://github.com/declare-lab/emma-x,pytorch,2024,rl_robotics,,True,True
+2302.05342,Combining Reconstruction and Contrastive Methods for Multimodal Representations in RL,https://github.com/pbecker93/coral,pytorch,2023,rl_robotics,,True,True
+2303.00599,LS-IQ: Implicit Reward Regularization for Inverse Reinforcement Learning,https://github.com/robfiras/ls-iq,pytorch,2023,rl_robotics,,True,True
+2211.12740,Masked Autoencoding for Scalable and Generalizable Decision Making,https://github.com/fangchenliu/maskdp_public,pytorch,2022,rl_robotics,,True,True
+2211.06136,Fleet Rebalancing for Expanding Shared e-Mobility Systems: A Multi-agent Deep Reinforcement Learning Approach,https://github.com/manluow/ev-simulator,none,2022,rl_robotics,,True,True
+2405.11982,Robust Deep Reinforcement Learning with Adaptive Adversarial Perturbations in Action Space,https://github.com/lqm00/a2p-sac,pytorch,2024,rl_robotics,,True,True
+2504.12501,Reinforcement Learning from Human Feedback,https://github.com/natolambert/rlhf-book,none,2025,rl_robotics,,True,True
+2210.07049,Dimensionality of datasets in object detection networks,https://github.com/ajaychawda58/id_cnn,pytorch,2022,rl_robotics,,True,True
+2410.15912,Bench4Merge: A Comprehensive Benchmark for Merging in Realistic Dense Traffic with Micro-Interactive Vehicles,https://github.com/wzm5853/bench4merge,pytorch,2024,rl_robotics,,True,True
+2310.12970,Real-Time Motion Prediction via Heterogeneous Polyline Transformer with Relative Pose Encoding,https://github.com/zhejz/hptr,pytorch,2023,rl_robotics,real-time-motion-prediction-via-heterogeneous,True,True
+2210.01241,"Is Reinforcement Learning (Not) for Natural Language Processing: Benchmarks, Baselines, and Building Blocks for Natural Language Policy Optimization",https://github.com/allenai/rl4lms,pytorch,2022,rl_robotics,,True,True
+2405.18118,An agent design with goal reaching guarantees for enhancement of learning,https://github.com/osinenkop/regelum-calf,none,2024,rl_robotics,,True,True
+2311.18232,LMRL Gym: Benchmarks for Multi-Turn Reinforcement Learning with Language Models,https://github.com/abdulhaim/lmrl-gym,jax,2023,rl_robotics,,True,True
+2407.06546,Exploring the Causality of End-to-End Autonomous Driving,https://github.com/bdvisl/driveinsight,none,2024,rl_robotics,,True,True
+2206.13387,"ScePT: Scene-consistent, Policy-based Trajectory Predictions for Planning",https://github.com/nvr-avg/scept,pytorch,2022,rl_robotics,scept-scene-consistent-policy-based,True,True
+2306.00978,AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration,https://github.com/internlm/lmdeploy,pytorch,2023,rl_robotics,,True,True
+2504.06983,Free Random Projection for In-Context Reinforcement Learning,https://github.com/thayafluss/frp_rl,jax,2025,rl_robotics,,True,True
+2505.06134,Realistic Adversarial Attacks for Robustness Evaluation of Trajectory Prediction Models via Future State Perturbation,https://github.com/jhagenus/general-framework-update-adversarial-jeroen,pytorch,2025,rl_robotics,,True,True
+2411.18270,Grid-augmented vision: A simple yet effective approach for enhanced spatial understanding in multi-modal agents,https://github.com/triumph123aaa/grid-augmented-vision,none,2024,rl_robotics,,True,True
+2212.00124,One Risk to Rule Them All: A Risk-Sensitive Perspective on Model-Based Offline Reinforcement Learning,https://github.com/marc-rigter/1r2r,none,2022,rl_robotics,one-risk-to-rule-them-all-a-risk-sensitive,True,True
+2302.00673,ADAPT: Action-aware Driving Caption Transformer,https://github.com/jxbbb/adapt,pytorch,2023,rl_robotics,,True,True
+2504.03160,DeepResearcher: Scaling Deep Research via Reinforcement Learning in Real-world Environments,https://github.com/gair-nlp/deepresearcher,pytorch,2025,rl_robotics,,True,True
+2210.10899,Learning Preferences for Interactive Autonomy,https://github.com/kli58/ROIAL,none,2022,rl_robotics,,True,True
+2505.14412,PRL: Prompts from Reinforcement Learning,https://github.com/batorskq/prl,pytorch,2025,rl_robotics,,True,True
+2407.11921,IPA-NeRF: Illusory Poisoning Attack Against Neural Radiance Fields,https://github.com/jiang-wenxiang/ipa-nerf,jax,2024,rl_robotics,,True,True
+2305.16498,Coherent Soft Imitation Learning,https://github.com/google-deepmind/csil,jax,2023,rl_robotics,coherent-soft-imitation-learning,True,True
+2403.03185,Correlated Proxies: A New Definition and Improved Mitigation for Reward Hacking,https://github.com/cassidylaidlaw/orpo,pytorch,2024,rl_robotics,,True,True
+2308.16562,The Power of MEME: Adversarial Malware Creation with Model-Based Reinforcement Learning,https://github.com/stratosphereips/meme_malware_rl,pytorch,2023,rl_robotics,,True,True
+2410.19400,Offline Reinforcement Learning with OOD State Correction and OOD Action Suppression,https://github.com/MAOYIXIU/SCAS,pytorch,2024,rl_robotics,,True,True
+2308.11924,Diverse Policies Converge in Reward-free Markov Decision Processe,https://github.com/openrl-lab/diversepolicies,none,2023,rl_robotics,,True,True
+2401.05737,An experimental evaluation of Deep Reinforcement Learning algorithms for HVAC control,https://github.com/ugr-sail/paper-drl_building,none,2024,rl_robotics,,True,True
+2211.10861,Efficient Meta Reinforcement Learning for Preference-based Fast Adaptation,https://github.com/stilwell-git/adaptation-with-noisy-oracle,pytorch,2022,rl_robotics,,True,True
+2503.24320,Can Test-Time Scaling Improve World Foundation Model?,https://github.com/mia-cong/swift,pytorch,2025,rl_robotics,,True,True
+2409.18053,DualAD: Dual-Layer Planning for Reasoning in Autonomous Driving,https://github.com/TUM-AVS/DualAD,none,2024,rl_robotics,,True,True
+2202.07147,Graph Meta-Reinforcement Learning for Transferable Autonomous Mobility-on-Demand,https://github.com/danielegammelli/graph-meta-rl-for-amod,pytorch,2022,rl_robotics,,True,True
+2206.03721,Stabilizing Voltage in Power Distribution Networks via Multi-Agent Reinforcement Learning with Transformer,https://github.com/cjdjr/t-maac,pytorch,2022,rl_robotics,,True,True
+2312.01203,Harnessing Discrete Representations For Continual Reinforcement Learning,https://github.com/ejmejm/discrete-representations-for-continual-rl,pytorch,2023,rl_robotics,,True,True
+2307.15429,Improvable Gap Balancing for Multi-Task Learning,https://github.com/yanqidai/igb4mtl,pytorch,2023,rl_robotics,,True,True
+2304.07773,PCPNet: An Efficient and Semantic-Enhanced Transformer Network for Point Cloud Prediction,https://github.com/blurryface0814/pcpnet,pytorch,2023,rl_robotics,,True,True
+2306.12755,Beyond OOD State Actions: Supported Cross-Domain Offline Reinforcement Learning,https://github.com/thuml/SPOT,pytorch,2023,rl_robotics,,True,True
+2507.03112,RLVER: Reinforcement Learning with Verifiable Emotion Rewards for Empathetic Agents,https://github.com/tencent/digitalhuman,pytorch,2025,rl_robotics,,True,True
+2211.12712,Contrastive Identity-Aware Learning for Multi-Agent Value Decomposition,https://github.com/liushunyu/cia,pytorch,2022,rl_robotics,,True,True
+2312.07488,LMDrive: Closed-Loop End-to-End Driving with Large Language Models,https://github.com/opendilab/lmdrive,pytorch,2023,rl_robotics,,True,True
+2206.01532,Acquiring and Modelling Abstract Commonsense Knowledge via Conceptualization,https://github.com/hkust-knowcomp/atomic-conceptualization,pytorch,2022,graph_ml,,True,True
+2410.17564,DisenGCD: A Meta Multigraph-assisted Disentangled Graph Learning Framework for Cognitive Diagnosis,https://github.com/bimk/intelligent-education,pytorch,2024,graph_ml,,True,True
+2309.16595,"Can LLMs Effectively Leverage Graph Structural Information through Prompts, and Why?",https://github.com/trais-lab/llm-structured-data,pytorch,2023,graph_ml,,True,True
+2312.16834,Hierarchical Aggregations for High-Dimensional Multiplex Graph Embedding,https://github.com/abdouskamel/hmge,pytorch,2023,graph_ml,,True,True
+2308.09517,Transitivity-Preserving Graph Representation Learning for Bridging Local Connectivity and Role-based Similarity,https://github.com/nslab-cuk/unified-graph-transformer,pytorch,2023,graph_ml,,True,True
+2505.13098,LLM-KG-Bench 3.0: A Compass for SemanticTechnology Capabilities in the Ocean of LLMs,https://github.com/aksw/llm-kg-bench,none,2025,graph_ml,,True,True
+2410.10341,Replay-and-Forget-Free Graph Class-Incremental Learning: A Task Profiling and Prompting Approach,https://github.com/mala-lab/tpp,pytorch,2024,graph_ml,,True,True
+2203.15209,OrphicX: A Causality-Inspired Latent Variable Model for Interpreting Graph Neural Networks,https://github.com/wanyugroup/cvpr2022-orphicx,pytorch,2022,graph_ml,,True,True
+2503.03241,Structural Entropy Guided Unsupervised Graph Out-Of-Distribution Detection,https://github.com/name-is-what/sego,pytorch,2025,graph_ml,,True,True
+2405.08540,Generalizing Knowledge Graph Embedding with Universal Orthogonal Parameterization,https://github.com/xxrep/golde,pytorch,2024,graph_ml,,True,True
+2305.18668,Fine-Grained is Too Coarse: A Novel Data-Centric Approach for Efficient Scene Graph Generation,https://github.com/maelic/vg_curated,pytorch,2023,graph_ml,,True,True
+2208.11210,Data augmentation on graphs for table type classification,https://github.com/ailab-unifi/da-graphtab,pytorch,2022,graph_ml,,True,True
+2409.07497,OneEdit: A Neural-Symbolic Collaboratively Knowledge Editing System,https://github.com/zjunlp/oneedit,pytorch,2024,graph_ml,,True,True
+2405.18378,A Canonicalization Perspective on Invariant and Equivariant Learning,https://github.com/PKU-ML/canonicalization,pytorch,2024,graph_ml,,True,True
+2411.17350,Correlation-Aware Graph Convolutional Networks for Multi-Label Node Classification,https://github.com/YuanchenBei/CorGCN,pytorch,2024,graph_ml,,True,True
+2205.06560,Kronecker Decomposition for Knowledge Graph Embeddings,https://github.com/dice-group/dice-embeddings,pytorch,2022,graph_ml,,True,True
+2211.15348,Learning Feynman Diagrams using Graph Neural Networks,https://github.com/clearbloo/feynman_gnn,pytorch,2022,graph_ml,,True,True
+2302.14189,You Only Transfer What You Share: Intersection-Induced Graph Transfer Learning for Link Prediction,https://github.com/amazon-science/gnn-tail-generalization,pytorch,2023,graph_ml,,True,True
+2202.03036,Structure-Aware Transformer for Graph Representation Learning,https://github.com/borgwardtlab/sat,pytorch,2022,graph_ml,,True,True
+2309.17122,Benchmarking the Abilities of Large Language Models for RDF Knowledge Graph Creation and Comprehension: How Well Do LLMs Speak Turtle?,https://github.com/aksw/llm-kg-bench,none,2023,graph_ml,,True,True
+2209.02528,Rethinking Symmetric Matrix Factorization: A More General and Better Clustering Perspective,https://github.com/clair-lab/symmetric-matrix-factorization,none,2022,graph_ml,,True,True
+2201.12843,Graph Representation Learning via Aggregation Enhancement,https://github.com/anonymous1252022/kr_for_gnns,pytorch,2022,graph_ml,,True,True
+2401.14876,Cross-Space Adaptive Filter: Integrating Graph Topology and Node Attributes for Alleviating the Over-smoothing Problem,https://github.com/huangzichun/cross-space-adaptive-filter,pytorch,2024,graph_ml,,True,True
+2301.05601,Sem@$K$: Is my knowledge graph embedding model semantic-aware?,https://github.com/nicolas-hbt/benchmark-sematk,pytorch,2023,graph_ml,,True,True
+2407.20824,DyGKT: Dynamic Graph Learning for Knowledge Tracing,https://github.com/penglinzhi/dygkt,pytorch,2024,graph_ml,,True,True
+2210.12678,ComFact: A Benchmark for Linking Contextual Commonsense Knowledge,https://github.com/silin159/comfact,pytorch,2022,graph_ml,,True,True
+2203.01820,An Effective Graph Learning based Approach for Temporal Link Prediction: The First Place of WSDM Cup 2022,https://github.com/im0qianqian/WSDM2022TGP-AntGraph,none,2022,graph_ml,,True,True
+2501.05667,TransPlace: Transferable Circuit Global Placement via Graph Neural Network,https://github.com/sorarain/transplace,pytorch,2025,graph_ml,,True,True
+2210.15985,Understanding Adverse Biological Effect Predictions Using Knowledge Graphs,https://github.com/NIVA-Knowledge-Graph/TERA,none,2022,graph_ml,,True,True
+2303.11553,Dynamic Vertex Replacement Grammars,https://github.com/daniel-gonzalez-cedre/dyverg,pytorch,2023,graph_ml,,True,True
+2310.14899,Universal Knowledge Graph Embeddings,https://github.com/dice-group/universal_embeddings,none,2023,graph_ml,,True,True
+2312.14438,PC-Conv: Unifying Homophily and Heterophily with Two-fold Filtering,https://github.com/uestclbh/pc-conv,pytorch,2023,graph_ml,,True,True
+2505.21020,NeuralOM: Neural Ocean Model for Subseasonal-to-Seasonal Simulation,https://github.com/yuangao-yg/neuralom,pytorch,2025,graph_ml,,True,True
+2209.09048,Gradual Weisfeiler-Leman: Slow and Steady Wins the Race,https://github.com/frareba/gradualweisfeilerleman,none,2022,graph_ml,,True,True
+2403.10231,Less is More: One-shot Subgraph Reasoning on Large-scale Knowledge Graphs,https://github.com/tmlr-group/one-shot-subgraph,pytorch,2024,graph_ml,,True,True
+2312.10370,Do Similar Entities have Similar Embeddings?,https://github.com/nicolas-hbt/similar-embeddings,pytorch,2023,graph_ml,,True,True
+2204.04813,Explanation Graph Generation via Pre-trained Language Models: An Empirical Study with Contrastive Learning,https://github.com/swarnahub/explagraphgen,pytorch,2022,graph_ml,,True,True
+2410.02550,NestedMorph: Enhancing Deformable Medical Image Registration with Nested Attention Mechanisms,https://github.com/as-lab/marthi-et-al-2024-nestedmorph-deformable-medical-image-registration,pytorch,2024,code_se,,True,True
+2403.05802,UniSparse: An Intermediate Language for General Sparse Format Customization,https://github.com/cornell-zhang/unisparse,none,2024,code_se,,True,True
+2211.12250,Efficient Frequency Domain-based Transformers for High-Quality Image Deblurring,https://github.com/kkkls/fftformer,pytorch,2022,code_se,,True,True
+2501.11107,ChaosEater: Fully Automating Chaos Engineering with Large Language Models,https://github.com/ntt-dkiku/chaos-eater,none,2025,code_se,,True,True
+2506.01303,Latent Structured Hopfield Network for Semantic Association and Retrieval,https://github.com/fudan-birlab/lshn,pytorch,2025,code_se,,True,True
+2210.12177,An unsupervised latent/output physics-informed convolutional-LSTM network for solving partial differential equations using peridynamic differential operator,https://github.com/ardamavi/pi-rcnn,tf,2022,code_se,,True,True
+2401.14196,DeepSeek-Coder: When the Large Language Model Meets Programming -- The Rise of Code Intelligence,https://github.com/deepseek-ai/DeepSeek-Coder,pytorch,2024,code_se,,True,True
+2207.02249,Learning Task Embeddings for Teamwork Adaptation in Multi-Agent Reinforcement Learning,https://github.com/uoe-agents/mate,pytorch,2022,code_se,,True,True
+2311.10349,Pseudo Label-Guided Data Fusion and Output Consistency for Semi-Supervised Medical Image Segmentation,https://github.com/ortonwang/plgdf,pytorch,2023,code_se,,True,True
+2206.06264,Automatic Polyp Segmentation with Multiple Kernel Dilated Convolution Network,https://github.com/nikhilroxtomar/mkdcnet,pytorch,2022,code_se,,True,True
+2302.01585,SegForestNet: Spatial-Partitioning-Based Aerial Image Segmentation,https://github.com/gritzner/segforestnet,pytorch,2023,code_se,,True,True
+2309.04780,Latent Degradation Representation Constraint for Single Image Deraining,https://github.com/madeline-hyh/ldrcnet,pytorch,2023,code_se,,True,True
+2304.04978,StageInteractor: Query-based Object Detector with Cross-stage Interaction,https://github.com/mcg-nju/stageinteractor,pytorch,2023,code_se,,True,True
+2405.08429,TEDNet: Twin Encoder Decoder Neural Network for 2D Camera and LiDAR Road Detection,https://github.com/martin-bayon/tednet,none,2024,code_se,,True,True
+2206.01737,MaxStyle: Adversarial Style Composition for Robust Medical Image Segmentation,https://github.com/cherise215/maxstyle,pytorch,2022,code_se,,True,True
+2406.08164,ConMe: Rethinking Evaluation of Compositional Reasoning for Modern VLMs,https://github.com/jmiemirza/conme,pytorch,2024,code_se,,True,True
+2212.11685,Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise,https://github.com/microsoft/ProphetNet,pytorch,2022,code_se,,True,True
+2401.02032,DiffusionEdge: Diffusion Probabilistic Model for Crisp Edge Detection,https://github.com/guhuangai/diffusionedge,pytorch,2024,code_se,,True,True
+2505.18646,SEW: Self-Evolving Agentic Workflows for Automated Code Generation,https://github.com/evoagentx/evoagentx,none,2025,code_se,,True,True
+2505.19590,Learning to Reason without External Rewards,https://github.com/sunblaze-ucb/intuitor,pytorch,2025,code_se,,True,True
+2310.05502,XAL: EXplainable Active Learning Makes Classifiers Better Low-resource Learners,https://github.com/luoxiaoheics/xal,pytorch,2023,code_se,,True,True
+2312.07360,Boosting Latent Diffusion with Flow Matching,https://github.com/compvis/fm-boosting,pytorch,2023,code_se,,True,True
+2501.04995,IPDN: Image-enhanced Prompt Decoding Network for 3D Referring Expression Segmentation,https://github.com/80chen86/ipdn,pytorch,2025,code_se,,True,True
+2305.06453,Autonomous GIS: the next-generation AI-powered GIS,https://github.com/gladcolor/llm-geo,none,2023,code_se,,True,True
+2410.24187,Chasing Better Deep Image Priors between Over- and Under-parameterization,https://github.com/vita-group/chasing-better-dips,pytorch,2024,code_se,,True,True
+2311.17068,Deep encoder-decoder hierarchical convolutional neural networks for conjugate heat transfer surrogate modeling,https://github.com/takiahebbspicken/conjugate-heat-transfer-surrogate-modeling,none,2023,code_se,,True,True
+2406.02486,A Temporal Kolmogorov-Arnold Transformer for Time Series Forecasting,https://github.com/remigenet/TKAT,tf,2024,code_se,,True,True
+2403.03894,IRCoder: Intermediate Representations Make Language Models Robust Multilingual Code Generators,https://github.com/UKPLab/arxiv2024-IRCoder,none,2024,code_se,,True,True
+2404.19660,Decoder Decomposition for the Analysis of the Latent Space of Nonlinear Autoencoders With Wind-Tunnel Experimental Data,https://github.com/magrilab/md-cnn-ae,tf,2024,code_se,,True,True
+2212.04487,Physics-constrained deep learning postprocessing of temperature and humidity,https://github.com/frazane/pcpp-workflow,pytorch,2022,time_series,,True,True
+2203.15009,DAMNETS: A Deep Autoregressive Model for Generating Markovian Network Time Series,https://github.com/damnets/damnets_icml_2022,pytorch,2022,time_series,,True,True
+2309.10230,LiON: Learning Point-wise Abstaining Penalty for LiDAR Outlier DetectioN Using Diverse Synthetic Data,https://github.com/daniellli/pad,pytorch,2023,time_series,,True,True
+2209.07027,Out-of-Distribution Representation Learning for Time Series Classification,https://github.com/microsoft/robustlearn,pytorch,2022,time_series,,True,True
+2406.14440,LLM4CP: Adapting Large Language Models for Channel Prediction,https://github.com/liuboxun/LLM4CP,pytorch,2024,time_series,,True,True
+2304.03420,Toward Unsupervised 3D Point Cloud Anomaly Detection using Variational Autoencoder,https://github.com/llien30/point_cloud_anomaly_detection,pytorch,2023,time_series,,True,True
+2404.03319,An early warning system for emerging markets,https://github.com/kraevskiyaa/ews_condent,none,2024,time_series,,True,True
+2208.03489,Forecasting Algorithms for Causal Inference with Panel Data,https://github.com/crabtain959/synbeats,pytorch,2022,time_series,,True,True
+2505.07375,Boosting Global-Local Feature Matching via Anomaly Synthesis for Multi-Class Point Cloud Anomaly Detection,https://github.com/hustCYQ/GLFM-Multi-class-3DAD,pytorch,2025,time_series,,True,True
+2207.10172,Video Anomaly Detection by Solving Decoupled Spatio-Temporal Jigsaw Puzzles,https://github.com/gdwang08/jigsaw-vad,pytorch,2022,time_series,,True,True
+2402.02010,GenFormer: A Deep-Learning-Based Approach for Generating Multivariate Stochastic Processes,https://github.com/zhaohr1990/genformer,pytorch,2024,time_series,,True,True
+2202.07125,Transformers in Time Series: A Survey,https://github.com/qingsongedu/time-series-transformers-review,none,2022,time_series,,True,True
+2205.14772,Unfooling Perturbation-Based Post Hoc Explainers,https://github.com/craymichael/unfooling,none,2022,time_series,,True,True
+2505.17761,Structured Linear CDEs: Maximally Expressive and Parallel-in-Time Sequence Models,https://github.com/benjamin-walker/log-neural-cdes,jax,2025,time_series,,True,True
+2401.10283,Window Stacking Meta-Models for Clinical EEG Classification,https://github.com/zhuyixuan1997/eegscopeandarbitration,pytorch,2024,time_series,,True,True
+2210.05811,Deep Counterfactual Estimation with Categorical Background Variables,https://github.com/edebrouwer/cfqp,pytorch,2022,time_series,,True,True
+2505.17871,BLAST: Balanced Sampling Time Series Corpus for Universal Forecasting Models,https://github.com/gestaltcogteam/blast,none,2025,time_series,,True,True
+2404.04986,Dynamic Distinction Learning: Adaptive Pseudo Anomalies for Video Anomaly Detection,https://github.com/demetrislappas/ddl,pytorch,2024,time_series,,True,True
+2211.17071,Interpreting Vulnerabilities of Multi-Instance Learning to Adversarial Perturbations,https://github.com/inkiinki/mi-uap,pytorch,2022,time_series,,True,True
+2208.11367,Combining AI and AM - Improving Approximate Matching through Transformer Networks,https://github.com/warlmare/dlam,pytorch,2022,time_series,,True,True
+2405.15124,Scaling Law for Time Series Forecasting,https://github.com/jingzheshi/scalinglawfortimeseriesforecasting,pytorch,2024,time_series,,True,True
+2307.00562,A MIL Approach for Anomaly Detection in Surveillance Videos from Multiple Camera Views,https://github.com/santiagosilas/mc-vad-dataset-basedon-pets2009,none,2023,time_series,,True,True
+2308.07886,Back to Basics: A Sanity Check on Modern Time Series Classification Algorithms,https://github.com/mlgig/tabularmodelsfortsc,none,2023,time_series,,True,True
+2306.03522,A Functional Data Perspective and Baseline On Multi-Layer Out-of-Distribution Detection,https://github.com/edadaltocg/ood-trajectory-projection,pytorch,2023,time_series,,True,True
+2308.15280,ADFA: Attention-augmented Differentiable top-k Feature Adaptation for Unsupervised Medical Anomaly Detection,https://github.com/cbmi-group/adfa,pytorch,2023,time_series,,True,True
+2505.12360,LaPON: A Lagrange's-mean-value-theorem-inspired operator network for solving PDEs and its application on NSE,https://github.com/alanZee/lapon-light-open,pytorch,2025,time_series,,True,True
+2405.11828,Federated Learning for Time-Series Healthcare Sensing with Incomplete Modalities,https://github.com/adibaorz/flism,pytorch,2024,time_series,,True,True
+2411.05601,Detecting Cointegrating Relations in Non-stationary Matrix-Valued Time Series,https://github.com/ivanuricardo/mecmrankdetermination,none,2024,time_series,,True,True
+2303.01694,DWFormer: Dynamic Window transFormer for Speech Emotion Recognition,https://github.com/scutcsq/dwformer,pytorch,2023,audio_speech,,True,True
+2405.14259,Let's Fuse Step by Step: A Generative Fusion Decoding Algorithm with LLMs for Multi-modal Text Recognition,https://github.com/mtkresearch/generative-fusion-decoding,pytorch,2024,audio_speech,,True,True
+2406.06220,Label-Looping: Highly Efficient Decoding for Transducers,https://github.com/NVIDIA/NeMo,pytorch,2024,audio_speech,,True,True
+2410.13267,CLaMP 2: Multimodal Music Information Retrieval Across 101 Languages Using Large Language Models,https://github.com/sanderwood/clamp2,pytorch,2024,audio_speech,,True,True
+2506.16381,InstructTTSEval: Benchmarking Complex Natural-Language Instruction Following in Text-to-Speech Systems,https://github.com/kexinhuang19/instructttseval,none,2025,audio_speech,,True,True
+2305.07855,The Whole Is Greater than the Sum of Its Parts: Improving Music Source Separation by Bridging Network,https://github.com/asteroid-team/asteroid,pytorch,2023,audio_speech,,True,True
+2403.20262,ELITR-Bench: A Meeting Assistant Benchmark for Long-Context Language Models,https://github.com/utter-project/elitr-bench,pytorch,2024,audio_speech,,True,True
+2406.02255,MidiCaps: A large-scale MIDI dataset with text captions,https://github.com/AMAAI-Lab/MidiCaps,none,2024,audio_speech,,True,True
+2505.12669,Text2midi-InferAlign: Improving Symbolic Music Generation with Inference-Time Alignment,https://github.com/amaai-lab/t2m-inferalign,pytorch,2025,audio_speech,,True,True
+2309.06014,Can large-scale vocoded spoofed data improve speech spoofing countermeasure with a self-supervised front end?,https://github.com/nii-yamagishilab/project-NN-Pytorch-scripts,pytorch,2023,audio_speech,,True,True
+2210.09556,Discrete Cross-Modal Alignment Enables Zero-Shot Speech Translation,https://github.com/znlp/zero-shot-st,pytorch,2022,audio_speech,,True,True
+2404.04420,The NES Video-Music Database: A Dataset of Symbolic Video Game Music Paired with Gameplay Videos,https://github.com/rubensolv/nes-vmdb,none,2024,audio_speech,,True,True
+2311.06851,Automatic Textual Normalization for Hate Speech Detection,https://github.com/anhhoang0529/small-lexnormvihsd,none,2023,audio_speech,,True,True
+2211.16112,On Word Error Rate Definitions and their Efficient Computation for Multi-Speaker Speech Recognition Systems,https://github.com/fgnt/meeteval,none,2022,audio_speech,,True,True
+2401.17230,"ESPnet-SPK: full pipeline speaker embedding toolkit with reproducible recipes, self-supervised front-ends, and off-the-shelf models",https://github.com/espnet/espnet,pytorch,2024,audio_speech,,True,True
+2504.03289,RWKVTTS: Yet another TTS based on RWKV-7,https://github.com/yynil/rwkvtts,pytorch,2025,audio_speech,,True,True
+2309.11724,Emotion-Aware Prosodic Phrasing for Expressive Text-to-Speech,https://github.com/ai-s2-lab/emopp,none,2023,audio_speech,,True,True
+2505.23420,The Warmup Dilemma: How Learning Rate Strategies Impact Speech-to-Text Model Convergence,https://github.com/hlt-mt/fbk-fairseq,pytorch,2025,audio_speech,,True,True
+2203.13412,Self-Supervised Predictive Learning: A Negative-Free Method for Sound Source Localization in Visual Scenes,https://github.com/zjsong/sspl,pytorch,2022,audio_speech,,True,True
+2409.08514,Apollo: Band-sequence Modeling for High-Quality Audio Restoration,https://github.com/jusperlee/apollo,pytorch,2024,audio_speech,,True,True
+2306.01348,Reducing Popularity Bias in Recommender Systems through AUC-Optimal Negative Sampling,https://github.com/studentcej/auc_ns,pytorch,2023,recsys,,True,True
+2308.11288,Test Time Embedding Normalization for Popularity Bias Mitigation,https://github.com/ml-postech/tten,pytorch,2023,recsys,,True,True
+2302.06595,When Can We Track Significant Preference Shifts in Dueling Bandits?,https://github.com/joesuk/nonstationary-duel,none,2023,recsys,when-can-we-track-significant-preference,True,True
+2403.17416,AFDGCF: Adaptive Feature De-correlation Graph Collaborative Filtering for Recommendations,https://github.com/u-rara/afdgcf,pytorch,2024,recsys,,True,True
+2310.19453,FLIP: Fine-grained Alignment between ID-based Models and Pretrained Language Models for CTR Prediction,https://github.com/justarter/flip,pytorch,2023,recsys,,True,True
+2308.04086,Understanding and Modeling Passive-Negative Feedback for Short-video Sequential Recommendation,https://github.com/tsinghua-fib-lab/recsys2023-sine,pytorch,2023,recsys,,True,True
+2311.05902,Citation Recommendation on Scholarly Legal Articles,https://github.com/dgknrsln/legalcitationrecommendation,none,2023,recsys,,True,True
+2307.16089,"Train Once, Use Flexibly: A Modular Framework for Multi-Aspect Neural News Recommendation",https://github.com/andreeaiana/manner,pytorch,2023,recsys,,True,True
+2203.00376,Popularity Bias in Collaborative Filtering-Based Multimedia Recommender Systems,https://github.com/domkowald/fairrecsys,none,2022,recsys,,True,True
+2408.08713,CTR-KAN: KAN for Adaptive High-Order Feature Interaction Modeling,https://github.com/ancientshi/karsein,pytorch,2024,recsys,,True,True
+2502.09027,A Contextual-Aware Position Encoding for Sequential Recommendation,https://github.com/yjdy/cape,pytorch,2025,recsys,,True,True
+2207.03091,Online SuBmodular + SuPermodular (BP) Maximization with Bandit Feedback,https://github.com/adhyyannarang/online_bp,none,2022,recsys,,True,True
+2309.04802,CPMR: Context-Aware Incremental Sequential Recommendation with Pseudo-Multi-Task Learning,https://github.com/dimarziobian/cpmr,pytorch,2023,recsys,,True,True
+2206.06035,SHREC 2022: Protein-ligand binding site recognition,https://github.com/stemylonas/deepsurf_shrec22,tf,2022,bio_medical,,True,True
+2209.11195,OLIVES Dataset: Ophthalmic Labels for Investigating Visual Eye Semantics,https://github.com/olivesgatech/olives_dataset,pytorch,2022,bio_medical,,True,True
+2306.12802,Otter-Knowledge: benchmarks of multimodal knowledge graph representation learning from different sources for drug discovery,https://github.com/ibm/otter-knowledge,pytorch,2023,bio_medical,,True,True
+2303.00351,Leveraging SO(3)-steerable convolutions for pose-robust semantic segmentation in 3D medical data,https://github.com/scan-nrad/e3nn_unet,pytorch,2023,bio_medical,,True,True
+2308.07416,DiffHopp: A Graph Diffusion Model for Novel Drug Design via Scaffold Hopping,https://github.com/jostorge/diffusion-hopping,pytorch,2023,bio_medical,,True,True
+2505.19562,AMQA: An Adversarial Dataset for Benchmarking Bias of LLMs in Medicine and Healthcare,https://github.com/xy-showing/amqa,none,2025,bio_medical,,True,True
+2408.16769,PromptSmooth: Certifying Robustness of Medical Vision-Language Models via Prompt Learning,https://github.com/nhussein/promptsmooth,pytorch,2024,bio_medical,,True,True
+2407.09043,Vision Language Model is NOT All You Need: Augmentation Strategies for Molecule Language Models,https://github.com/namkyeong/amole,pytorch,2024,bio_medical,,True,True
+2205.02289,A Dataset for N-ary Relation Extraction of Drug Combinations,https://github.com/allenai/drug-combo-extraction,pytorch,2022,bio_medical,,True,True
+2404.18960,Leak Proof CMap; a framework for training and evaluation of cell line agnostic L1000 similarity methods,https://github.com/gsk-ai/leak-proof-cmap,pytorch,2024,bio_medical,,True,True
+2501.16718,Outlier Synthesis via Hamiltonian Monte Carlo for Out-of-Distribution Detection,https://github.com/fir-lat/hamos_ood,pytorch,2025,bio_medical,,True,True
+2210.03488,AlphaFold Distillation for Protein Design,https://github.com/ibm/afdistill,pytorch,2022,bio_medical,,True,True
+
