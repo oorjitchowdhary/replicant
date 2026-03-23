@@ -6,60 +6,34 @@ Turn research papers into working local environments using AI.
 
 Give **replicant** an arXiv paper (or a PDF, or a GitHub URL) and it will:
 
-1. **Intelligently analyze** the paper using Google's Gemini AI to extract GitHub repository links, dependencies, and environment details
-2. Clone the repo and detect existing environment files (`Dockerfile`, `environment.yml`, `requirements.txt`)
-3. Generate a Docker image with all dependencies installed
-4. Drop you into an interactive shell with the code mounted at `/workspace`
+1. **Intelligently analyze** the paper using Claude (via AWS Bedrock) to extract GitHub repository links, dependencies, and environment details
+2. Clone the repo and detect existing environment files (`Dockerfile`, `environment.yml`, `requirements.txt`, `Pipfile`, etc.)
+3. Use AI to resolve ambiguous or underspecified dependencies with correct version pinning
+4. Generate a Docker image with all dependencies installed
+5. Drop you into an interactive shell with the code mounted at `/workspace`
 
-## 🧠 AI-Powered Analysis
-
-**Replicant** uses Google's Gemini AI for intelligent paper analysis, providing superior accuracy for:
-
-- GitHub repository detection from paper text, references, and acknowledgments
-- Framework and library identification (PyTorch, TensorFlow, Hugging Face, etc.)
-- Dataset recognition (both well-known and custom datasets)
-- Hardware requirement extraction (GPU, TPU, memory requirements)
-- Download URL classification (data vs model checkpoints)
-
-**Required Setup:**
-```bash
-# Get a Gemini API key from https://aistudio.google.com/app/apikey
-export GEMINI_API_KEY=your_api_key_here
-
-# Check configuration
-replicant llm-config
-```
-
-## 🤖 Enhanced with AI
-
-**Replicant** now uses Google's Gemini AI for intelligent paper analysis, providing much better accuracy than regex patterns for:
-
-- GitHub repository detection
-- Framework and library identification 
-- Dataset recognition (beyond hardcoded lists)
-- Hardware requirement extraction
-- Download URL classification
-
-**Setup AI analysis (optional):**
-1. Get a Gemini API key: https://aistudio.google.com/app/apikey
-2. Set environment variable: `export GEMINI_API_KEY=your_key_here`
-3. Check setup: `replicant llm-config`
-
-If no API key is provided, replicant falls back to regex-based analysis.
-
-## Quick Start
+## Setup
 
 **Prerequisites:** Docker must be installed and running.
 
 ```bash
-# 1. Install
+# Install
 pip install -e .
 
-# 2. Configure AI (required)
-export GEMINI_API_KEY=your_api_key_here
-replicant llm-config  # Verify setup
+# Set your AWS Bedrock bearer token
+export AWS_BEARER_TOKEN_BEDROCK=your_token
 
-# 3. Use replicant
+# Optional overrides
+export BEDROCK_MODEL_ID=us.anthropic.claude-sonnet-4-6  # default
+export AWS_DEFAULT_REGION=us-west-2                     # default
+
+# Verify setup
+replicant llm-config
+```
+
+## Quick Start
+
+```bash
 # From an arXiv ID
 replicant setup 2301.12345
 
@@ -80,17 +54,33 @@ replicant shell
 
 | Command | Description |
 |---------|-------------|
-| `replicant llm-config` | **Required**: Check and configure AI analysis |
 | `replicant setup <source>` | Set up from arXiv ID, PDF path, or GitHub URL |
 | `replicant setup <source> --github <url>` | Specify GitHub repo explicitly |
 | `replicant shell [env_id]` | Enter environment (latest if no ID) |
 | `replicant list` | List all environments |
 | `replicant info [env_id]` | Show environment details |
-| `replicant delete <env_id>` | Remove environment and Docker image || `replicant llm-config` | Check and configure AI analysis || `replicant validate [env_id]` | Run validation checks |
+| `replicant delete <env_id>` | Remove environment and Docker image |
+| `replicant validate [env_id]` | Run validation checks |
+| `replicant benchmark <corpus>` | Batch-run across a corpus of papers |
+| `replicant llm-config` | Check and configure AI (Bedrock) setup |
 
 ### Global Flags
 
 - `--verbose` — Show debug output (build logs, etc.)
+
+### Benchmark Flags
+
+```bash
+replicant benchmark corpus.csv [OPTIONS]
+
+  -o, --output DIR        Output directory for results (default: ~/.replicant/benchmark/)
+  -t, --timeout SECONDS   Max seconds per Docker build (default: 600)
+  -w, --workers N         Number of parallel workers (default: 4)
+  --resume                Skip papers that already have result files
+  --no-llm                Baseline mode: skip LLM inference, build directly from raw spec files
+```
+
+The `--no-llm` flag is useful for baseline comparisons — it runs the same pipeline but skips all Bedrock API calls and generates Dockerfiles directly from the raw specification files. Results include `"llm_assisted": false` to distinguish baseline runs. `AWS_BEARER_TOKEN_BEDROCK` is not required in this mode.
 
 ## How Environments Are Built
 
@@ -98,8 +88,9 @@ Replicant detects environment files in priority order:
 
 1. **`Dockerfile`** — Used as-is, built directly
 2. **`environment.yml`** — Generates a conda-based Dockerfile
-3. **`requirements.txt`** — Generates a pip-based Dockerfile with inferred Python version
+3. **`requirements.txt`** — Generates a pip-based Dockerfile; AI resolves version pins
 4. **`setup.py` / `pyproject.toml`** — Generates a Dockerfile that `pip install`s the package
+5. **`Pipfile`** — Generates a pipenv-based Dockerfile
 
 ## Storage
 
@@ -121,19 +112,23 @@ Set `REPLICANT_HOME` to override the base directory.
 ```
 replicant/
 ├── cli.py              # Click CLI entrypoint
-├── parsers/
-│   ├── pdf.py          # Extract GitHub URLs from PDFs
+├── sources/
 │   ├── arxiv.py        # Fetch papers from arXiv
-│   └── github.py       # Clone repositories
+│   ├── github.py       # Clone repositories
+│   └── pdf.py          # PDF text extraction
 ├── analyzers/
-│   └── stage1.py       # Find environment files in repos
+│   ├── repo.py         # Environment file detection and spec building
+│   ├── paper.py        # AI-powered paper analysis
+│   └── dependencies.py # AI dependency resolution and version pinning
 ├── generators/
-│   └── docker.py       # Generate Dockerfiles
+│   └── docker.py       # Dockerfile generation
 ├── executors/
 │   └── local.py        # Docker build / run / shell
+├── benchmark.py        # Batch benchmarking across paper corpora
 └── utils/
-    ├── config.py       # Metadata management
-    └── validation.py   # Environment validation
+    ├── config.py        # Metadata management
+    ├── llm_config.py    # AWS Bedrock configuration
+    └── validation.py    # Environment validation
 ```
 
 ## License
