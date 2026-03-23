@@ -6,6 +6,94 @@ from replicant.analyzers.repo import EnvironmentSpec
 from replicant.utils.config import BUILD, ensure_dirs
 
 
+def generate_baseline(spec: EnvironmentSpec, eid: str) -> Path:
+    """Generate a Dockerfile directly from the raw spec file — no LLM resolution."""
+    ensure_dirs()
+    d = BUILD / eid
+    d.mkdir(parents=True, exist_ok=True)
+    p = spec.primary_env
+    if not p:
+        raise RuntimeError("No environment file found in repo.")
+
+    v = spec.python_version
+    if v.count(".") > 1:
+        v = ".".join(v.split(".")[:2])
+
+    if p.endswith("Dockerfile"):
+        return _existing(spec, d)
+
+    if p.endswith((".yml", ".yaml")):
+        f = spec.primary_env_path
+        shutil.copy2(f, d / f.name)
+        (d / "Dockerfile").write_text(f"""\
+FROM continuumio/miniconda3:latest
+COPY {f.name} /tmp/{f.name}
+COPY repo /tmp/repo
+RUN conda env create -f /tmp/{f.name} -n env && conda clean -afy
+WORKDIR /workspace
+CMD ["/bin/bash"]
+""")
+        return d
+
+    if "requirements" in p or p.endswith("reqs.txt"):
+        dest = d / "repo"
+        if dest.exists():
+            shutil.rmtree(dest)
+        shutil.copytree(spec.repo_path, dest, dirs_exist_ok=True)
+        requirements_content = ""
+        if spec.primary_env_path and spec.primary_env_path.exists():
+            requirements_content = spec.primary_env_path.read_text()
+        (d / "requirements.txt").write_text(requirements_content)
+        (d / "Dockerfile").write_text(f"""\
+FROM python:{v}-slim
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential git && rm -rf /var/lib/apt/lists/*
+COPY repo /tmp/repo
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install --no-cache-dir /tmp/repo || true
+WORKDIR /workspace
+CMD ["/bin/bash"]
+""")
+        return d
+
+    if p.endswith(("setup.py", "pyproject.toml", "setup.cfg")):
+        dest = d / "repo"
+        if dest.exists():
+            shutil.rmtree(dest)
+        shutil.copytree(spec.repo_path, dest, dirs_exist_ok=True)
+        (d / "Dockerfile").write_text(f"""\
+FROM python:{v}-slim
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential git && rm -rf /var/lib/apt/lists/*
+COPY repo /tmp/repo
+RUN pip install --no-cache-dir /tmp/repo
+WORKDIR /workspace
+CMD ["/bin/bash"]
+""")
+        return d
+
+    if p.endswith("Pipfile"):
+        shutil.copy2(spec.primary_env_path, d / "Pipfile")
+        lockfile = spec.primary_env_path.parent / "Pipfile.lock"
+        if lockfile.exists():
+            shutil.copy2(lockfile, d / "Pipfile.lock")
+        dest = d / "repo"
+        if dest.exists():
+            shutil.rmtree(dest)
+        shutil.copytree(spec.repo_path, dest, dirs_exist_ok=True)
+        (d / "Dockerfile").write_text(f"""\
+FROM python:{v}-slim
+RUN pip install pipenv
+COPY repo /tmp/repo
+WORKDIR /tmp/repo
+RUN pipenv install --system --deploy || pipenv install --system
+WORKDIR /workspace
+CMD ["/bin/bash"]
+""")
+        return d
+
+    raise RuntimeError(f"Can't handle: {p}")
+
+
 def generate(spec: EnvironmentSpec, eid: str) -> Path:
     ensure_dirs()
     d = BUILD / eid; d.mkdir(parents=True, exist_ok=True)

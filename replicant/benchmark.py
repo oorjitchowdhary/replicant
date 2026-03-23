@@ -85,6 +85,7 @@ class PaperResult(BaseModel):
     github_accessible: bool = False
     env_file_found: bool = False
     env_file_type: str = ""
+    llm_assisted: bool = True
     llm_inferences_made: int = 0
     python_version_inferred: str = ""
     dependencies_detected: int = 0
@@ -294,6 +295,7 @@ def run_single_paper(
     entry: CorpusEntry,
     timeout: int = DEFAULT_TIMEOUT,
     logger: logging.Logger | None = None,
+    no_llm: bool = False,
 ) -> PaperResult:
     """Run the full setup pipeline for a single paper. Never raises."""
     log = logger or logging.getLogger("replicant.benchmark")
@@ -303,6 +305,7 @@ def run_single_paper(
         venue=entry.conference or "arxiv", year=int(entry.year) if entry.year else 0,
         subfield=entry.subfield, framework=entry.framework,
         timestamp=datetime.now(timezone.utc).isoformat(),
+        llm_assisted=not no_llm,
     )
     github_url: str | None = entry.repo_url.strip() or None
 
@@ -346,19 +349,20 @@ def run_single_paper(
             _fail(result, "repo_inaccessible", str(exc)[:500], "github_discovery")
             return result
 
-        # Step 3: PDF path for analysis
+        # Step 3: PDF path for analysis (skipped in no-LLM mode)
         pdf_for_analysis = None
-        from replicant.sources.arxiv import is_arxiv
-        if is_arxiv(entry.paper_arxiv_id):
-            candidate = HOME / "papers" / f"{entry.paper_arxiv_id}.pdf"
-            if candidate.exists():
-                pdf_for_analysis = candidate
+        if not no_llm:
+            from replicant.sources.arxiv import is_arxiv
+            if is_arxiv(entry.paper_arxiv_id):
+                candidate = HOME / "papers" / f"{entry.paper_arxiv_id}.pdf"
+                if candidate.exists():
+                    pdf_for_analysis = candidate
 
         # Step 4: Analyze repo
         log.info("[%s] Analyzing repo", entry.paper_arxiv_id)
         try:
             from replicant.analyzers.repo import analyze
-            spec = analyze(code_path, pdf_path=pdf_for_analysis)
+            spec = analyze(code_path, pdf_path=pdf_for_analysis, resolve_deps=not no_llm)
             if pdf_for_analysis:
                 result.llm_inferences_made += 1
             if spec.resolved_deps:
@@ -389,9 +393,13 @@ def run_single_paper(
         # Step 5: Generate Dockerfile
         log.info("[%s] Generating Dockerfile", entry.paper_arxiv_id)
         try:
-            from replicant.generators.docker import generate
             eid = env_id(entry.paper_arxiv_id, github_url)
-            build_dir = generate(spec, eid)
+            if no_llm:
+                from replicant.generators.docker import generate_baseline
+                build_dir = generate_baseline(spec, eid)
+            else:
+                from replicant.generators.docker import generate
+                build_dir = generate(spec, eid)
         except Exception as exc:
             log.warning("[%s] Dockerfile generation failed: %s", entry.paper_arxiv_id, exc)
             message = str(exc)
@@ -509,7 +517,7 @@ def _tally(results: list[PaperResult], field: str) -> dict[str, dict[str, int]]:
     return out
 
 
-def generate_summary(results: list[PaperResult], skipped: int = 0) -> dict:
+def generate_summary(results: list[PaperResult], skipped: int = 0, no_llm: bool = False) -> dict:
     """Generate an aggregate summary from all paper results."""
     successes = sum(1 for r in results if r.build_success)
     failure_breakdown: dict[str, int] = {}
@@ -520,6 +528,7 @@ def generate_summary(results: list[PaperResult], skipped: int = 0) -> dict:
         if r.failure_stage:
             failure_by_stage[r.failure_stage] = failure_by_stage.get(r.failure_stage, 0) + 1
     return {
+        "llm_assisted": not no_llm,
         "corpus_size": len(results) + skipped,
         "completed": len(results),
         "skipped": skipped,
@@ -539,6 +548,7 @@ def run_benchmark(
     resume: bool = False,
     max_workers: int = 1,
     result_callback=None,
+    no_llm: bool = False,
 ) -> Path:
     """Run the full benchmark. Returns the output directory path."""
     if not corpus:
@@ -584,7 +594,7 @@ def run_benchmark(
             while queue and len(futures) < max_workers:
                 idx, entry = queue.pop(0)
                 logger.info("[%d/%d] %s — starting", idx, total, entry.paper_arxiv_id)
-                future = executor.submit(run_single_paper, entry, timeout=timeout, logger=logger)
+                future = executor.submit(run_single_paper, entry, timeout=timeout, logger=logger, no_llm=no_llm)
                 futures[future] = (idx, entry)
 
             # Process completions and submit new work
@@ -611,11 +621,11 @@ def run_benchmark(
                     if queue:
                         next_idx, next_entry = queue.pop(0)
                         logger.info("[%d/%d] %s — starting", next_idx, total, next_entry.paper_arxiv_id)
-                        next_future = executor.submit(run_single_paper, next_entry, timeout=timeout, logger=logger)
+                        next_future = executor.submit(run_single_paper, next_entry, timeout=timeout, logger=logger, no_llm=no_llm)
                         futures[next_future] = (next_idx, next_entry)
                     break
 
-    summary = generate_summary(results, skipped=skipped)
+    summary = generate_summary(results, skipped=skipped, no_llm=no_llm)
     (output / "summary.json").write_text(json.dumps(summary, indent=2))
     logger.info("Benchmark complete. Summary: %s", output / "summary.json")
     return output

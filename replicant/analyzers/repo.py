@@ -75,7 +75,7 @@ class EnvironmentSpec:
     readme_setup: str = ""                                   # setup section from README
 
 
-def analyze(repo: str | Path, pdf_path: str | Path | None = None) -> EnvironmentSpec:
+def analyze(repo: str | Path, pdf_path: str | Path | None = None, resolve_deps: bool = True) -> EnvironmentSpec:
     repo = Path(repo)
     spec = EnvironmentSpec(repo_path=repo)
 
@@ -181,7 +181,7 @@ def analyze(repo: str | Path, pdf_path: str | Path | None = None) -> Environment
 
     # === AI-POWERED DEPENDENCY RESOLUTION ===
     # Only run if we have an env file — skip for repos that will fail at env_detection anyway
-    if spec.primary_env:
+    if spec.primary_env and resolve_deps:
         spec.resolved_deps = _resolve_with_ai(repo, spec)
     
     # Update python version from AI resolution if provided

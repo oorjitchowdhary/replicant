@@ -354,10 +354,11 @@ def validate(env_id):
 @click.option("--timeout", "-t", default=600, type=int, show_default=True, help="Max seconds per paper Docker build.")
 @click.option("--workers", "-w", default=4, type=int, show_default=True, help="Number of parallel workers.")
 @click.option("--resume", is_flag=True, help="Skip papers that already have result files.")
+@click.option("--no-llm", "no_llm", is_flag=True, help="Baseline mode: skip LLM inference and build directly from raw spec files.")
 @click.pass_context
-def benchmark(ctx, corpus_file, output, timeout, workers, resume):
+def benchmark(ctx, corpus_file, output, timeout, workers, resume, no_llm):
     """Batch-run setup across a corpus of papers and collect structured failure data."""
-    if not os.getenv("AWS_BEARER_TOKEN_BEDROCK"):
+    if not no_llm and not os.getenv("AWS_BEARER_TOKEN_BEDROCK"):
         _abort("AWS_BEARER_TOKEN_BEDROCK is required. Set it with: export AWS_BEARER_TOKEN_BEDROCK=your_token")
 
     with _spin("Checking Docker…") as p:
@@ -373,6 +374,10 @@ def benchmark(ctx, corpus_file, output, timeout, workers, resume):
         _abort(f"Failed to load corpus: {e}")
 
     con.print(f"  Corpus: [cyan]{corpus_file}[/] ({len(corpus)} papers)")
+    if no_llm:
+        con.print("  Mode: [yellow]baseline (no LLM)[/]")
+    else:
+        con.print("  Mode: [green]LLM-assisted[/]")
     if resume:
         con.print("  [dim]Resume mode: skipping papers with existing results[/]")
     con.print(f"  Workers: {workers} parallel | Timeout: {timeout}s per paper\n")
@@ -386,7 +391,7 @@ def benchmark(ctx, corpus_file, output, timeout, workers, resume):
             con.print(f"  [{idx}/{total}] [cyan]{pid}[/] — [red]✗ {status}[/] [dim]({duration:.1f}s)[/]")
 
     try:
-        output_dir = run_benchmark(corpus, output_dir=output, timeout=timeout, resume=resume, max_workers=workers, result_callback=_print_result)
+        output_dir = run_benchmark(corpus, output_dir=output, timeout=timeout, resume=resume, max_workers=workers, result_callback=_print_result, no_llm=no_llm)
     except Exception as e:
         _abort(f"Benchmark failed: {e}")
 
@@ -404,8 +409,10 @@ def _print_benchmark_summary(s: dict, output_dir):
     t.add_column("Value")
     total_done = s["outcomes"]["success"] + s["outcomes"]["failure"]
     rate = (s["outcomes"]["success"] / total_done * 100) if total_done else 0
+    mode_val = "[green]LLM-assisted[/]" if s.get("llm_assisted", True) else "[yellow]baseline (no LLM)[/]"
     for label, val in [
         ("Corpus size", s["corpus_size"]), ("Completed", s["completed"]),
+        ("Mode", mode_val),
         ("Skipped (cached)", s["skipped"]), ("Duration", f"{s['total_duration_seconds']:.0f}s"),
         ("", ""), ("[green]Successes[/]", f"{s['outcomes']['success']}  ({rate:.0f}%)"),
         ("[red]Failures[/]", s["outcomes"]["failure"]),
