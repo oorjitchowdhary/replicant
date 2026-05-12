@@ -131,6 +131,12 @@ replicant/
     └── validation.py    # Environment validation
 ```
 
+## Docs
+
+- [How it works](docs/how-it-works.md) — pipeline, AI dependency resolution, implementation overview
+- [Supported environments](docs/supported-environments.md) — env file types, priority order, generated Dockerfiles
+- [Troubleshooting](docs/troubleshooting.md) — failure categories and fixes
+
 ## License
 
 MIT
