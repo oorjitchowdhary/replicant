@@ -36,3 +36,12 @@ htmlcov/
 
 # Logs
 *.log
+
+# Benchmark results and corpus data (kept on acm-rep-2026 branch)
+results/
+results_baseline/
+benchmark_merged/
+corpus*.csv
+corpus*.json
+corpus_methodology.json
+tmp_benchmark_subset.csv
