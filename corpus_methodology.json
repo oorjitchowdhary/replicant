@@ -1,0 +1,68 @@
+{
+  "description": "Corpus selection methodology for ACM REP '26 benchmark",
+  "source": "Papers with Code archive (final snapshot, July 2025)",
+  "source_url": "https://huggingface.co/datasets/pwc-archive/links-between-paper-and-code",
+  "license": "CC-BY-SA 4.0",
+  "random_seed": 42,
+  "target_size": 1000,
+  "min_per_subfield": 5,
+  "year_range": [
+    2022,
+    2025
+  ],
+  "inclusion_criteria": [
+    "Has arXiv identifier",
+    "Code hosted on GitHub",
+    "Author-provided (official) repository link",
+    "Published 2022-2025"
+  ],
+  "filtering_funnel": {
+    "total_paper_code_links": 300161,
+    "official_repos_only": 194541,
+    "with_arxiv_id": 187115,
+    "github_hosted": 184323,
+    "total_papers_in_archive": 576261,
+    "year_filtered": 92951,
+    "after_dedup": 89697,
+    "final_corpus": 1000
+  },
+  "subfield_classification": "Keyword matching on PwC task annotations",
+  "subfield_distribution": {
+    "other_ml": 323,
+    "computer_vision": 205,
+    "uncategorized": 159,
+    "nlp": 124,
+    "rl_robotics": 50,
+    "graph_ml": 37,
+    "code_se": 29,
+    "time_series": 28,
+    "audio_speech": 20,
+    "recsys": 13,
+    "bio_medical": 12
+  },
+  "year_distribution": {
+    "2022": 243,
+    "2023": 291,
+    "2024": 325,
+    "2025": 141
+  },
+  "framework_distribution": {
+    "pytorch": 649,
+    "none": 290,
+    "jax": 33,
+    "tf": 28
+  },
+  "allocation": {
+    "other_ml": 323,
+    "computer_vision": 205,
+    "uncategorized": 159,
+    "nlp": 124,
+    "rl_robotics": 50,
+    "graph_ml": 37,
+    "code_se": 29,
+    "time_series": 28,
+    "audio_speech": 20,
+    "recsys": 13,
+    "bio_medical": 12
+  }
+}
