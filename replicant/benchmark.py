@@ -100,6 +100,7 @@ class PaperResult(BaseModel):
     dataset_access: str = ""
     hardware_required: str = ""
     fixability: str = ""
+    retry_attempted: bool = False
     duration_seconds: float = 0.0
     timestamp: str = ""
 
@@ -434,6 +435,43 @@ def run_single_paper(
         else:
             cat, detail, stg = categorize_failure(build_log, build_log, "docker_build")
             _fail(result, cat, detail, stg)
+
+            # One-shot retry for dependency failures when LLM is available
+            _retryable = ("phantom_dependency", "version_conflict", "unknown_build_error")
+            if not no_llm and cat in _retryable and spec.primary_env and not spec.primary_env.endswith("Dockerfile"):
+                log.info("[%s] Retrying after %s with corrected deps", entry.paper_arxiv_id, cat)
+                result.retry_attempted = True
+                try:
+                    from replicant.utils.build_errors import parse_build_failure
+                    from replicant.utils.config import LOGS
+                    from replicant.analyzers.dependencies import resolve_dependencies, extract_code_samples
+                    from replicant.generators.docker import generate
+
+                    failure_ctx = parse_build_failure(LOGS / f"{tag}.log")
+                    req_content = spec.primary_env_path.read_text(errors="ignore") if spec.primary_env_path else ""
+                    code_samps = extract_code_samples(code_path)
+
+                    spec.resolved_deps = resolve_dependencies(
+                        repo_path=code_path,
+                        existing_requirements=(
+                            req_content +
+                            f"\n\n# PREVIOUS BUILD FAILURE — use this to fix the dependency set:\n"
+                            + "\n".join(f"# {ln}" for ln in failure_ctx.splitlines())
+                        ),
+                        code_samples=code_samps,
+                        readme_content=spec.readme_setup or "",
+                    )
+                    result.llm_inferences_made += 1
+                    build_dir = generate(spec, eid)
+                    build_success, build_log = _build_with_timeout(build_dir, tag, timeout)
+                    if build_success:
+                        result.build_success = True
+                        result.failure_category = "success"
+                    else:
+                        cat2, detail2, stg2 = categorize_failure(build_log, build_log, "docker_build")
+                        _fail(result, cat2, detail2, stg2)
+                except Exception as retry_exc:
+                    log.warning("[%s] Retry failed: %s", entry.paper_arxiv_id, retry_exc)
 
         # Save EnvMeta
         from replicant.utils.config import EnvMeta

@@ -149,7 +149,37 @@ def setup(ctx, source, github):
     # build
     con.print("[bold]Building Docker image…[/]")
     from replicant.executors.local import build
-    if build(build_dir, tag, verbose=verbose):
+    build_ok = build(build_dir, tag, verbose=verbose)
+
+    # One-shot retry for dependency failures
+    if not build_ok and spec.resolved_deps and spec.primary_env and not spec.primary_env.endswith("Dockerfile"):
+        con.print("[yellow]Build failed — retrying with corrected dependencies…[/]")
+        try:
+            from replicant.utils.build_errors import parse_build_failure
+            from replicant.utils.config import LOGS
+            from replicant.analyzers.dependencies import resolve_dependencies, extract_code_samples
+            from replicant.generators.docker import generate as _generate
+
+            failure_ctx = parse_build_failure(LOGS / f"{tag}.log")
+            req_content = spec.primary_env_path.read_text(errors="ignore") if spec.primary_env_path else ""
+            code_samps = extract_code_samples(Path(meta.code_path))
+
+            spec.resolved_deps = resolve_dependencies(
+                repo_path=Path(meta.code_path),
+                existing_requirements=(
+                    req_content +
+                    f"\n\n# PREVIOUS BUILD FAILURE — use this to fix the dependency set:\n"
+                    + "\n".join(f"# {ln}" for ln in failure_ctx.splitlines())
+                ),
+                code_samples=code_samps,
+                readme_content=spec.readme_setup or "",
+            )
+            build_dir = _generate(spec, eid)
+            build_ok = build(build_dir, tag, verbose=verbose)
+        except Exception as retry_exc:
+            con.print(f"[dim]Retry attempt failed: {retry_exc}[/]")
+
+    if build_ok:
         meta.status = "ready"; meta.save()
         con.print(Panel(
             f"[bold green]✔ Ready![/]\n  ID: [bold]{eid}[/]  Image: {tag}\n\n"

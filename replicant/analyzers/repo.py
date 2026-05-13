@@ -226,7 +226,7 @@ def _resolve_with_ai(repo: Path, spec: EnvironmentSpec) -> "ResolvedDependencies
             readme_content = readme_file.read_text(errors="ignore")
         
         # Call AI dependency resolver
-        return resolve_dependencies(
+        resolved = resolve_dependencies(
             repo_path=repo,
             existing_requirements=requirements_content,
             existing_env_yml=env_yml_content,
@@ -234,6 +234,28 @@ def _resolve_with_ai(repo: Path, spec: EnvironmentSpec) -> "ResolvedDependencies
             code_samples=code_samples,
             readme_content=readme_content,
         )
+
+        # Pre-build PyPI validation — catch phantom packages before Docker wastes time
+        try:
+            from replicant.utils.preflight import validate_packages, revalidate_with_llm
+            phantoms = validate_packages(resolved)
+            if phantoms:
+                import sys
+                print(f"[preflight] Phantom packages detected: {phantoms}. Re-resolving…", file=sys.stderr)
+                resolved = revalidate_with_llm(
+                    phantoms=phantoms,
+                    repo_path=repo,
+                    existing_requirements=requirements_content,
+                    existing_env_yml=env_yml_content,
+                    setup_py_content=setup_content,
+                    code_samples=code_samples,
+                    readme_content=readme_content,
+                )
+        except Exception as preflight_err:
+            import sys
+            print(f"Warning: preflight validation failed: {preflight_err}", file=sys.stderr)
+
+        return resolved
     except Exception as e:
         # Log but don't fail - fall back to existing requirements
         import sys
@@ -266,7 +288,7 @@ def _find_env_files(repo: Path) -> tuple[dict[str, Path], str | None, Path | Non
         if p.exists():
             found[name] = p
 
-    # --- glob patterns ---
+    # --- glob patterns (depth 1-2) ---
     for p in repo.glob("requirements-*.txt"):
         found[p.name] = p
     for p in repo.glob("requirements_*.txt"):
@@ -284,7 +306,26 @@ def _find_env_files(repo: Path) -> tuple[dict[str, Path], str | None, Path | Non
         if key not in found:
             found[key] = df
 
-    # --- one-level-deep fallbacks for setup files ---
+    # --- depth-2 patterns ---
+    for pattern in (
+        "*/*/requirements.txt",
+        "*/*/requirements-*.txt",
+        "*/*/requirements_*.txt",
+        "*/*/environment.yml",
+        "*/*/environment.yaml",
+    ):
+        for p in repo.glob(pattern):
+            key = str(p.relative_to(repo))
+            if key not in found:
+                found[key] = p
+
+    # --- depth-3 requirements ---
+    for p in repo.glob("*/*/*/requirements.txt"):
+        key = str(p.relative_to(repo))
+        if key not in found:
+            found[key] = p
+
+    # --- multi-level fallbacks for setup files (depth 1-2) ---
     for child in repo.iterdir():
         if not child.is_dir() or child.name.startswith("."):
             continue
@@ -295,6 +336,17 @@ def _find_env_files(repo: Path) -> tuple[dict[str, Path], str | None, Path | Non
                 key = str(p.relative_to(repo))
                 if key not in found:
                     found[key] = p
+        # depth-2 setup files
+        for grandchild in child.iterdir():
+            if not grandchild.is_dir() or grandchild.name.startswith("."):
+                continue
+            for name in ("setup.py", "pyproject.toml", "setup.cfg", "Pipfile",
+                         "environment.yml", "environment.yaml"):
+                p = grandchild / name
+                if p.exists():
+                    key = str(p.relative_to(repo))
+                    if key not in found:
+                        found[key] = p
 
     # --- determine primary by priority ---
     primary: str | None = None
@@ -353,15 +405,22 @@ def _find_env_files(repo: Path) -> tuple[dict[str, Path], str | None, Path | Non
             if _set(name):
                 break
 
-    # 10. One-level-deep setup files (lowest priority)
+    # 10. Multi-level setup files (lowest priority, prefer shallowest + most .py files)
     if primary is None:
-        for name, p in found.items():
-            if "/" in name and any(
-                name.endswith(s) for s in ("setup.py", "pyproject.toml", "setup.cfg", "Pipfile",
-                                           "environment.yml", "environment.yaml")
-            ):
-                primary, primary_path = name, p
-                break
+        _setup_suffixes = ("setup.py", "pyproject.toml", "setup.cfg", "Pipfile",
+                           "environment.yml", "environment.yaml", "requirements.txt")
+        candidates = [
+            (name, p) for name, p in found.items()
+            if "/" in name and any(name.endswith(s) for s in _setup_suffixes)
+        ]
+        if candidates:
+            def _candidate_score(item: tuple[str, Path]) -> tuple[int, int]:
+                name, p = item
+                depth = name.count("/")
+                py_count = sum(1 for _ in p.parent.glob("*.py"))
+                return (depth, -py_count)
+            best = min(candidates, key=_candidate_score)
+            primary, primary_path = best[0], best[1]
 
     # Fallback: any Dockerfile found anywhere
     if primary is None:
