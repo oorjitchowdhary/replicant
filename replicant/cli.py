@@ -38,8 +38,9 @@ def main(ctx, verbose):
 @main.command()
 @click.argument("source")
 @click.option("--github", default=None, help="Explicit GitHub URL.")
+@click.option("--cloud", is_flag=True, help="Run build in the cloud (AWS EC2 GPU instance).")
 @click.pass_context
-def setup(ctx, source, github):
+def setup(ctx, source, github, cloud):
     """Setup environment from arXiv ID, PDF, or GitHub URL."""
     verbose = ctx.obj["verbose"]
 
@@ -131,6 +132,14 @@ def setup(ctx, source, github):
     _print_spec(spec)
     con.print()
 
+    # decide whether to use cloud
+    use_cloud = cloud
+    if not use_cloud:
+        needs_cloud = spec.needs_gpu or spec.needs_tpu or bool(spec.download_urls)
+        if needs_cloud:
+            con.print("[yellow]⚠  GPU or large data detected.[/]")
+            use_cloud = click.confirm("Run in the cloud?", default=False)
+
     # generate dockerfile
     with _spin("Generating Dockerfile…") as p:
         p.add_task("Generating Dockerfile…")
@@ -146,49 +155,81 @@ def setup(ctx, source, github):
     )
     meta.save()
 
-    # build
-    con.print("[bold]Building Docker image…[/]")
-    from replicant.executors.local import build
-    build_ok = build(build_dir, tag, verbose=verbose)
-
-    # One-shot retry for dependency failures
-    if not build_ok and spec.resolved_deps and spec.primary_env and not spec.primary_env.endswith("Dockerfile"):
-        con.print("[yellow]Build failed — retrying with corrected dependencies…[/]")
+    if use_cloud:
+        # Cloud build via AWS EC2
+        con.print("[bold]Provisioning cloud infrastructure…[/]")
+        from replicant.providers.aws import AWSProvider
+        from replicant.executors.cloud import CloudExecutor
         try:
-            from replicant.utils.build_errors import parse_build_failure
-            from replicant.utils.config import LOGS
-            from replicant.analyzers.dependencies import resolve_dependencies, extract_code_samples
-            from replicant.generators.docker import generate as _generate
+            provider = AWSProvider()
+            resources = provider.provision(spec, eid)
+        except Exception as e:
+            meta.status = "failed"; meta.save()
+            _abort(f"Cloud provisioning failed: {e}")
 
-            failure_ctx = parse_build_failure(LOGS / f"{tag}.log")
-            req_content = spec.primary_env_path.read_text(errors="ignore") if spec.primary_env_path else ""
-            code_samps = extract_code_samples(Path(meta.code_path))
+        meta.cloud_provider = "aws"
+        meta.cloud_instance_id = resources.instance_id
+        meta.cloud_region = resources.region
+        meta.cloud_bucket = resources.s3_bucket
+        meta.save()
 
-            spec.resolved_deps = resolve_dependencies(
-                repo_path=Path(meta.code_path),
-                existing_requirements=(
-                    req_content +
-                    f"\n\n# PREVIOUS BUILD FAILURE — use this to fix the dependency set:\n"
-                    + "\n".join(f"# {ln}" for ln in failure_ctx.splitlines())
-                ),
-                code_samples=code_samps,
-                readme_content=spec.readme_setup or "",
-            )
-            build_dir = _generate(spec, eid)
-            build_ok = build(build_dir, tag, verbose=verbose)
-        except Exception as retry_exc:
-            con.print(f"[dim]Retry attempt failed: {retry_exc}[/]")
-
-    if build_ok:
-        meta.status = "ready"; meta.save()
-        con.print(Panel(
-            f"[bold green]✔ Ready![/]\n  ID: [bold]{eid}[/]  Image: {tag}\n\n"
-            f"  [bold cyan]replicant shell {eid}[/]",
-            title="Success", border_style="green",
-        ))
+        con.print(f"  Instance: [cyan]{resources.instance_ip}[/]  Bucket: [cyan]{resources.s3_bucket}[/]")
+        con.print("[bold]Building Docker image on cloud instance…[/]")
+        executor = CloudExecutor(resources)
+        if executor.build(build_dir, tag, verbose=verbose):
+            meta.status = "ready"; meta.save()
+            con.print(Panel(
+                f"[bold green]✔ Ready (cloud)![/]\n  ID: [bold]{eid}[/]  Image: {tag}\n\n"
+                f"  [bold cyan]replicant shell {eid}[/]",
+                title="Success", border_style="green",
+            ))
+        else:
+            meta.status = "failed"; meta.save()
+            _abort(f"Cloud build failed. Check ~/.replicant/logs/{tag}.log")
     else:
-        meta.status = "failed"; meta.save()
-        _abort(f"Build failed. Check ~/.replicant/logs/{tag}.log")
+        # Local build
+        con.print("[bold]Building Docker image…[/]")
+        from replicant.executors.local import build
+        build_ok = build(build_dir, tag, verbose=verbose)
+
+        # One-shot retry for dependency failures
+        if not build_ok and spec.resolved_deps and spec.primary_env and not spec.primary_env.endswith("Dockerfile"):
+            con.print("[yellow]Build failed — retrying with corrected dependencies…[/]")
+            try:
+                from replicant.utils.build_errors import parse_build_failure
+                from replicant.utils.config import LOGS
+                from replicant.analyzers.dependencies import resolve_dependencies, extract_code_samples
+                from replicant.generators.docker import generate as _generate
+
+                failure_ctx = parse_build_failure(LOGS / f"{tag}.log")
+                req_content = spec.primary_env_path.read_text(errors="ignore") if spec.primary_env_path else ""
+                code_samps = extract_code_samples(Path(meta.code_path))
+
+                spec.resolved_deps = resolve_dependencies(
+                    repo_path=Path(meta.code_path),
+                    existing_requirements=(
+                        req_content +
+                        f"\n\n# PREVIOUS BUILD FAILURE — use this to fix the dependency set:\n"
+                        + "\n".join(f"# {ln}" for ln in failure_ctx.splitlines())
+                    ),
+                    code_samples=code_samps,
+                    readme_content=spec.readme_setup or "",
+                )
+                build_dir = _generate(spec, eid)
+                build_ok = build(build_dir, tag, verbose=verbose)
+            except Exception as retry_exc:
+                con.print(f"[dim]Retry attempt failed: {retry_exc}[/]")
+
+        if build_ok:
+            meta.status = "ready"; meta.save()
+            con.print(Panel(
+                f"[bold green]✔ Ready![/]\n  ID: [bold]{eid}[/]  Image: {tag}\n\n"
+                f"  [bold cyan]replicant shell {eid}[/]",
+                title="Success", border_style="green",
+            ))
+        else:
+            meta.status = "failed"; meta.save()
+            _abort(f"Build failed. Check ~/.replicant/logs/{tag}.log")
 
 
 def _print_spec(spec):
@@ -472,6 +513,62 @@ def llm_config():
         con.print(f"[red]✗[/] {message}")
         con.print(get_config_instructions())
         sys.exit(1)
+
+
+@main.group()
+def cloud():
+    """Manage cloud environments."""
+
+
+@cloud.command()
+@click.argument("env_id")
+def teardown(env_id):
+    """Tear down cloud infrastructure for an environment."""
+    m = _env(env_id)
+    if m.cloud_provider != "aws":
+        _abort(f"Environment '{env_id}' has no cloud infrastructure to tear down.")
+    from replicant.providers.aws import AWSProvider
+    con.print(f"Tearing down cloud infrastructure for [bold]{env_id}[/] …")
+    try:
+        AWSProvider().teardown(env_id)
+    except Exception as e:
+        _abort(f"Teardown failed: {e}")
+    m.cloud_provider = None
+    m.cloud_instance_id = None
+    m.cloud_region = None
+    m.cloud_bucket = None
+    m.status = "ready"
+    m.save()
+    con.print(f"[green]✔[/] Cloud infrastructure for [bold]{env_id}[/] torn down.")
+
+
+@cloud.command(name="status")
+def cloud_status():
+    """List environments running in the cloud."""
+    envs = [e for e in EnvMeta.all() if e.cloud_provider is not None]
+    if not envs:
+        con.print("No cloud environments.")
+        return
+    t = Table(title="Cloud Environments")
+    t.add_column("ID", style="bold")
+    t.add_column("Provider")
+    t.add_column("Status")
+    t.add_column("Instance ID")
+    t.add_column("Region")
+    t.add_column("Bucket")
+    t.add_column("Source")
+    for e in envs:
+        st_color = {"ready": "green", "building": "yellow", "failed": "red"}.get(e.status, "dim")
+        t.add_row(
+            e.env_id,
+            e.cloud_provider or "-",
+            f"[{st_color}]{e.status}[/]",
+            e.cloud_instance_id or "-",
+            e.cloud_region or "-",
+            e.cloud_bucket or "-",
+            e.source[:40],
+        )
+    con.print(t)
 
 
 if __name__ == "__main__":
