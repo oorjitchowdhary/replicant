@@ -3,7 +3,8 @@ resource "random_id" "bucket_suffix" {
 }
 
 resource "aws_s3_bucket" "artifacts" {
-  bucket = "replicant-${var.project_tag}-${random_id.bucket_suffix.hex}-artifacts"
+  bucket        = "replicant-${var.project_tag}-${random_id.bucket_suffix.hex}-artifacts"
+  force_destroy = true
 
   tags = {
     replicant_env = var.project_tag
