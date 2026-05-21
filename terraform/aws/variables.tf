@@ -1,7 +1,7 @@
 variable "instance_type" {
-  description = "EC2 instance type"
+  description = "EC2 instance type. Use t3.large for standard workloads, g4dn.xlarge for GPU (requires quota increase)."
   type        = string
-  default     = "g4dn.xlarge"
+  default     = "t3.large"
 }
 
 variable "region" {
@@ -11,9 +11,9 @@ variable "region" {
 }
 
 variable "ami_id" {
-  description = "Deep Learning AMI (Ubuntu) - update per region"
+  description = "Ubuntu 22.04 LTS AMI - update if deploying outside us-west-2"
   type        = string
-  default     = "ami-0735c191cf914754d"  # us-west-2 Deep Learning AMI Ubuntu 20.04
+  default     = "ami-03f65b8614a860c29"  # us-west-2 Ubuntu 22.04 LTS
 }
 
 variable "project_tag" {

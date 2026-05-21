@@ -80,25 +80,32 @@ class CloudExecutor:
 
     def shell(self, meta: EnvMeta, gpu: bool = False) -> None:
         """
-        Load image from S3 if not present, then launch an interactive shell.
+        Sync repo code to instance, load image from S3 if not present,
+        then launch an interactive shell with the code mounted at /workspace.
         """
         tag = meta.docker_image
         bucket = self.resources.s3_bucket
+        remote = self._remote()
 
-        # Load image from S3 if not already present on the remote
+        # Sync the local repo clone to ~/code on the instance (ubuntu-owned path).
+        if meta.code_path:
+            print("  Syncing code to instance…")
+            self._run_rsync(f"{meta.code_path}/", f"{remote}:/home/ubuntu/code/")
+
+        # Load image from S3 if not already present on the remote.
         load_cmd = (
             f"docker image inspect {tag} > /dev/null 2>&1 || "
             f"aws s3 cp s3://{bucket}/{tag}.tar.gz - | docker load"
         )
-        self._run_ssh(load_cmd)
+        self._run_ssh(load_cmd, capture=False)
 
         gpu_flag = "--gpus all" if gpu else ""
         run_cmd = (
             f"docker run -it --rm {gpu_flag} "
-            f"-v /workspace:/workspace {tag} /bin/bash"
+            f"-v /home/ubuntu/code:/workspace -w /workspace {tag} /bin/bash"
         ).strip()
 
-        cmd = ["ssh", "-t", *self._ssh_opts(), self._remote(), run_cmd]
+        cmd = ["ssh", "-t", *self._ssh_opts(), remote, run_cmd]
         subprocess.run(cmd)
 
     def remove_image(self, tag: str) -> None:

@@ -9,7 +9,7 @@ import pytest
 
 from replicant.providers.base import CloudResources
 from replicant.executors.cloud import CloudExecutor
-from replicant.providers.aws import AWSProvider, _find_terraform
+from replicant.providers.aws import AWSProvider, _find_terraform, _find_sso_profile, _ensure_aws_credentials
 from replicant.utils.config import EnvMeta
 
 
@@ -263,18 +263,19 @@ def _fake_tf_outputs() -> str:
     })
 
 
+_no_creds = patch("replicant.providers.aws._ensure_aws_credentials")
+_no_wait  = patch("replicant.providers.aws._wait_for_instance_ready")
+
+
 def test_provision_returns_cloud_resources():
     provider = AWSProvider()
 
-    call_count = [0]
-
     def fake_tf(*args, **kwargs):
-        call_count[0] += 1
         if "output" in args:
             return subprocess.CompletedProcess(args=[], returncode=0, stdout=_fake_tf_outputs(), stderr="")
         return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
-    with patch.object(provider, "_tf", side_effect=fake_tf):
+    with _no_creds, _no_wait, patch.object(provider, "_tf", side_effect=fake_tf):
         resources = provider.provision(MagicMock(), "env-abc")
 
     assert resources.instance_ip == "10.0.0.1"
@@ -294,7 +295,7 @@ def test_provision_calls_init_then_apply():
             return subprocess.CompletedProcess(args=[], returncode=0, stdout=_fake_tf_outputs(), stderr="")
         return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
-    with patch.object(provider, "_tf", side_effect=fake_tf):
+    with _no_creds, _no_wait, patch.object(provider, "_tf", side_effect=fake_tf):
         provider.provision(MagicMock(), "env-xyz")
 
     assert calls[0][0] == "init"
@@ -312,10 +313,26 @@ def test_provision_passes_env_id_as_project_tag():
             return subprocess.CompletedProcess(args=[], returncode=0, stdout=_fake_tf_outputs(), stderr="")
         return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
-    with patch.object(provider, "_tf", side_effect=fake_tf):
+    with _no_creds, _no_wait, patch.object(provider, "_tf", side_effect=fake_tf):
         provider.provision(MagicMock(), "my-env-id")
 
     assert any("my-env-id" in a for a in apply_args)
+
+
+def test_provision_waits_for_instance_ready():
+    provider = AWSProvider()
+
+    def fake_tf(*args, **kwargs):
+        if "output" in args:
+            return subprocess.CompletedProcess(args=[], returncode=0, stdout=_fake_tf_outputs(), stderr="")
+        return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
+
+    with _no_creds, \
+         patch.object(provider, "_tf", side_effect=fake_tf), \
+         patch("replicant.providers.aws._wait_for_instance_ready") as mock_wait:
+        provider.provision(MagicMock(), "env-wait")
+
+    mock_wait.assert_called_once()
 
 
 # ── AWSProvider.teardown ──────────────────────────────────────────────────────
@@ -329,7 +346,7 @@ def test_teardown_calls_destroy_with_env_id():
             destroy_args.extend(args)
         return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
-    with patch.object(provider, "_tf", side_effect=fake_tf):
+    with _no_creds, patch.object(provider, "_tf", side_effect=fake_tf):
         provider.teardown("env-to-kill")
 
     assert "destroy" in destroy_args
@@ -361,3 +378,113 @@ def test_aws_provider_region_from_env(monkeypatch):
     monkeypatch.setenv("AWS_DEFAULT_REGION", "eu-central-1")
     provider = AWSProvider()
     assert provider.region == "eu-central-1"
+
+
+# ── _find_sso_profile ─────────────────────────────────────────────────────────
+
+def test_find_sso_profile_returns_none_when_no_config(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    assert _find_sso_profile() is None
+
+
+def test_find_sso_profile_returns_none_when_no_sso_section(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    aws_dir = tmp_path / ".aws"
+    aws_dir.mkdir()
+    (aws_dir / "config").write_text("[profile myprofile]\nregion = us-west-2\n")
+    assert _find_sso_profile() is None
+
+
+def test_find_sso_profile_finds_sso_profile(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    aws_dir = tmp_path / ".aws"
+    aws_dir.mkdir()
+    (aws_dir / "config").write_text(
+        "[profile myprofile]\n"
+        "sso_start_url = https://my-org.awsapps.com/start\n"
+        "sso_account_id = 123456789\n"
+        "region = us-west-2\n"
+    )
+    assert _find_sso_profile() == "myprofile"
+
+
+def test_find_sso_profile_prefers_first_sso_profile(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    aws_dir = tmp_path / ".aws"
+    aws_dir.mkdir()
+    (aws_dir / "config").write_text(
+        "[profile plain]\nregion = us-east-1\n\n"
+        "[profile sso-first]\nsso_start_url = https://a.awsapps.com/start\n\n"
+        "[profile sso-second]\nsso_start_url = https://b.awsapps.com/start\n"
+    )
+    assert _find_sso_profile() == "sso-first"
+
+
+# ── _ensure_aws_credentials ───────────────────────────────────────────────────
+
+def test_ensure_credentials_passes_when_sts_succeeds():
+    """If STS call succeeds, no SSO flow is triggered."""
+    mock_session = MagicMock()
+    mock_session.return_value.client.return_value.get_caller_identity.return_value = {}
+    with patch("boto3.Session", mock_session):
+        _ensure_aws_credentials("us-west-2")  # should not raise
+
+
+def test_ensure_credentials_prompts_iam_when_no_creds_and_no_profile():
+    """NoCredentialsError + no SSO profile → falls through to IAM key prompt."""
+    import botocore.exceptions
+
+    mock_session = MagicMock()
+    mock_session.return_value.client.return_value.get_caller_identity.side_effect = \
+        botocore.exceptions.NoCredentialsError()
+
+    with patch("boto3.Session", mock_session), \
+         patch("replicant.providers.aws._find_sso_profile", return_value=None), \
+         patch("replicant.providers.aws._prompt_iam_credentials") as mock_prompt:
+        _ensure_aws_credentials("us-west-2")
+
+    mock_prompt.assert_called_once_with("us-west-2")
+
+
+def test_ensure_credentials_triggers_sso_login_when_profile_found():
+    """NoCredentialsError + SSO profile present → `aws sso login` is called."""
+    import botocore.exceptions
+    from unittest.mock import patch as _patch
+
+    login_calls = []
+
+    def fake_subprocess_run(cmd, **kwargs):
+        login_calls.append(cmd)
+        return subprocess.CompletedProcess(args=cmd, returncode=0, stdout="", stderr="")
+
+    mock_session = MagicMock()
+    mock_session.return_value.client.return_value.get_caller_identity.side_effect = [
+        botocore.exceptions.NoCredentialsError(),
+        {},
+    ]
+    mock_session.return_value.region_name = "us-west-2"
+
+    # patch.dict contains any os.environ mutations made by the code under test.
+    with _patch.dict("os.environ", {}, clear=False), \
+         patch("boto3.Session", mock_session), \
+         patch("replicant.providers.aws._find_sso_profile", return_value="my-sso-profile"), \
+         patch("subprocess.run", side_effect=fake_subprocess_run):
+        _ensure_aws_credentials("us-west-2")
+
+    assert any("sso" in " ".join(c) and "login" in " ".join(c) for c in login_calls)
+    assert any("my-sso-profile" in " ".join(c) for c in login_calls)
+
+
+def test_ensure_credentials_raises_when_sso_login_fails(monkeypatch):
+    """If `aws sso login` exits nonzero, raise RuntimeError."""
+    import botocore.exceptions
+
+    mock_session = MagicMock()
+    mock_session.return_value.client.return_value.get_caller_identity.side_effect = \
+        botocore.exceptions.NoCredentialsError()
+
+    with patch("boto3.Session", mock_session), \
+         patch("replicant.providers.aws._find_sso_profile", return_value="my-profile"), \
+         patch("subprocess.run", return_value=subprocess.CompletedProcess(args=[], returncode=1)), \
+         pytest.raises(RuntimeError, match="SSO login failed"):
+        _ensure_aws_credentials("us-west-2")

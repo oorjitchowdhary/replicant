@@ -93,39 +93,56 @@ def setup(ctx, source, github, cloud):
         _abort("No GitHub URL found. Use [bold]--github <url>[/].")
     con.print(f"  Repo: [cyan]{github}[/]")
 
-    # dedupe
+    # dedupe / cache lookup
     eid = env_id(label, github)
+    import json as _json
+    from replicant.utils.config import SPECS, BUILD, ensure_dirs
+    ensure_dirs()
+
     try:
         existing = EnvMeta.load(eid)
         if existing.status == "ready":
             con.print(Panel(f"Already set up. Run [bold]replicant shell {eid}[/].", title="✔"))
             return
-    except FileNotFoundError: pass
+    except FileNotFoundError:
+        existing = None
 
-    # clone
-    with _spin("Cloning…") as p:
-        p.add_task("Cloning…")
-        from replicant.sources.github import clone
-        code_path = clone(github)
-    con.print(f"  Cloned: [dim]{code_path}[/]")
+    # ── clone (skip if already on disk) ──────────────────────────────────────
+    cached_code = existing and existing.code_path and Path(existing.code_path).exists()
+    if cached_code:
+        code_path = Path(existing.code_path)
+        con.print(f"  Repo: [dim](cached)[/] {code_path}")
+    else:
+        with _spin("Cloning…") as p:
+            p.add_task("Cloning…")
+            from replicant.sources.github import clone
+            code_path = clone(github)
+        con.print(f"  Cloned: [dim]{code_path}[/]")
 
-    # resolve PDF path for analysis (arXiv download or user-supplied)
-    pdf_for_analysis = None
-    if label.startswith("arxiv:"):
-        from replicant.utils.config import HOME
-        candidate = HOME / "papers" / f"{label.split(':')[1]}.pdf"
-        if candidate.exists(): pdf_for_analysis = candidate
-    elif Path(source).expanduser().resolve().suffix == ".pdf":
-        pdf_for_analysis = Path(source).expanduser().resolve()
+    # ── analyze (skip if spec cache exists) ──────────────────────────────────
+    spec_cache = SPECS / f"{eid}.json"
+    if spec_cache.exists():
+        from replicant.analyzers.repo import EnvironmentSpec
+        spec = EnvironmentSpec.from_cache(_json.loads(spec_cache.read_text()))
+        con.print("  Analysis: [dim](cached)[/]")
+    else:
+        pdf_for_analysis = None
+        if label.startswith("arxiv:"):
+            from replicant.utils.config import HOME
+            candidate = HOME / "papers" / f"{label.split(':')[1]}.pdf"
+            if candidate.exists(): pdf_for_analysis = candidate
+        elif Path(source).expanduser().resolve().suffix == ".pdf":
+            pdf_for_analysis = Path(source).expanduser().resolve()
 
-    # analyze – full environment spec including paper context
-    with _spin("Analyzing with AI…") as p:
-        p.add_task("Analyzing with AI…")
-        from replicant.analyzers.repo import analyze
-        spec = analyze(code_path, pdf_path=pdf_for_analysis)
+        with _spin("Analyzing with AI…") as p:
+            p.add_task("Analyzing with AI…")
+            from replicant.analyzers.repo import analyze
+            spec = analyze(code_path, pdf_path=pdf_for_analysis)
 
-    if not spec.env_files:
-        _abort("No environment files found (Dockerfile, environment.yml, requirements.txt, …).")
+        if not spec.env_files:
+            _abort("No environment files found (Dockerfile, environment.yml, requirements.txt, …).")
+
+        spec_cache.write_text(_json.dumps(spec.to_cache(), indent=2))
 
     # display full spec
     con.print()
@@ -140,11 +157,16 @@ def setup(ctx, source, github, cloud):
             con.print("[yellow]⚠  GPU or large data detected.[/]")
             use_cloud = click.confirm("Run in the cloud?", default=False)
 
-    # generate dockerfile
-    with _spin("Generating Dockerfile…") as p:
-        p.add_task("Generating Dockerfile…")
-        from replicant.generators.docker import generate
-        build_dir = generate(spec, eid)
+    # ── generate dockerfile (skip if already exists) ──────────────────────────
+    build_dir = BUILD / eid
+    cached_dockerfile = (build_dir / "Dockerfile").exists()
+    if cached_dockerfile:
+        con.print("  Dockerfile: [dim](cached)[/]")
+    else:
+        with _spin("Generating Dockerfile…") as p:
+            p.add_task("Generating Dockerfile…")
+            from replicant.generators.docker import generate
+            build_dir = generate(spec, eid)
 
     # save metadata
     tag = f"replicant-{eid}"
@@ -153,6 +175,11 @@ def setup(ctx, source, github, cloud):
         docker_image=tag, environment_file=spec.primary_env or "",
         paper_title=paper_title, status="building", code_path=str(code_path),
     )
+    if existing:
+        meta.cloud_provider = existing.cloud_provider
+        meta.cloud_instance_id = existing.cloud_instance_id
+        meta.cloud_region = existing.cloud_region
+        meta.cloud_bucket = existing.cloud_bucket
     meta.save()
 
     if use_cloud:
@@ -169,6 +196,7 @@ def setup(ctx, source, github, cloud):
 
         meta.cloud_provider = "aws"
         meta.cloud_instance_id = resources.instance_id
+        meta.cloud_instance_ip = resources.instance_ip
         meta.cloud_region = resources.region
         meta.cloud_bucket = resources.s3_bucket
         meta.save()
@@ -311,7 +339,21 @@ def shell(env_id, gpu):
     meta = _env(env_id)
     if meta.status != "ready": _abort(f"Not ready (status: {meta.status}).")
     con.print(f"Entering [bold]{meta.env_id}[/] …")
-    from replicant.executors.local import shell as sh; sh(meta, gpu=gpu)
+    if meta.cloud_provider:
+        from replicant.providers.base import CloudResources
+        from replicant.executors.cloud import CloudExecutor
+        from replicant.utils.config import HOME
+        key_path = HOME / "keys" / f"{meta.env_id}.pem"
+        resources = CloudResources(
+            instance_ip=meta.cloud_instance_ip or _abort("No instance IP saved for this environment."),
+            ssh_key_path=key_path,
+            s3_bucket=meta.cloud_bucket or "",
+            instance_id=meta.cloud_instance_id or "",
+            region=meta.cloud_region or "us-west-2",
+        )
+        CloudExecutor(resources).shell(meta, gpu=gpu)
+    else:
+        from replicant.executors.local import shell as sh; sh(meta, gpu=gpu)
 
 
 @main.command(name="list")

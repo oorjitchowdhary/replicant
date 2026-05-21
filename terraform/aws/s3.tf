@@ -17,6 +17,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "artifacts" {
     id     = "expire-objects"
     status = "Enabled"
 
+    filter {}
+
     expiration {
       days = 30
     }

@@ -74,6 +74,56 @@ class EnvironmentSpec:
     ram_hint: str | None = None                              # e.g. "32 GB"
     readme_setup: str = ""                                   # setup section from README
 
+    def to_cache(self) -> dict:
+        import json as _json
+        from replicant.analyzers.dependencies import ResolvedDependencies
+        d: dict = {
+            "repo_path": str(self.repo_path),
+            "env_files": {k: str(v) for k, v in self.env_files.items()},
+            "primary_env": self.primary_env,
+            "primary_env_path": str(self.primary_env_path) if self.primary_env_path else None,
+            "python_version": self.python_version,
+            "packages": self.packages,
+            "datasets": self.datasets,
+            "download_commands": self.download_commands,
+            "download_urls": self.download_urls,
+            "checkpoint_urls": self.checkpoint_urls,
+            "frameworks": self.frameworks,
+            "resolved_deps": self.resolved_deps.model_dump() if self.resolved_deps else None,
+            "entrypoints": self.entrypoints,
+            "needs_gpu": self.needs_gpu,
+            "needs_tpu": self.needs_tpu,
+            "gpu_detail": self.gpu_detail,
+            "ram_hint": self.ram_hint,
+            "readme_setup": self.readme_setup,
+        }
+        return d
+
+    @classmethod
+    def from_cache(cls, d: dict) -> "EnvironmentSpec":
+        from replicant.analyzers.dependencies import ResolvedDependencies
+        resolved = ResolvedDependencies(**d["resolved_deps"]) if d.get("resolved_deps") else None
+        return cls(
+            repo_path=Path(d["repo_path"]),
+            env_files={k: Path(v) for k, v in d.get("env_files", {}).items()},
+            primary_env=d.get("primary_env"),
+            primary_env_path=Path(d["primary_env_path"]) if d.get("primary_env_path") else None,
+            python_version=d.get("python_version", "3.10"),
+            packages=d.get("packages", []),
+            datasets=d.get("datasets", []),
+            download_commands=d.get("download_commands", []),
+            download_urls=d.get("download_urls", []),
+            checkpoint_urls=d.get("checkpoint_urls", []),
+            frameworks=d.get("frameworks", []),
+            resolved_deps=resolved,
+            entrypoints=d.get("entrypoints", []),
+            needs_gpu=d.get("needs_gpu", False),
+            needs_tpu=d.get("needs_tpu", False),
+            gpu_detail=d.get("gpu_detail"),
+            ram_hint=d.get("ram_hint"),
+            readme_setup=d.get("readme_setup", ""),
+        )
+
 
 def analyze(repo: str | Path, pdf_path: str | Path | None = None, resolve_deps: bool = True) -> EnvironmentSpec:
     repo = Path(repo)
