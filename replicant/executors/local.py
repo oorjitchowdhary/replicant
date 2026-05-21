@@ -8,11 +8,31 @@ from replicant.utils.config import EnvMeta, LOGS, ensure_dirs
 
 
 def check_docker():
-    try: docker.from_env().ping()
+    # Try SDK first; fall back to CLI in case the socket path is non-standard
+    # (common on WSL where Docker Desktop may use /mnt/wsl/docker-desktop/docker.sock).
+    try:
+        docker.from_env().ping()
+        return
     except Exception:
+        pass
+
+    cli = subprocess.run(["docker", "info"], capture_output=True)
+    if cli.returncode == 0:
+        return
+
+    import platform
+    socket_missing = not Path("/var/run/docker.sock").exists()
+    if platform.system() == "Linux" and socket_missing:
         raise RuntimeError(
-            "Docker is not running. Install Docker Desktop and start it."
+            "Docker socket not found (/var/run/docker.sock).\n"
+            "On WSL: open Docker Desktop → Settings → Resources → WSL Integration "
+            "and enable it for your distro, then restart Docker Desktop.\n"
+            "On Linux: run `sudo service docker start` or `sudo systemctl start docker`."
         )
+    raise RuntimeError(
+        "Docker is not running or your user lacks permission to access the socket.\n"
+        "Try: `sudo usermod -aG docker $USER` then log out and back in."
+    )
 
 def has_gpu() -> bool:
     try: return "nvidia" in docker.from_env().info().get("Runtimes", {})
