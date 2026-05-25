@@ -126,3 +126,57 @@ def test_step_aws_credentials_prompts_when_no_creds():
         mock_prompt.return_value = None
         _step_aws_credentials(default_region="us-east-1")
     mock_prompt.assert_called_once()
+
+
+# New tests for model selection, docker check, bedrock test, and wizard
+from replicant.utils.onboarding import _step_model_select, _step_docker, _step_test_bedrock, run_wizard, ensure_configured
+
+_WIZARD_MODELS = [
+    "us.anthropic.claude-sonnet-4-6-20251001-v2:0",
+    "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "us.anthropic.claude-sonnet-3-5-20241022-v2:0",
+    "us.anthropic.claude-opus-4-7-20250514-v1:0",
+]
+
+def test_step_model_select_returns_first_on_default(monkeypatch):
+    import click
+    monkeypatch.setattr("click.prompt", lambda *a, **kw: "1")
+    model = _step_model_select()
+    assert model == _WIZARD_MODELS[0]
+
+def test_step_model_select_returns_chosen_model(monkeypatch):
+    import click
+    monkeypatch.setattr("click.prompt", lambda *a, **kw: "2")
+    model = _step_model_select()
+    assert model == _WIZARD_MODELS[1]
+
+def test_ensure_configured_skips_when_config_complete(tmp_path):
+    cfg_path = tmp_path / "config.json"
+    cfg_path.write_text(json.dumps({
+        "aws_region": "us-east-1",
+        "bedrock_model_id": "some-model",
+    }))
+    with patch("replicant.utils.onboarding._CONFIG_PATH", cfg_path), \
+         patch("replicant.utils.onboarding.run_wizard") as mock_wizard:
+        ensure_configured()
+    mock_wizard.assert_not_called()
+
+def test_ensure_configured_runs_wizard_when_config_missing(tmp_path):
+    cfg_path = tmp_path / "config.json"
+    with patch("replicant.utils.onboarding._CONFIG_PATH", cfg_path), \
+         patch("replicant.utils.onboarding.run_wizard") as mock_wizard:
+        ensure_configured()
+    mock_wizard.assert_called_once()
+
+def test_run_wizard_writes_config(tmp_path):
+    cfg_path = tmp_path / "config.json"
+    with patch("replicant.utils.onboarding._CONFIG_PATH", cfg_path), \
+         patch("replicant.utils.onboarding._step_docker", return_value=True), \
+         patch("replicant.utils.onboarding._step_terraform", return_value=True), \
+         patch("replicant.utils.onboarding._step_aws_credentials", return_value=("us-east-1", None)), \
+         patch("replicant.utils.onboarding._step_model_select", return_value="my-model"), \
+         patch("replicant.utils.onboarding._step_test_bedrock", return_value=True):
+        run_wizard()
+    cfg = json.loads(cfg_path.read_text())
+    assert cfg["bedrock_model_id"] == "my-model"
+    assert cfg["aws_region"] == "us-east-1"
