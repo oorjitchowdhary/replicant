@@ -132,10 +132,10 @@ def test_step_aws_credentials_prompts_when_no_creds():
 from replicant.utils.onboarding import _step_model_select, _step_docker, _step_test_bedrock, run_wizard, ensure_configured
 
 _WIZARD_MODELS = [
-    "us.anthropic.claude-sonnet-4-6-20251001-v2:0",
+    "us.anthropic.claude-sonnet-4-6",
     "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-    "us.anthropic.claude-sonnet-3-5-20241022-v2:0",
-    "us.anthropic.claude-opus-4-7-20250514-v1:0",
+    "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "us.anthropic.claude-opus-4-7",
 ]
 
 def test_step_model_select_returns_first_on_default(monkeypatch):

@@ -149,10 +149,10 @@ def _step_aws_credentials(default_region: str = "us-east-1") -> tuple[str, str |
 
 
 _MODELS = [
-    ("claude-sonnet-4-6", "us.anthropic.claude-sonnet-4-6-20251001-v2:0", "recommended — best quality"),
-    ("claude-haiku-4-5",  "us.anthropic.claude-haiku-4-5-20251001-v1:0",  "fastest, cheapest"),
-    ("claude-sonnet-3-5", "us.anthropic.claude-sonnet-3-5-20241022-v2:0", "widely available"),
-    ("claude-opus-4-7",   "us.anthropic.claude-opus-4-7-20250514-v1:0",   "most capable, slower"),
+    ("claude-sonnet-4-6", "us.anthropic.claude-sonnet-4-6",                "recommended — best quality"),
+    ("claude-haiku-4-5",  "us.anthropic.claude-haiku-4-5-20251001-v1:0",   "fastest, cheapest"),
+    ("claude-sonnet-4-5", "us.anthropic.claude-sonnet-4-5-20250929-v1:0",  "widely available"),
+    ("claude-opus-4-7",   "us.anthropic.claude-opus-4-7",                  "most capable, slower"),
 ]
 
 
