@@ -9,6 +9,28 @@ description = "Turn research papers into working local environments"
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
+authors = [
+    {name = "Oorjit Chowdhary", email = "oorjitc@uw.edu"},
+]
+keywords = [
+    "reproducibility", "research", "docker", "arxiv",
+    "machine-learning", "bedrock", "llm", "ai",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Build Tools",
+]
 dependencies = [
     "click>=8.1",
     "pypdf>=3.0",
@@ -25,6 +47,11 @@ dev = [
     "pytest>=7.0",
     "pytest-cov",
 ]
+
+[project.urls]
+Homepage = "https://github.com/oorjitchowdhary/replicant"
+Repository = "https://github.com/oorjitchowdhary/replicant"
+"Bug Tracker" = "https://github.com/oorjitchowdhary/replicant/issues"
 
 [project.scripts]
 replicant = "replicant.cli:main"
