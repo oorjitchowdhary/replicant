@@ -149,19 +149,25 @@ def _step_aws_credentials(default_region: str = "us-east-1") -> tuple[str, str |
 
 
 _MODELS = [
-    ("claude-sonnet-4-6", "us.anthropic.claude-sonnet-4-6",                "recommended — best quality"),
-    ("claude-haiku-4-5",  "us.anthropic.claude-haiku-4-5-20251001-v1:0",   "fastest, cheapest"),
-    ("claude-sonnet-4-5", "us.anthropic.claude-sonnet-4-5-20250929-v1:0",  "widely available"),
-    ("claude-opus-4-7",   "us.anthropic.claude-opus-4-7",                  "most capable, slower"),
+    ("claude-sonnet-4-6",   "us.anthropic.claude-sonnet-4-6",              "Anthropic — recommended"),
+    ("claude-haiku-4-5",    "us.anthropic.claude-haiku-4-5-20251001-v1:0", "Anthropic — fastest, cheapest"),
+    ("amazon-nova-pro",     "us.amazon.nova-pro-v1:0",                     "Amazon — strong performance"),
+    ("llama-3.3-70b",       "us.meta.llama3-3-70b-instruct-v1:0",          "Meta — open source"),
 ]
 
 
 def _step_model_select() -> str:
     """Wizard step 4: pick a Bedrock model. Returns the full model ID."""
     import click
-    _con.print("\n  Available Bedrock models:")
+    _con.print(
+        "\n  Browse all available models: "
+        "[link=https://docs.aws.amazon.com/bedrock/latest/userguide/model-cards.html]"
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-cards.html[/link]"
+    )
+    _con.print("  Featured models:")
     for i, (name, _, desc) in enumerate(_MODELS, 1):
         _con.print(f"    {i}. {name}  ({desc})")
+    _con.print("    or enter any Bedrock model ID directly")
     choice = click.prompt("  Select model", default="1")
     try:
         idx = int(choice) - 1
@@ -170,7 +176,10 @@ def _step_model_select() -> str:
             _con.print(f"  [green]✔[/] Selected {_MODELS[idx][0]}")
             return model_id
     except ValueError:
-        pass
+        # Treat non-integer input as a raw model ID
+        if choice.strip():
+            _con.print(f"  [green]✔[/] Using model: {choice.strip()}")
+            return choice.strip()
     _con.print("  Invalid choice — using default")
     return _MODELS[0][1]
 
