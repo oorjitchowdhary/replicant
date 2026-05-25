@@ -44,13 +44,8 @@ def setup(ctx, source, github, cloud):
     """Setup environment from arXiv ID, PDF, or GitHub URL."""
     verbose = ctx.obj["verbose"]
 
-    # Check for Bedrock bearer token
-    if not os.getenv("AWS_BEARER_TOKEN_BEDROCK"):
-        _abort(
-            "AWS_BEARER_TOKEN_BEDROCK is required.\n"
-            "Set it with: export AWS_BEARER_TOKEN_BEDROCK=your_token\n"
-            "Or run: replicant llm-config for help"
-        )
+    from replicant.utils.onboarding import ensure_configured
+    ensure_configured()
 
     # docker check
     with _spin("Checking Docker…") as p:
@@ -336,6 +331,8 @@ def _print_spec(spec):
 @click.option("--gpu/--no-gpu", default=False)
 def shell(env_id, gpu):
     """Enter an environment shell."""
+    from replicant.utils.onboarding import ensure_configured
+    ensure_configured()
     meta = _env(env_id)
     if meta.status != "ready": _abort(f"Not ready (status: {meta.status}).")
     con.print(f"Entering [bold]{meta.env_id}[/] …")
@@ -542,19 +539,35 @@ def _print_benchmark_summary(s: dict, output_dir):
     con.print(f"  Summary: [bold]{output_dir / 'summary.json'}[/]")
 
 
+@main.command("init")
+@click.option("--reset", is_flag=True, help="Wipe existing config and re-run wizard.")
+def init_cmd(reset):
+    """Run the first-time setup wizard."""
+    from replicant.utils.onboarding import run_wizard
+    run_wizard(reset=reset)
+
+
 @main.command(name="llm-config")
 def llm_config():
-    """Check and configure LLM integration."""
-    from replicant.utils.llm_config import check_bedrock_setup, get_config_instructions
-
-    is_configured, message = check_bedrock_setup()
-
-    if is_configured:
-        con.print(f"[green]✔[/] {message}")
+    """Show current Bedrock config and test the connection."""
+    from replicant.utils.onboarding import load_config
+    from replicant.utils.llm_config import test_bedrock_connection
+    cfg = load_config()
+    if not cfg:
+        con.print("[yellow]No config found.[/] Run [bold]replicant init[/] to set up.")
+        return
+    con.print(f"  Region:   {cfg.get('aws_region', 'not set')}")
+    con.print(f"  Model:    {cfg.get('bedrock_model_id', 'not set')}")
+    con.print(f"  Profile:  {cfg.get('aws_profile', 'default')}")
+    ok, msg = test_bedrock_connection(
+        cfg.get("bedrock_model_id", ""),
+        cfg.get("aws_region", "us-east-1"),
+        cfg.get("aws_profile"),
+    )
+    if ok:
+        con.print(f"  [green]✔[/] {msg}")
     else:
-        con.print(f"[red]✗[/] {message}")
-        con.print(get_config_instructions())
-        sys.exit(1)
+        con.print(f"  [red]✗[/] {msg}")
 
 
 @main.group()
