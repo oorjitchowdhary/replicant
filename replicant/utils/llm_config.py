@@ -3,74 +3,69 @@ from __future__ import annotations
 import os
 
 
-BEDROCK_MODEL_ID = os.getenv("BEDROCK_MODEL_ID", "us.anthropic.claude-sonnet-4-6")
-AWS_REGION = os.getenv("AWS_DEFAULT_REGION", "us-west-2")
+def _cfg() -> dict:
+    from replicant.utils.onboarding import load_config
+    return load_config()
 
 
-def get_bedrock_client():
-    """Return a boto3 bedrock-runtime client with a generous read timeout."""
+def get_bedrock_client(model_id: str | None = None, region: str | None = None, profile: str | None = None):
+    """Return a boto3 bedrock-runtime client."""
     import boto3
     from botocore.config import Config
-    return boto3.client(
+    cfg = _cfg()
+    resolved_region = region or cfg.get("aws_region") or os.getenv("AWS_DEFAULT_REGION", "us-east-1")
+    resolved_profile = profile or cfg.get("aws_profile")
+    session = boto3.Session(profile_name=resolved_profile) if resolved_profile else boto3.Session()
+    return session.client(
         "bedrock-runtime",
-        region_name=AWS_REGION,
+        region_name=resolved_region,
         config=Config(read_timeout=300, connect_timeout=10),
     )
 
 
-def check_bedrock_setup() -> tuple[bool, str]:
-    """Check if AWS Bedrock is properly configured.
+def get_model_id() -> str:
+    """Return the configured Bedrock model ID."""
+    cfg = _cfg()
+    return cfg.get("bedrock_model_id") or os.getenv("BEDROCK_MODEL_ID", "us.anthropic.claude-sonnet-4-6")
 
-    Returns:
-        (is_configured, message)
-    """
-    if not os.getenv("AWS_BEARER_TOKEN_BEDROCK"):
-        return False, (
-            "AWS_BEARER_TOKEN_BEDROCK environment variable is not set.\n"
-            "Set it with: export AWS_BEARER_TOKEN_BEDROCK=your_token"
-        )
 
+def get_region() -> str:
+    cfg = _cfg()
+    return cfg.get("aws_region") or os.getenv("AWS_DEFAULT_REGION", "us-east-1")
+
+
+def test_bedrock_connection(model_id: str, region: str, profile: str | None) -> tuple[bool, str]:
+    """Fire a minimal converse() call. Returns (success, message)."""
     try:
-        import boto3
-    except ImportError:
-        return False, "boto3 package not installed. Run: pip install boto3"
-
-    try:
-        client = get_bedrock_client()
-        response = client.converse(
-            modelId=BEDROCK_MODEL_ID,
+        client = get_bedrock_client(model_id=model_id, region=region, profile=profile)
+        client.converse(
+            modelId=model_id,
             inferenceConfig={"maxTokens": 16},
             messages=[{"role": "user", "content": [{"text": "Hi"}]}],
         )
-        response["output"]["message"]["content"][0]["text"]
-        return True, f"AWS Bedrock configured successfully (model: {BEDROCK_MODEL_ID}) - replicant is ready to use!"
+        return True, f"Bedrock connection successful (model: {model_id})"
     except Exception as e:
-        return False, f"AWS Bedrock test failed: {e}"
+        return False, f"Bedrock test failed: {e}"
+
+
+test_bedrock_connection.__test__ = False  # noqa: F405
+
+
+# Backward-compat aliases used by analyzers/dependencies.py and analyzers/paper.py
+BEDROCK_MODEL_ID: str = get_model_id()
+AWS_REGION: str = get_region()
+
+
+def check_bedrock_setup() -> tuple[bool, str]:
+    """Legacy check — now delegates to test_bedrock_connection with config values."""
+    cfg = _cfg()
+    model = cfg.get("bedrock_model_id") or os.getenv("BEDROCK_MODEL_ID", "us.anthropic.claude-sonnet-4-6")
+    region = cfg.get("aws_region") or os.getenv("AWS_DEFAULT_REGION", "us-east-1")
+    profile = cfg.get("aws_profile")
+    if not model:
+        return False, "No Bedrock model configured. Run: replicant init"
+    return test_bedrock_connection(model, region, profile)
 
 
 def get_config_instructions() -> str:
-    """Get instructions for configuring AWS Bedrock."""
-    return f"""
-Replicant: AI-Powered Research Environment Setup
-
-Replicant uses Anthropic's Claude (via AWS Bedrock) to intelligently analyze
-research papers and automatically create working environments. This provides:
-
-• Smart GitHub repository detection
-• Intelligent framework and library identification
-• Advanced dataset recognition
-• Context-aware hardware requirement extraction
-• Intelligent download URL classification
-
-Setup:
-1. Set your Bedrock bearer token:
-     export AWS_BEARER_TOKEN_BEDROCK=your_token
-
-2. (Optional) Override defaults:
-     export BEDROCK_MODEL_ID={BEDROCK_MODEL_ID}
-     export AWS_DEFAULT_REGION={AWS_REGION}
-
-3. Run replicant normally - it will use Claude via Bedrock automatically.
-
-Without a valid AWS_BEARER_TOKEN_BEDROCK, replicant cannot function.
-"""
+    return "Run `replicant init` to configure replicant."

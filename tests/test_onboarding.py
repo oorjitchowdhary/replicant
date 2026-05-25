@@ -30,3 +30,39 @@ def test_save_config_creates_parent_dir(tmp_path):
     with patch("replicant.utils.onboarding._CONFIG_PATH", cfg_path):
         save_config({"bedrock_model_id": "x", "aws_region": "us-east-1"})
     assert cfg_path.exists()
+
+
+# New tests for llm_config
+from unittest.mock import MagicMock, patch
+from replicant.utils.llm_config import test_bedrock_connection, get_bedrock_client
+
+def test_bedrock_connection_returns_true_on_success():
+    mock_client = MagicMock()
+    mock_client.converse.return_value = {
+        "output": {"message": {"content": [{"text": "hi"}]}}
+    }
+    with patch("replicant.utils.llm_config.get_bedrock_client", return_value=mock_client):
+        ok, msg = test_bedrock_connection("us.anthropic.claude-sonnet-4-6", "us-east-1", None)
+    assert ok is True
+    assert "success" in msg.lower()
+
+def test_bedrock_connection_returns_false_on_exception():
+    mock_client = MagicMock()
+    mock_client.converse.side_effect = Exception("no access")
+    with patch("replicant.utils.llm_config.get_bedrock_client", return_value=mock_client):
+        ok, msg = test_bedrock_connection("my-model", "us-east-1", None)
+    assert ok is False
+    assert "no access" in msg
+
+def test_get_bedrock_client_uses_config_region(tmp_path):
+    cfg_path = tmp_path / "config.json"
+    cfg_path.write_text(json.dumps({"aws_region": "ap-southeast-1", "bedrock_model_id": "m"}))
+    with patch("replicant.utils.onboarding._CONFIG_PATH", cfg_path), \
+         patch("boto3.Session") as mock_session_cls:
+        mock_session = MagicMock()
+        mock_session_cls.return_value = mock_session
+        mock_session.client.return_value = MagicMock()
+        get_bedrock_client()
+    mock_session.client.assert_called_once()
+    call_kwargs = mock_session.client.call_args[1]
+    assert call_kwargs["region_name"] == "ap-southeast-1"
