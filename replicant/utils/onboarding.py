@@ -114,3 +114,35 @@ def _step_terraform() -> bool:
         "    Cloud execution will be unavailable until Terraform is installed."
     )
     return False
+
+
+def _step_aws_credentials(default_region: str = "us-east-1") -> tuple[str, str | None]:
+    """
+    Wizard step 3: verify AWS credentials are present and working.
+    Returns (region, profile_name_or_None).
+    """
+    import boto3
+    import botocore.exceptions
+    import click
+
+    session = boto3.Session()
+    creds = session.get_credentials()
+    region = session.region_name or default_region
+    profile = None
+
+    if creds:
+        try:
+            session.client("sts", region_name=region).get_caller_identity()
+            _con.print(f"  [green]✔[/] AWS credentials found (region: {region})")
+            confirm = click.confirm("  Use these credentials?", default=True)
+            if confirm:
+                region = click.prompt("  AWS region", default=region)
+                return region, session.profile_name
+        except (botocore.exceptions.NoCredentialsError, botocore.exceptions.ClientError):
+            pass
+
+    _con.print("  [yellow]![/] No valid AWS credentials found — launching setup…")
+    region = click.prompt("  AWS region (must match where Bedrock is enabled)", default=default_region)
+    from replicant.providers.aws import _prompt_iam_credentials
+    _prompt_iam_credentials(region)
+    return region, None

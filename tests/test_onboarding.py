@@ -100,3 +100,29 @@ def test_install_terraform_returns_false_when_all_fail():
         mock_run.return_value = MagicMock(returncode=1)
         ok = _install_terraform()
     assert ok is False
+
+
+# New tests for aws credentials step
+from replicant.utils.onboarding import _step_aws_credentials
+
+def test_step_aws_credentials_returns_region_when_creds_valid():
+    mock_session = MagicMock()
+    mock_session.get_credentials.return_value = MagicMock()
+    mock_session.client.return_value.get_caller_identity.return_value = {}
+    mock_session.region_name = "us-east-1"
+    mock_session.profile_name = None
+    with patch("boto3.Session", return_value=mock_session), \
+         patch("click.confirm", return_value=True), \
+         patch("click.prompt", return_value="us-east-1"):
+        region, profile = _step_aws_credentials(default_region="us-east-1")
+    assert region == "us-east-1"
+
+def test_step_aws_credentials_prompts_when_no_creds():
+    mock_session = MagicMock()
+    mock_session.get_credentials.return_value = None
+    with patch("boto3.Session", return_value=mock_session), \
+         patch("replicant.providers.aws._prompt_iam_credentials") as mock_prompt, \
+         patch("click.prompt", return_value="us-east-1"):
+        mock_prompt.return_value = None
+        _step_aws_credentials(default_region="us-east-1")
+    mock_prompt.assert_called_once()
