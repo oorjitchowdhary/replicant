@@ -1,6 +1,5 @@
 """Replicant CLI."""
 from __future__ import annotations
-import os
 import shutil, sys
 from pathlib import Path
 import click
@@ -468,9 +467,6 @@ def validate(env_id):
 @click.pass_context
 def benchmark(ctx, corpus_file, output, timeout, workers, resume, no_llm):
     """Batch-run setup across a corpus of papers and collect structured failure data."""
-    if not no_llm and not os.getenv("AWS_BEARER_TOKEN_BEDROCK"):
-        _abort("AWS_BEARER_TOKEN_BEDROCK is required. Set it with: export AWS_BEARER_TOKEN_BEDROCK=your_token")
-
     with _spin("Checking Docker…") as p:
         p.add_task("Checking Docker…")
         try:
