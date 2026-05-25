@@ -51,7 +51,9 @@ def _install_terraform() -> bool:
                 )
                 if r2.returncode == 0 and shutil.which("terraform"):
                     return True
-            _con.print(f"    [dim]brew install failed: {r.stderr.strip() or r2.stderr.strip()}[/]")
+                _con.print(f"    [dim]brew install failed: {r2.stderr.strip()}[/]")
+            else:
+                _con.print(f"    [dim]brew tap failed: {r.stderr.strip()}[/]")
 
         # Linux — apt
         if system == "Linux" and shutil.which("apt-get"):
@@ -69,6 +71,7 @@ def _install_terraform() -> bool:
             success = all(subprocess.run(c, capture_output=True).returncode == 0 for c in cmds)
             if success and shutil.which("terraform"):
                 return True
+            _con.print("    [dim]apt install failed[/]")
 
         # Fallback — download binary to ~/.local/bin
         try:
