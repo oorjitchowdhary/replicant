@@ -133,9 +133,9 @@ from replicant.utils.onboarding import _step_model_select, _step_docker, _step_t
 
 _WIZARD_MODELS = [
     "us.anthropic.claude-sonnet-4-6",
-    "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-    "us.amazon.nova-pro-v1:0",
-    "us.meta.llama3-3-70b-instruct-v1:0",
+    "us.anthropic.claude-opus-4-7",
+    "openai.gpt-oss-120b-1:0",
+    "qwen.qwen3-coder-next",
 ]
 
 def test_step_model_select_returns_first_on_default(monkeypatch):

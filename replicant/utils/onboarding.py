@@ -149,10 +149,10 @@ def _step_aws_credentials(default_region: str = "us-east-1") -> tuple[str, str |
 
 
 _MODELS = [
-    ("claude-sonnet-4-6",   "us.anthropic.claude-sonnet-4-6",              "Anthropic — recommended"),
-    ("claude-haiku-4-5",    "us.anthropic.claude-haiku-4-5-20251001-v1:0", "Anthropic — fastest, cheapest"),
-    ("amazon-nova-pro",     "us.amazon.nova-pro-v1:0",                     "Amazon — strong performance"),
-    ("llama-3.3-70b",       "us.meta.llama3-3-70b-instruct-v1:0",          "Meta — open source"),
+    ("claude-sonnet-4-6",     "us.anthropic.claude-sonnet-4-6",   "Anthropic — latest Sonnet, recommended"),
+    ("claude-opus-4-7",       "us.anthropic.claude-opus-4-7",     "Anthropic — most capable"),
+    ("gpt-oss-120b",          "openai.gpt-oss-120b-1:0",          "OpenAI — GPT 120B"),
+    ("qwen3-coder-next",      "qwen.qwen3-coder-next",             "Qwen — latest coder model"),
 ]
 
 
