@@ -15,10 +15,14 @@ resource "aws_instance" "replicant" {
     #!/bin/bash
     set -e
     apt-get update -y
-    apt-get install -y docker.io awscli
+    apt-get install -y docker.io awscli amazon-ecr-credential-helper
     systemctl enable docker
     systemctl start docker
     usermod -aG docker ubuntu
+    mkdir -p /root/.docker /home/ubuntu/.docker
+    printf '{"credsStore":"ecr-login"}' > /root/.docker/config.json
+    cp /root/.docker/config.json /home/ubuntu/.docker/config.json
+    chown -R ubuntu:ubuntu /home/ubuntu/.docker
   EOF
 
   tags = {

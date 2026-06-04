@@ -15,20 +15,33 @@ resource "aws_iam_role" "replicant" {
   }
 }
 
-resource "aws_iam_role_policy" "replicant_s3" {
-  name = "replicant-s3-access"
+resource "aws_iam_role_policy" "replicant_ecr" {
+  name = "replicant-ecr-access"
   role = aws_iam_role.replicant.id
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Effect   = "Allow"
-      Action   = ["s3:PutObject", "s3:GetObject", "s3:DeleteObject", "s3:ListBucket"]
-      Resource = [
-        aws_s3_bucket.artifacts.arn,
-        "${aws_s3_bucket.artifacts.arn}/*"
-      ]
-    }]
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "ecr:GetAuthorizationToken"
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:PutImage",
+          "ecr:InitiateLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:CompleteLayerUpload",
+          "ecr:BatchDeleteImage",
+        ]
+        Resource = aws_ecr_repository.replicant.arn
+      },
+    ]
   })
 }
 
