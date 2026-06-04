@@ -63,23 +63,57 @@ def setup(ctx, source, github, cloud):
     else:
         from replicant.sources.arxiv import is_arxiv
         if is_arxiv(source):
-            with _spin("Fetching from arXiv…") as p:
-                p.add_task("Fetching from arXiv…")
-                from replicant.sources.arxiv import fetch
-                from replicant.analyzers.paper import analyze_paper
-                info = fetch(source)
-                paper_ctx = analyze_paper(source)
-                paper_title = info.get("title", "")
-                label = f"arxiv:{info['arxiv_id']}"
-                github = paper_ctx.github_urls[0] if paper_ctx.github_urls else None
+            from replicant.sources.arxiv import parse_id
+            _aid = parse_id(source)
+            label = f"arxiv:{_aid}"
+
+            # Look up by source string before touching any APIs.
+            _cached = next((m for m in EnvMeta.all() if m.source == label), None)
+            if _cached:
+                if _cached.status == "ready":
+                    con.print(Panel(
+                        f"Already set up. Run [bold]replicant shell {_cached.env_id}[/].",
+                        title="✔",
+                    ))
+                    return
+                if _cached.github_url:
+                    # Previous run got this far — reuse without re-calling APIs.
+                    github = _cached.github_url
+                    paper_title = _cached.paper_title
+
+            if not github:
+                with _spin("Fetching from arXiv…") as p:
+                    p.add_task("Fetching from arXiv…")
+                    from replicant.sources.arxiv import fetch
+                    from replicant.analyzers.paper import analyze_paper
+                    info = fetch(source)
+                    paper_ctx = analyze_paper(source)
+                    paper_title = info.get("title", "")
+                    label = f"arxiv:{info['arxiv_id']}"
+                    github = paper_ctx.github_urls[0] if paper_ctx.github_urls else None
+
         elif Path(source).expanduser().exists():
-            with _spin("Reading PDF…") as p:
-                p.add_task("Reading PDF…")
-                from replicant.analyzers.paper import analyze_paper
-                pdf = Path(source).expanduser().resolve()
-                paper_ctx = analyze_paper(pdf)
-                paper_title, label = paper_ctx.title, str(pdf)
-                github = paper_ctx.github_urls[0] if paper_ctx.github_urls else None
+            pdf = Path(source).expanduser().resolve()
+            label = str(pdf)
+            _cached = next((m for m in EnvMeta.all() if m.source == label), None)
+            if _cached:
+                if _cached.status == "ready":
+                    con.print(Panel(
+                        f"Already set up. Run [bold]replicant shell {_cached.env_id}[/].",
+                        title="✔",
+                    ))
+                    return
+                if _cached.github_url:
+                    github = _cached.github_url
+                    paper_title = _cached.paper_title
+
+            if not github:
+                with _spin("Reading PDF…") as p:
+                    p.add_task("Reading PDF…")
+                    from replicant.analyzers.paper import analyze_paper
+                    paper_ctx = analyze_paper(pdf)
+                    paper_title, label = paper_ctx.title, str(pdf)
+                    github = paper_ctx.github_urls[0] if paper_ctx.github_urls else None
         else:
             _abort(f"Can't interpret '{source}'. Use arXiv ID, PDF path, GitHub URL, or --github.")
 
@@ -173,7 +207,7 @@ def setup(ctx, source, github, cloud):
         meta.cloud_provider = existing.cloud_provider
         meta.cloud_instance_id = existing.cloud_instance_id
         meta.cloud_region = existing.cloud_region
-        meta.cloud_bucket = existing.cloud_bucket
+        meta.cloud_ecr_repo = existing.cloud_ecr_repo
     meta.save()
 
     if use_cloud:
@@ -192,13 +226,16 @@ def setup(ctx, source, github, cloud):
         meta.cloud_instance_id = resources.instance_id
         meta.cloud_instance_ip = resources.instance_ip
         meta.cloud_region = resources.region
-        meta.cloud_bucket = resources.s3_bucket
+        meta.cloud_ecr_repo = resources.ecr_repo_url
         meta.save()
 
-        con.print(f"  Instance: [cyan]{resources.instance_ip}[/]  Bucket: [cyan]{resources.s3_bucket}[/]")
+        con.print(f"  Instance: [cyan]{resources.instance_ip}[/]")
+        con.out(f"  ECR:      {resources.ecr_repo_url}")
         con.print("[bold]Building Docker image on cloud instance…[/]")
         executor = CloudExecutor(resources)
         if executor.build(build_dir, tag, verbose=verbose):
+            con.print("[bold]Syncing code to instance…[/]")
+            executor.sync_code(code_path)
             meta.status = "ready"; meta.save()
             con.print(Panel(
                 f"[bold green]✔ Ready (cloud)![/]\n  ID: [bold]{eid}[/]  Image: {tag}\n\n"
@@ -343,7 +380,7 @@ def shell(env_id, gpu):
         resources = CloudResources(
             instance_ip=meta.cloud_instance_ip or _abort("No instance IP saved for this environment."),
             ssh_key_path=key_path,
-            s3_bucket=meta.cloud_bucket or "",
+            ecr_repo_url=meta.cloud_ecr_repo or "",
             instance_id=meta.cloud_instance_id or "",
             region=meta.cloud_region or "us-west-2",
         )
@@ -379,64 +416,68 @@ def info(env_id):
     con.print(Panel(t, title=f"Environment {m.env_id}", border_style="cyan"))
 
 
+def _delete_one(m: EnvMeta, keep_code: bool) -> None:
+    """Delete a single environment, handling cloud teardown if needed."""
+    if m.cloud_provider == "aws":
+        con.print(f"  Tearing down cloud infrastructure for [bold]{m.env_id}[/]…")
+        try:
+            from replicant.providers.aws import AWSProvider
+            AWSProvider().teardown(m.env_id)
+        except Exception as e:
+            err.print(f"  [yellow]Warning:[/] Cloud teardown failed (may already be gone): {e}")
+    else:
+        from replicant.executors.local import remove_image
+        remove_image(m.docker_image)
+
+    if not keep_code and m.code_path:
+        p = Path(m.code_path)
+        if p.exists():
+            shutil.rmtree(p, ignore_errors=True)
+    m.delete()
+
+
 @main.command()
 @click.argument("env_id", required=False, default=None)
-@click.option("-y","--yes", is_flag=True, help="Skip confirmation prompt.")
+@click.option("-y", "--yes", is_flag=True, help="Skip confirmation prompt.")
 @click.option("--keep-code", is_flag=True, help="Keep cloned repository code.")
 @click.option("--all", "delete_all", is_flag=True, help="Delete all environments.")
 def delete(env_id, yes, keep_code, delete_all):
-    """Delete an environment (or all environments with --all)."""
-    
-    # Validate: need either env_id or --all
+    """Delete an environment. Cloud environments tear down EC2/ECR automatically."""
     if not env_id and not delete_all:
         _abort("Provide an environment ID or use --all to delete all environments.")
-    
     if env_id and delete_all:
-        _abort("Cannot specify both environment ID and --all flag.")
-    
+        _abort("Cannot specify both an environment ID and --all.")
+
     if delete_all:
-        # Delete all environments
         envs = EnvMeta.all()
         if not envs:
             con.print("[yellow]No environments to delete.[/]")
             return
-        
-        # Show what will be deleted
-        con.print(f"[bold yellow]⚠ About to delete {len(envs)} environment(s):[/]")
+        cloud_count = sum(1 for m in envs if m.cloud_provider)
+        summary = f"{len(envs)} environment(s)"
+        if cloud_count:
+            summary += f" ([yellow]{cloud_count} cloud[/] — will run terraform destroy)"
+        con.print(f"[bold yellow]⚠ About to delete {summary}:[/]")
         for m in envs:
-            con.print(f"  • {m.env_id} ({m.source})")
-        
+            tag = " [yellow](cloud)[/]" if m.cloud_provider else ""
+            con.print(f"  • {m.env_id} ({m.source}){tag}")
         if not yes:
             click.confirm(f"Delete all {len(envs)} environment(s)?", abort=True)
-        
-        # Delete each environment
-        from replicant.executors.local import remove_image
-        deleted_count = 0
+        deleted = 0
         for m in envs:
             try:
-                remove_image(m.docker_image)
-                if not keep_code and m.code_path:
-                    p = Path(m.code_path)
-                    if p.exists():
-                        shutil.rmtree(p, ignore_errors=True)
-                m.delete()
-                deleted_count += 1
+                _delete_one(m, keep_code)
+                deleted += 1
             except Exception as e:
                 err.print(f"[yellow]Warning:[/] Failed to delete {m.env_id}: {e}")
-        
-        con.print(f"[green]✔[/] Deleted {deleted_count}/{len(envs)} environment(s).")
+        con.print(f"[green]✔[/] Deleted {deleted}/{len(envs)} environment(s).")
     else:
-        # Delete single environment
         m = _env(env_id)
+        if m.cloud_provider:
+            con.print(f"[yellow]Note:[/] This is a cloud environment — terraform destroy will run.")
         if not yes:
             click.confirm(f"Delete '{env_id}'?", abort=True)
-        from replicant.executors.local import remove_image
-        remove_image(m.docker_image)
-        if not keep_code and m.code_path:
-            p = Path(m.code_path)
-            if p.exists():
-                shutil.rmtree(p, ignore_errors=True)
-        m.delete()
+        _delete_one(m, keep_code)
         con.print(f"[green]✔[/] Deleted [bold]{env_id}[/].")
 
 
@@ -587,7 +628,7 @@ def teardown(env_id):
     m.cloud_provider = None
     m.cloud_instance_id = None
     m.cloud_region = None
-    m.cloud_bucket = None
+    m.cloud_ecr_repo = None
     m.status = "ready"
     m.save()
     con.print(f"[green]✔[/] Cloud infrastructure for [bold]{env_id}[/] torn down.")
@@ -606,7 +647,7 @@ def cloud_status():
     t.add_column("Status")
     t.add_column("Instance ID")
     t.add_column("Region")
-    t.add_column("Bucket")
+    t.add_column("ECR Repo")
     t.add_column("Source")
     for e in envs:
         st_color = {"ready": "green", "building": "yellow", "failed": "red"}.get(e.status, "dim")
@@ -616,7 +657,7 @@ def cloud_status():
             f"[{st_color}]{e.status}[/]",
             e.cloud_instance_id or "-",
             e.cloud_region or "-",
-            e.cloud_bucket or "-",
+            e.cloud_ecr_repo or "-",
             e.source[:40],
         )
     con.print(t)
