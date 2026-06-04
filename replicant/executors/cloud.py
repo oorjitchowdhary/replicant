@@ -1,4 +1,4 @@
-"""Cloud (EC2) executor: build, shell, and cleanup via SSH + S3."""
+"""Cloud (EC2) executor: build, shell, and cleanup via SSH + ECR."""
 from __future__ import annotations
 import subprocess
 from pathlib import Path
@@ -8,7 +8,7 @@ from replicant.utils.config import EnvMeta
 
 
 class CloudExecutor:
-    """Executes Docker operations on a remote EC2 instance."""
+    """Executes Docker operations on a remote EC2 instance backed by ECR."""
 
     def __init__(self, resources: CloudResources) -> None:
         self.resources = resources
@@ -29,91 +29,111 @@ class CloudExecutor:
         cmd = ["ssh", *self._ssh_opts(), self._remote(), command]
         return subprocess.run(cmd, capture_output=capture, text=True)
 
-    def _run_rsync(self, src: str, dst: str) -> subprocess.CompletedProcess:
+    def _run_rsync(self, src: str, dst: str, verbose: bool = False) -> subprocess.CompletedProcess:
         ssh_str = "ssh " + " ".join(self._ssh_opts())
-        cmd = ["rsync", "-az", "-e", ssh_str, src, dst]
-        return subprocess.run(cmd, capture_output=True, text=True)
+        flags = "-avz" if verbose else "-az"
+        cmd = ["rsync", flags, "-e", ssh_str, src, dst]
+        return subprocess.run(cmd, capture_output=not verbose, text=True)
 
     # ── Executor protocol ────────────────────────────────────────────────────
+
+    def _ecr_login_cmd(self) -> str:
+        """Authenticate Docker with ECR using the instance role.
+
+        Resets ~/.docker/config.json first to clear any broken credential store
+        that Ubuntu's docker.io package ships with ('not implemented' errors).
+        """
+        registry = self.resources.ecr_repo_url.split("/")[0]
+        return (
+            "mkdir -p ~/.docker && printf '{}' > ~/.docker/config.json && "
+            f"aws ecr get-login-password --region {self.resources.region} "
+            f"| docker login --username AWS --password-stdin {registry}"
+        )
 
     def build(self, build_dir: Path, tag: str, verbose: bool = False) -> bool:
         """
         1. rsync build context to EC2
         2. docker build on remote
-        3. docker save + gzip
-        4. upload .tar.gz to S3
+        3. ECR login via instance role
+        4. docker tag + push to ECR
         """
         build_dir = Path(build_dir)
         remote = self._remote()
-        bucket = self.resources.s3_bucket
+        image_uri = f"{self.resources.ecr_repo_url}:latest"
 
         # 1. rsync
-        rsync_dst = f"{remote}:/tmp/replicant-build/"
-        r = self._run_rsync(f"{build_dir}/", rsync_dst)
+        r = self._run_rsync(f"{build_dir}/", f"{remote}:/tmp/replicant-build/", verbose=verbose)
         if r.returncode != 0:
             if verbose:
                 print(r.stderr)
             return False
 
-        # 2. docker build
-        r = self._run_ssh(f"docker build -t {tag} /tmp/replicant-build/")
+        # 2. docker build — stream always so long builds don't look stalled
+        r = self._run_ssh(f"docker build -t {tag} /tmp/replicant-build/", capture=False)
         if r.returncode != 0:
-            if verbose:
-                print(r.stderr)
             return False
 
-        # 3. docker save + gzip
-        r = self._run_ssh(f"docker save {tag} | gzip > /tmp/{tag}.tar.gz")
+        # 3. ECR login — stream so auth errors are visible
+        r = self._run_ssh(self._ecr_login_cmd(), capture=False)
         if r.returncode != 0:
-            if verbose:
-                print(r.stderr)
             return False
 
-        # 4. upload to S3
-        r = self._run_ssh(f"aws s3 cp /tmp/{tag}.tar.gz s3://{bucket}/{tag}.tar.gz")
+        # 4. tag + push to ECR — stream so layer progress is visible
+        r = self._run_ssh(f"docker tag {tag} {image_uri}", capture=False)
         if r.returncode != 0:
-            if verbose:
-                print(r.stderr)
+            return False
+
+        r = self._run_ssh(f"docker push {image_uri}", capture=False)
+        if r.returncode != 0:
             return False
 
         return True
 
+    def sync_code(self, code_path: Path) -> None:
+        """Rsync the local repo clone to ~/code on the instance."""
+        self._run_rsync(f"{code_path}/", f"{self._remote()}:/home/ubuntu/code/")
+
     def shell(self, meta: EnvMeta, gpu: bool = False) -> None:
         """
-        Sync repo code to instance, load image from S3 if not present,
-        then launch an interactive shell with the code mounted at /workspace.
+        Pull image from ECR if not cached, then launch an interactive shell
+        with the code (already synced during setup) mounted at /workspace.
         """
-        tag = meta.docker_image
-        bucket = self.resources.s3_bucket
+        image_uri = f"{self.resources.ecr_repo_url}:latest"
         remote = self._remote()
 
-        # Sync the local repo clone to ~/code on the instance (ubuntu-owned path).
-        if meta.code_path:
-            print("  Syncing code to instance…")
-            self._run_rsync(f"{meta.code_path}/", f"{remote}:/home/ubuntu/code/")
-
-        # Load image from S3 if not already present on the remote.
-        load_cmd = (
-            f"docker image inspect {tag} > /dev/null 2>&1 || "
-            f"aws s3 cp s3://{bucket}/{tag}.tar.gz - | docker load"
+        # Login to ECR, then pull if the image is not already cached.
+        self._run_ssh(self._ecr_login_cmd())
+        pull_cmd = (
+            f"docker image inspect {image_uri} > /dev/null 2>&1 || "
+            f"docker pull {image_uri}"
         )
-        self._run_ssh(load_cmd, capture=False)
+        self._run_ssh(pull_cmd, capture=False)
 
         gpu_flag = "--gpus all" if gpu else ""
         run_cmd = (
             f"docker run -it --rm {gpu_flag} "
-            f"-v /home/ubuntu/code:/workspace -w /workspace {tag} /bin/bash"
+            f"-v /home/ubuntu/code:/workspace -w /workspace {image_uri} /bin/bash"
         ).strip()
 
         cmd = ["ssh", "-t", *self._ssh_opts(), remote, run_cmd]
         subprocess.run(cmd)
 
     def remove_image(self, tag: str) -> None:
-        """Remove Docker image on remote (ignore errors) and delete from S3."""
-        bucket = self.resources.s3_bucket
+        """Remove Docker image from ECR and evict from the remote instance cache."""
+        import boto3
 
-        # Remove on remote — ignore errors
-        self._run_ssh(f"docker rmi {tag} || true")
+        image_uri = f"{self.resources.ecr_repo_url}:latest"
 
-        # Remove from S3
-        self._run_ssh(f"aws s3 rm s3://{bucket}/{tag}.tar.gz")
+        # Evict from remote cache (ignore errors — instance may be gone)
+        self._run_ssh(f"docker rmi {image_uri} || true")
+
+        # Delete from ECR via boto3 (works even if the instance is off)
+        repo_name = self.resources.ecr_repo_url.split("/", 1)[1]
+        try:
+            ecr = boto3.client("ecr", region_name=self.resources.region)
+            ecr.batch_delete_image(
+                repositoryName=repo_name,
+                imageIds=[{"imageTag": "latest"}],
+            )
+        except Exception:
+            pass

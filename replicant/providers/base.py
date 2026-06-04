@@ -17,6 +17,6 @@ class CloudProvider(Protocol):
 class CloudResources:
     instance_ip: str
     ssh_key_path: Path
-    s3_bucket: str
+    ecr_repo_url: str
     instance_id: str
     region: str

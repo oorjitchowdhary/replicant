@@ -65,14 +65,14 @@ class AWSProvider:
         outputs = json.loads(out_result.stdout)
 
         instance_ip = outputs["instance_public_ip"]["value"]
-        s3_bucket = outputs["s3_bucket_name"]["value"]
+        ecr_repo_url = outputs["ecr_repo_url"]["value"]
         instance_id = outputs["instance_id"]["value"]
         key_path = Path(outputs["key_path"]["value"]).expanduser()
 
         resources = CloudResources(
             instance_ip=instance_ip,
             ssh_key_path=key_path,
-            s3_bucket=s3_bucket,
+            ecr_repo_url=ecr_repo_url,
             instance_id=instance_id,
             region=self.region,
         )

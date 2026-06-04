@@ -29,7 +29,7 @@ class EnvMeta:
     cloud_instance_id: str | None = field(default=None)
     cloud_instance_ip: str | None = field(default=None)
     cloud_region: str | None = field(default=None)
-    cloud_bucket: str | None = field(default=None)
+    cloud_ecr_repo: str | None = field(default=None)
 
     def save(self):
         ensure_dirs()
