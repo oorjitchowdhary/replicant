@@ -19,7 +19,7 @@ def _resources(**overrides) -> CloudResources:
     defaults = dict(
         instance_ip="1.2.3.4",
         ssh_key_path=Path("/tmp/key.pem"),
-        s3_bucket="replicant-bucket",
+        ecr_repo_url="123456789.dkr.ecr.us-west-2.amazonaws.com/replicant-abc123",
         instance_id="i-abc123",
         region="us-west-2",
     )
@@ -41,7 +41,7 @@ def test_cloud_resources_fields():
     r = _resources()
     assert r.instance_ip == "1.2.3.4"
     assert r.ssh_key_path == Path("/tmp/key.pem")
-    assert r.s3_bucket == "replicant-bucket"
+    assert r.ecr_repo_url == "123456789.dkr.ecr.us-west-2.amazonaws.com/replicant-abc123"
     assert r.instance_id == "i-abc123"
     assert r.region == "us-west-2"
 
@@ -70,7 +70,7 @@ def test_build_succeeds_when_all_steps_pass():
          patch.object(ex, "_run_ssh", return_value=_ok()) as mock_ssh:
         assert ex.build(Path("/tmp/build"), "my-tag") is True
     mock_rsync.assert_called_once()
-    assert mock_ssh.call_count == 3  # docker build, docker save, aws s3 cp
+    assert mock_ssh.call_count == 4  # docker build, ecr login, docker tag, docker push
 
 
 def test_build_fails_on_rsync_error():
@@ -88,17 +88,24 @@ def test_build_fails_on_docker_build_error():
         assert ex.build(Path("/tmp/build"), "my-tag") is False
 
 
-def test_build_fails_on_docker_save_error():
+def test_build_fails_on_ecr_login_error():
     ex = CloudExecutor(_resources())
     with patch.object(ex, "_run_rsync", return_value=_ok()), \
-         patch.object(ex, "_run_ssh", side_effect=[_ok(), _fail(), _ok()]):
+         patch.object(ex, "_run_ssh", side_effect=[_ok(), _fail(), _ok(), _ok()]):
         assert ex.build(Path("/tmp/build"), "my-tag") is False
 
 
-def test_build_fails_on_s3_upload_error():
+def test_build_fails_on_docker_tag_error():
     ex = CloudExecutor(_resources())
     with patch.object(ex, "_run_rsync", return_value=_ok()), \
-         patch.object(ex, "_run_ssh", side_effect=[_ok(), _ok(), _fail()]):
+         patch.object(ex, "_run_ssh", side_effect=[_ok(), _ok(), _fail(), _ok()]):
+        assert ex.build(Path("/tmp/build"), "my-tag") is False
+
+
+def test_build_fails_on_ecr_push_error():
+    ex = CloudExecutor(_resources())
+    with patch.object(ex, "_run_rsync", return_value=_ok()), \
+         patch.object(ex, "_run_ssh", side_effect=[_ok(), _ok(), _ok(), _fail()]):
         assert ex.build(Path("/tmp/build"), "my-tag") is False
 
 
@@ -106,7 +113,7 @@ def test_build_rsync_dst_uses_instance_ip():
     ex = CloudExecutor(_resources(instance_ip="9.9.9.9"))
     captured = {}
 
-    def fake_rsync(src, dst):
+    def fake_rsync(src, dst, **kwargs):
         captured["dst"] = dst
         return _ok()
 
@@ -117,8 +124,9 @@ def test_build_rsync_dst_uses_instance_ip():
     assert "9.9.9.9" in captured["dst"]
 
 
-def test_build_ssh_commands_use_tag_and_bucket():
-    ex = CloudExecutor(_resources(s3_bucket="my-bucket"))
+def test_build_ssh_commands_use_tag_and_ecr_repo():
+    ecr_url = "123.dkr.ecr.us-west-2.amazonaws.com/replicant-xyz"
+    ex = CloudExecutor(_resources(ecr_repo_url=ecr_url))
     captured_cmds = []
 
     def fake_ssh(command, **kwargs):
@@ -130,27 +138,32 @@ def test_build_ssh_commands_use_tag_and_bucket():
         ex.build(Path("/tmp/build"), "img-tag")
 
     assert any("img-tag" in c for c in captured_cmds)
-    assert any("my-bucket" in c for c in captured_cmds)
+    assert any(ecr_url in c for c in captured_cmds)
 
 
 # ── CloudExecutor.remove_image ────────────────────────────────────────────────
 
-def test_remove_image_issues_two_ssh_commands():
+def test_remove_image_issues_ssh_docker_rmi():
     ex = CloudExecutor(_resources())
     cmds = []
-    with patch.object(ex, "_run_ssh", side_effect=lambda c, **kw: cmds.append(c) or _ok()):
+    mock_ecr = MagicMock()
+    with patch.object(ex, "_run_ssh", side_effect=lambda c, **kw: cmds.append(c) or _ok()), \
+         patch("boto3.client", return_value=mock_ecr):
         ex.remove_image("old-tag")
-    assert len(cmds) == 2
     assert any("docker rmi" in c for c in cmds)
-    assert any("s3 rm" in c for c in cmds)
 
 
-def test_remove_image_uses_bucket_and_tag():
-    ex = CloudExecutor(_resources(s3_bucket="test-bucket"))
-    cmds = []
-    with patch.object(ex, "_run_ssh", side_effect=lambda c, **kw: cmds.append(c) or _ok()):
+def test_remove_image_deletes_from_ecr():
+    ecr_url = "123.dkr.ecr.us-west-2.amazonaws.com/replicant-xyz"
+    ex = CloudExecutor(_resources(ecr_repo_url=ecr_url))
+    mock_ecr = MagicMock()
+    with patch.object(ex, "_run_ssh", return_value=_ok()), \
+         patch("boto3.client", return_value=mock_ecr):
         ex.remove_image("test-tag")
-    assert any("test-bucket" in c and "test-tag" in c for c in cmds)
+    mock_ecr.batch_delete_image.assert_called_once_with(
+        repositoryName="replicant-xyz",
+        imageIds=[{"imageTag": "latest"}],
+    )
 
 
 # ── EnvMeta cloud fields ──────────────────────────────────────────────────────
@@ -160,19 +173,19 @@ def test_envmeta_cloud_fields_default_none():
     assert m.cloud_provider is None
     assert m.cloud_instance_id is None
     assert m.cloud_region is None
-    assert m.cloud_bucket is None
+    assert m.cloud_ecr_repo is None
 
 
 def test_envmeta_cloud_fields_set():
     m = EnvMeta(
         env_id="x", source="s", github_url="g",
         cloud_provider="aws", cloud_instance_id="i-abc",
-        cloud_region="us-east-1", cloud_bucket="my-bucket",
+        cloud_region="us-east-1", cloud_ecr_repo="my-bucket",
     )
     assert m.cloud_provider == "aws"
     assert m.cloud_instance_id == "i-abc"
     assert m.cloud_region == "us-east-1"
-    assert m.cloud_bucket == "my-bucket"
+    assert m.cloud_ecr_repo == "my-bucket"
 
 
 def test_envmeta_cloud_fields_serialize():
@@ -181,13 +194,13 @@ def test_envmeta_cloud_fields_serialize():
     m = EnvMeta(
         env_id="x", source="s", github_url="g",
         cloud_provider="aws", cloud_instance_id="i-xyz",
-        cloud_region="us-west-2", cloud_bucket="bucket",
+        cloud_region="us-west-2", cloud_ecr_repo="bucket",
     )
     data = asdict(m)
     assert data["cloud_provider"] == "aws"
     assert data["cloud_instance_id"] == "i-xyz"
     assert data["cloud_region"] == "us-west-2"
-    assert data["cloud_bucket"] == "bucket"
+    assert data["cloud_ecr_repo"] == "bucket"
 
 
 def test_envmeta_cloud_fields_roundtrip_json(tmp_path, monkeypatch):
@@ -199,14 +212,14 @@ def test_envmeta_cloud_fields_roundtrip_json(tmp_path, monkeypatch):
 
     m = _EnvMeta(
         env_id="abc", source="src", github_url="https://github.com/x/y",
-        cloud_provider="aws", cloud_instance_id="i-1", cloud_region="eu-west-1", cloud_bucket="b",
+        cloud_provider="aws", cloud_instance_id="i-1", cloud_region="eu-west-1", cloud_ecr_repo="b",
     )
     m.save()
     loaded = _EnvMeta.load("abc")
     assert loaded.cloud_provider == "aws"
     assert loaded.cloud_instance_id == "i-1"
     assert loaded.cloud_region == "eu-west-1"
-    assert loaded.cloud_bucket == "b"
+    assert loaded.cloud_ecr_repo == "b"
 
 
 # ── AWSProvider._tf ───────────────────────────────────────────────────────────
@@ -257,7 +270,7 @@ def test_aws_provider_tf_no_raise_when_check_false():
 def _fake_tf_outputs() -> str:
     return json.dumps({
         "instance_public_ip": {"value": "10.0.0.1"},
-        "s3_bucket_name": {"value": "replicant-test-bucket"},
+        "ecr_repo_url": {"value": "123456789.dkr.ecr.us-west-2.amazonaws.com/replicant-test"},
         "instance_id": {"value": "i-deadbeef"},
         "key_path": {"value": "/tmp/key.pem"},
     })
@@ -279,7 +292,7 @@ def test_provision_returns_cloud_resources():
         resources = provider.provision(MagicMock(), "env-abc")
 
     assert resources.instance_ip == "10.0.0.1"
-    assert resources.s3_bucket == "replicant-test-bucket"
+    assert resources.ecr_repo_url == "123456789.dkr.ecr.us-west-2.amazonaws.com/replicant-test"
     assert resources.instance_id == "i-deadbeef"
     assert resources.ssh_key_path == Path("/tmp/key.pem")
     assert resources.region == provider.region
