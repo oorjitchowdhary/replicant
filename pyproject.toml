@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "AGPL-3.0-or-later"}
 authors = [
-    {name = "Oorjit Chowdhary", email = "oorjitc@uw.edu"},
+    {name = "Oorjit Chowdhary", email = "chowdhary.oorjit@gmail.com"},
 ]
 keywords = [
     "reproducibility", "research", "docker", "arxiv",
@@ -58,6 +58,9 @@ replicant = "replicant.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["replicant*"]
+
+[tool.setuptools.package-data]
+replicant = ["terraform/aws/*.tf"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

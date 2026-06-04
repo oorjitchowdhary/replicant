@@ -8,20 +8,30 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from replicant.providers.base import CloudResources
+from replicant.utils.config import HOME
 
 if TYPE_CHECKING:
     from replicant.analyzers.repo import EnvironmentSpec
 
-# Repo root is three levels up from this file: replicant/providers/aws.py
-_REPO_ROOT = Path(__file__).parent.parent.parent
+# Bundled .tf source files (read-only, inside the package)
+_TF_SRC = Path(__file__).parent.parent / "terraform" / "aws"
 
 
 class AWSProvider:
     """Provisions and tears down AWS infrastructure via Terraform."""
 
     def __init__(self) -> None:
-        self.terraform_dir: Path = _REPO_ROOT / "terraform" / "aws"
         self.region: str = os.environ.get("AWS_DEFAULT_REGION", "us-west-2")
+        # Working directory: mutable, holds provider cache + tfstate
+        self.terraform_dir: Path = HOME / "terraform" / "aws"
+        self._sync_tf_files()
+
+    def _sync_tf_files(self) -> None:
+        """Copy bundled .tf templates to the writable working directory."""
+        import shutil
+        self.terraform_dir.mkdir(parents=True, exist_ok=True)
+        for tf_file in _TF_SRC.glob("*.tf"):
+            shutil.copy2(tf_file, self.terraform_dir / tf_file.name)
 
     # ── helpers ─────────────────────────────────────────────────────────────
 
