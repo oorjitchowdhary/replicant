@@ -90,7 +90,7 @@ A package must be installed before another (e.g. `torch` must be installed befor
 
 **`Terraform binary not found`**
 
-Run `replicant init` — it installs Terraform automatically (via brew on macOS, apt on Linux, or a direct binary download as fallback).
+replicant installs Terraform automatically on first use — it downloads the latest binary from HashiCorp into `~/.replicant/bin/`. No sudo or package manager needed. If the auto-install fails (e.g. no internet), install manually: https://developer.hashicorp.com/terraform/install
 
 **`Instance did not become ready within 300s`**
 

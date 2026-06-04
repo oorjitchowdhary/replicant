@@ -271,12 +271,77 @@ def _wait_for_instance_ready(resources: "CloudResources", timeout: int = 300) ->
 
 
 def _find_terraform() -> str:
-    """Return the path to the terraform binary, raising if not found."""
+    """Return the path to the terraform binary, installing it automatically if absent."""
+    import platform
     import shutil
+
     tf = shutil.which("terraform")
-    if tf is None:
+    if tf:
+        return tf
+
+    # Check ~/.replicant/bin/ (where we auto-install)
+    exe = "terraform.exe" if platform.system() == "Windows" else "terraform"
+    local_tf = HOME / "bin" / exe
+    if local_tf.exists():
+        return str(local_tf)
+
+    return _install_terraform()
+
+
+def _install_terraform() -> str:
+    """
+    Download the latest Terraform binary from HashiCorp releases into
+    ~/.replicant/bin/ and return its path. Works on macOS, Linux, Windows,
+    and WSL — no sudo or package manager required.
+    """
+    import platform
+    import urllib.request
+    import zipfile
+    import json
+
+    print("  Terraform not found — installing automatically…")
+
+    # Resolve latest stable version via HashiCorp checkpoint API
+    try:
+        with urllib.request.urlopen(
+            "https://checkpoint-api.hashicorp.com/v1/check/terraform", timeout=10
+        ) as resp:
+            version = json.loads(resp.read())["current_version"]
+    except Exception:
+        version = "1.10.5"  # known-good fallback
+
+    system = platform.system().lower()
+    machine = platform.machine().lower()
+
+    _os = {"darwin": "darwin", "linux": "linux", "windows": "windows"}.get(system, "linux")
+    _arch = {
+        "x86_64": "amd64", "amd64": "amd64",
+        "arm64": "arm64", "aarch64": "arm64",
+        "i386": "386", "i686": "386",
+    }.get(machine, "amd64")
+
+    filename = f"terraform_{version}_{_os}_{_arch}.zip"
+    url = f"https://releases.hashicorp.com/terraform/{version}/{filename}"
+
+    bin_dir = HOME / "bin"
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    exe = "terraform.exe" if system == "windows" else "terraform"
+    tf_path = bin_dir / exe
+    zip_path = bin_dir / filename
+
+    print(f"  Downloading Terraform {version} ({_os}/{_arch})…")
+    try:
+        urllib.request.urlretrieve(url, zip_path)
+        with zipfile.ZipFile(zip_path) as zf:
+            zf.extract(exe, bin_dir)
+        zip_path.unlink(missing_ok=True)
+        if system != "windows":
+            tf_path.chmod(0o755)
+        print(f"  Terraform installed to {tf_path}")
+        return str(tf_path)
+    except Exception as e:
+        zip_path.unlink(missing_ok=True)
         raise RuntimeError(
-            "terraform binary not found in PATH. "
-            "Install Terraform: https://developer.hashicorp.com/terraform/install"
-        )
-    return tf
+            f"Failed to auto-install Terraform: {e}\n"
+            "Install manually: https://developer.hashicorp.com/terraform/install"
+        ) from e
