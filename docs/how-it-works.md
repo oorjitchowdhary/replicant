@@ -1,6 +1,6 @@
 # How It Works
 
-replicant turns a research paper (or GitHub repo) into a runnable Docker environment in five steps.
+replicant turns a research paper (or GitHub repo) into a runnable Docker environment in five steps, with PyPI validation and one-shot retry baked in.
 
 ## Pipeline
 
@@ -17,15 +17,18 @@ source (arXiv / PDF / GitHub URL)
   3. AI dependency resolution
          │
          ▼
+  3b. PyPI preflight validation
+         │
+         ▼
   4. Generate Dockerfile
          │
          ▼
-  5. Docker build → shell
+  5. Docker build → (retry on failure) → shell
 ```
 
 ### 1. Fetch & extract
 
-- **arXiv ID** → downloads the PDF from arXiv, extracts text, runs `paper.py` to pull out the GitHub URL, datasets, hardware hints, and frameworks mentioned in the paper.
+- **arXiv ID** → downloads the PDF, extracts text, runs `paper.py` to pull out the GitHub URL, datasets, hardware hints, and frameworks mentioned in the paper.
 - **Local PDF** → same analysis, skips the download.
 - **GitHub URL** → skips paper analysis entirely; clones directly.
 
@@ -35,7 +38,7 @@ The paper analyzer uses Claude (via AWS Bedrock) to parse unstructured text and 
 
 `analyzers/repo.py` scans the cloned repository:
 
-- **Environment files** — detected in priority order (see [Supported Environments](supported-environments.md)). The highest-priority file becomes the `primary_env` that drives Dockerfile generation.
+- **Environment files** — detected in priority order (see [Supported Environments](supported-environments.md)). Searches up to 3 levels deep with monorepo-aware heuristics. The highest-priority file becomes the `primary_env` that drives Dockerfile generation.
 - **Packages** — parsed from `requirements.txt`, `environment.yml`, `setup.py`, `pyproject.toml`.
 - **Datasets & downloads** — regex patterns scan all text files for HuggingFace `load_dataset()` calls, `wget`/`curl`/`gdown` commands, Google Drive links, and direct `.tar.gz`/`.zip` URLs.
 - **Hardware** — scans for `cuda`, `.to('cuda')`, `torch.device`, `tpu`, `xla` patterns.
@@ -58,6 +61,12 @@ Key heuristics baked into the prompt:
 
 This step is skipped when `--no-llm` is passed (baseline mode).
 
+### 3b. PyPI preflight validation
+
+Before generating the Dockerfile, `utils/preflight.py` checks every resolved package name against the PyPI JSON API in parallel. Any 404s are phantom dependencies — packages that don't exist on PyPI.
+
+If phantoms are found, the resolver re-runs with the phantom names appended to the prompt as additional context. The corrected resolution is validated once more. If phantoms persist after the re-run, a warning is shown and the build proceeds — the one-shot retry in step 5 handles it if the build breaks.
+
 ### 4. Generate Dockerfile
 
 `generators/docker.py` picks a generation strategy based on `primary_env`:
@@ -74,28 +83,74 @@ For `requirements.txt`, if TensorFlow 1.x is detected the base image switches to
 
 ### 5. Docker build
 
-`executors/local.py` runs `docker build` in the generated context directory. Build logs are streamed to `~/.replicant/logs/{image}.log`. On success the environment is marked `ready`; on failure it's `failed` and the log has the full error.
+**Local builds:** `executors/local.py` runs `docker build` in the generated context directory. Build logs are streamed to `~/.replicant/logs/{env_id}.log`.
+
+**Cloud builds (`--cloud`):** `executors/cloud.py` rsyncs the build context to the EC2 instance, runs `docker build` remotely (streaming output over SSH), authenticates with ECR, then tags and pushes the image. On `replicant shell`, the image is pulled from ECR if not cached locally on the instance and run with the code mounted at `/workspace`.
+
+**One-shot retry:** If the build fails, `utils/build_errors.py` extracts the failing `RUN` step and the last 50 lines of the error log, then re-invokes the dependency resolver with that failure context appended. A new Dockerfile is generated and the build is retried once. The retry attempt is logged distinctly.
+
+On success the environment is marked `ready`. On failure (including after retry) it's marked `failed` and the log has the full error.
+
+---
+
+## Cloud execution
+
+Cloud builds provision an EC2 `g4dn.xlarge` instance (NVIDIA T4 GPU) via Terraform. Infrastructure is managed per-environment: each cloud build gets its own ECR repository.
+
+```
+replicant setup <paper> --cloud
+         │
+         ├─ AWSProvider.provision()
+         │    └─ terraform apply (EC2 + ECR + IAM)
+         │
+         ├─ CloudExecutor.build()
+         │    ├─ rsync build context → EC2
+         │    ├─ docker build (on EC2)
+         │    ├─ ECR login (aws ecr get-login-password | docker login)
+         │    └─ docker tag + push → ECR
+         │
+         ├─ sync code → EC2 ~/code
+         │
+         └─ ready
+
+replicant shell <env_id>
+         │
+         ├─ ECR login
+         ├─ docker pull (if not cached)
+         └─ docker run -it -v ~/code:/workspace
+```
+
+Terraform state lives in `~/.replicant/terraform/aws/`. Terraform binaries are bundled with the pip package; the `replicant init` wizard installs the `terraform` CLI if it's not already present.
+
+Tear down with `replicant cloud teardown <env_id>` or `replicant delete <env_id>` — both call `terraform destroy` and remove ECR images.
+
+---
 
 ## Storage layout
 
 ```
 ~/.replicant/
-├── environments/   # One JSON metadata file per environment
-├── repos/          # Cloned repositories
-├── dockerfiles/    # Generated build contexts (Dockerfile + supporting files)
-├── logs/           # Docker build logs
-└── papers/         # Downloaded arXiv PDFs
+├── config.json       # Bedrock model + AWS region + profile (written by replicant init)
+├── environments/     # One JSON metadata file per environment
+├── repos/            # Cloned repositories
+├── dockerfiles/      # Generated build contexts (Dockerfile + supporting files)
+├── logs/             # Docker build logs
+├── papers/           # Downloaded arXiv PDFs
+└── terraform/        # Terraform working directory (state, provider cache)
+    └── aws/
 ```
 
 Set `REPLICANT_HOME` to use a different base directory.
 
+---
+
 ## LLM integration
 
-replicant uses **Claude via AWS Bedrock** (default: `us.anthropic.claude-sonnet-4-6`). Two modules make LLM calls:
+replicant uses **Claude via AWS Bedrock**. Two modules make LLM calls:
 
 - `analyzers/paper.py` — paper analysis (GitHub URL extraction, datasets, hardware)
-- `analyzers/dependencies.py` — dependency resolution
+- `analyzers/dependencies.py` — dependency resolution and version pinning
 
-Both use `boto3` with the Bedrock `converse` API. The bearer token auth is handled via `AWS_BEARER_TOKEN_BEDROCK`. Override the model with `BEDROCK_MODEL_ID` and region with `AWS_DEFAULT_REGION`.
+Both use `boto3` with the Bedrock `converse` API. Credentials and model selection are configured by `replicant init` and stored in `~/.replicant/config.json`. To override without re-running init, set `BEDROCK_MODEL_ID` and `AWS_DEFAULT_REGION` as environment variables.
 
 Throttling is handled with exponential backoff (30s, 60s retry).

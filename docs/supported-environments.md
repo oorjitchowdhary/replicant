@@ -12,7 +12,7 @@ replicant detects environment files in priority order. The highest-priority file
 6. `setup.py`
 7. `pyproject.toml`, `setup.cfg`
 8. `Pipfile`
-9. One-level-deep fallbacks (e.g. `mypackage/setup.py`)
+9. Multi-level fallbacks (up to 3 levels deep) — `*/requirements.txt`, `*/setup.py`, etc. For monorepos with multiple candidates, the file whose parent directory contains the most `.py` files wins.
 
 If none of these are found, setup fails with `missing_env_spec`.
 
