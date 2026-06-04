@@ -373,9 +373,21 @@ def test_find_terraform_returns_path_when_present():
         assert _find_terraform() == "/usr/local/bin/terraform"
 
 
-def test_find_terraform_raises_when_missing():
-    with patch("shutil.which", return_value=None):
-        with pytest.raises(RuntimeError, match="terraform binary not found"):
+def test_find_terraform_auto_installs_when_missing(tmp_path):
+    # When not in PATH and not in ~/.replicant/bin, it calls _install_terraform
+    with patch("shutil.which", return_value=None), \
+         patch("replicant.providers.aws.HOME", tmp_path), \
+         patch("replicant.providers.aws._install_terraform", return_value=str(tmp_path / "terraform")) as mock_install:
+        result = _find_terraform()
+    mock_install.assert_called_once()
+    assert result == str(tmp_path / "terraform")
+
+
+def test_find_terraform_raises_when_install_fails(tmp_path):
+    with patch("shutil.which", return_value=None), \
+         patch("replicant.providers.aws.HOME", tmp_path), \
+         patch("replicant.providers.aws._install_terraform", side_effect=RuntimeError("Failed to auto-install Terraform")):
+        with pytest.raises(RuntimeError, match="Failed to auto-install"):
             _find_terraform()
 
 

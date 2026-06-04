@@ -68,38 +68,29 @@ def test_get_bedrock_client_uses_config_region(tmp_path):
     assert call_kwargs["region_name"] == "ap-southeast-1"
 
 
-# New tests for terraform auto-install
-import shutil
-from replicant.utils.onboarding import _install_terraform, _step_terraform
+# Tests for terraform step (delegates to aws._find_terraform)
+from replicant.utils.onboarding import _step_terraform
 
-def test_step_terraform_skips_when_already_installed():
-    with patch("shutil.which", return_value="/usr/local/bin/terraform"):
+def test_step_terraform_returns_true_when_find_succeeds():
+    with patch("replicant.providers.aws._find_terraform", return_value="/usr/local/bin/terraform"):
         result = _step_terraform()
     assert result is True
 
-def test_install_terraform_tries_brew_on_macos():
-    def which_side_effect(x):
-        if x == "brew":
-            return "/usr/bin/brew"
-        if x == "terraform":
-            return "/usr/local/bin/terraform"
-        return None
-    with patch("platform.system", return_value="Darwin"), \
-         patch("shutil.which", side_effect=which_side_effect), \
-         patch("subprocess.run") as mock_run:
-        mock_run.return_value = MagicMock(returncode=0)
-        ok = _install_terraform()
-    assert ok is True
-    cmds = [" ".join(c.args[0]) if isinstance(c.args[0], list) else " ".join(c.args) for c in mock_run.call_args_list]
-    assert any("brew" in c for c in cmds)
+def test_step_terraform_returns_false_when_find_raises():
+    with patch("replicant.providers.aws._find_terraform", side_effect=RuntimeError("auto-install failed")):
+        result = _step_terraform()
+    assert result is False
 
-def test_install_terraform_returns_false_when_all_fail():
-    with patch("platform.system", return_value="Darwin"), \
-         patch("shutil.which", return_value=None), \
-         patch("subprocess.run") as mock_run:
-        mock_run.return_value = MagicMock(returncode=1)
-        ok = _install_terraform()
-    assert ok is False
+def test_install_terraform_raises_on_download_failure(tmp_path):
+    from replicant.providers.aws import _install_terraform
+    with patch("replicant.providers.aws.HOME", tmp_path), \
+         patch("urllib.request.urlretrieve", side_effect=OSError("network error")), \
+         patch("urllib.request.urlopen") as mock_urlopen:
+        mock_urlopen.return_value.__enter__ = lambda s: s
+        mock_urlopen.return_value.__exit__ = MagicMock(return_value=False)
+        mock_urlopen.return_value.read.return_value = b'{"current_version": "1.10.5"}'
+        with pytest.raises(RuntimeError, match="Failed to auto-install"):
+            _install_terraform()
 
 
 # New tests for aws credentials step
