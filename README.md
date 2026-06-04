@@ -12,8 +12,6 @@ replicant shell              # enter the environment
 
 Works on any ML paper. GPU papers spin up an EC2 instance automatically.
 
----
-
 ## Prerequisites
 
 - **Docker** — must be installed and running
@@ -27,8 +25,6 @@ replicant init
 
 The wizard checks Docker, installs Terraform if needed, verifies AWS credentials, and tests Bedrock access. Takes about 2 minutes.
 
----
-
 ## Install
 
 ```bash
@@ -36,8 +32,6 @@ pip install replicant
 ```
 
 Requires Python 3.9+.
-
----
 
 ## Quick Start
 
@@ -61,8 +55,6 @@ replicant shell
 replicant shell a3f2c1b0
 ```
 
----
-
 ## Commands
 
 | Command | Description |
@@ -83,8 +75,6 @@ replicant shell a3f2c1b0
 | `replicant benchmark <corpus>` | Batch-run across a CSV corpus of papers |
 
 **Global flag:** `--verbose` — stream build logs and debug output.
-
----
 
 ## Cloud Execution
 
@@ -108,8 +98,6 @@ replicant cloud teardown <env_id>
 
 Cloud builds require Terraform — the `replicant init` wizard installs it automatically on macOS and Linux.
 
----
-
 ## How It Works
 
 replicant analyzes the repo and paper to build an environment spec, then generates a Dockerfile:
@@ -122,15 +110,11 @@ replicant analyzes the repo and paper to build an environment spec, then generat
 
 All data lives under `~/.replicant/`. Set `REPLICANT_HOME` to override.
 
----
-
 ## Docs
 
 - [How it works](docs/how-it-works.md) — pipeline, AI dependency resolution, retry logic
 - [Supported environments](docs/supported-environments.md) — env file types, priority order, Dockerfile templates
 - [Troubleshooting](docs/troubleshooting.md) — common failures and fixes
-
----
 
 ## License
 
